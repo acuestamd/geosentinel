@@ -244,22 +244,26 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{su
 
 function flyTo(lat,lng){map.flyTo([lat,lng],5,{duration:1})}
 
+let pillAllActive=true;
 function filterBySev(el,level){
-  // Toggle: click same pill again = show all
-  if(el.classList.contains('active')&&level!=='all'){
-    filterSev='all';
-    document.querySelectorAll('.pill').forEach(p=>p.classList.add('active'));
-  }else{
+  const allPills=document.querySelectorAll('.pill');
+  if(pillAllActive){
+    // First click: isolate to this level
     filterSev=level;
-    document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
-    if(level==='all'){document.querySelectorAll('.pill').forEach(p=>p.classList.add('active'))}
-    else{el.classList.add('active')}
+    allPills.forEach(p=>p.classList.remove('active'));
+    el.classList.add('active');
+    pillAllActive=false;
+  }else if(el.classList.contains('active')){
+    // Clicking the already-active pill: reset to show all
+    filterSev='all';
+    allPills.forEach(p=>p.classList.add('active'));
+    pillAllActive=true;
+  }else{
+    // Clicking a different pill: switch to that level
+    filterSev=level;
+    allPills.forEach(p=>p.classList.remove('active'));
+    el.classList.add('active');
   }
-  // Sync toolbar buttons
-  document.querySelectorAll('.tbtn[data-f="sev"]').forEach(b=>b.classList.remove('on'));
-  const tbMap={'all':'all','high':'high','mod':'all','low':'all'};
-  const tb=document.querySelector(`.tbtn[data-f="sev"][data-v="${filterSev==='all'?'all':filterSev==='high'?'high':'all'}"]`);
-  if(tb)tb.classList.add('on');
   refresh();
 }
 
