@@ -1,11 +1,6 @@
 {
   "scans": [
     {
-      "time": "2026-03-03T18:07:17.246038+00:00",
-      "signals": 53,
-      "hotspots": 29
-    },
-    {
       "time": "2026-03-03T19:59:00.486636+00:00",
       "signals": 53,
       "hotspots": 31
@@ -149,48 +144,53 @@
       "time": "2026-03-05T05:53:25.323193+00:00",
       "signals": 17,
       "hotspots": 16
+    },
+    {
+      "time": "2026-03-05T07:00:32.500146+00:00",
+      "signals": 13,
+      "hotspots": 13
     }
   ],
   "baselines": {
     "ET:marburg": {
-      "avg_weekly": 1.1724137931034477,
-      "samples": 464
+      "avg_weekly": 1.1720430107526876,
+      "samples": 465
     },
     "CD:ebola": {
       "avg_weekly": 1.0,
-      "samples": 464
+      "samples": 465
     },
     "BD:nipah": {
-      "avg_weekly": 1.2887931034482776,
-      "samples": 464
+      "avg_weekly": 1.2881720430107544,
+      "samples": 465
     },
     "IN:nipah": {
-      "avg_weekly": 1.3211206896551737,
-      "samples": 464
+      "avg_weekly": 1.320430107526883,
+      "samples": 465
     },
     "GN:polio": {
       "avg_weekly": 1.0,
-      "samples": 464
+      "samples": 465
     },
     "KH:h5n1": {
       "avg_weekly": 1.0,
-      "samples": 464
+      "samples": 465
     },
     "TH:anthrax": {
       "avg_weekly": 1.0,
-      "samples": 464
+      "samples": 465
     },
     "MX:h5n1": {
       "avg_weekly": 1.0,
-      "samples": 464
+      "samples": 465
     },
     "SN:rift valley fever": {
       "avg_weekly": 1.0,
-      "samples": 464
+      "samples": 465
     },
     "MA:measles": {
       "avg_weekly": 1.0,
-      "samples": 464
+      "samples": 465
     },
     "ZA:cholera": {
       "avg_weekly": 1.0,
@@ -214,11 +214,11 @@
     },
     "SA:unknown": {
       "avg_weekly": 1.0,
-      "samples": 464
+      "samples": 465
     },
     "UG:unknown": {
       "avg_weekly": 1.0,
-      "samples": 464
+      "samples": 465
     },
     "CD:yellow fever": {
       "avg_weekly": 1.0,
@@ -234,7 +234,7 @@
     },
     "GB:travel": {
       "avg_weekly": 1.0,
-      "samples": 450
+      "samples": 451
     },
     "HT:cholera": {
       "avg_weekly": 1.0,
