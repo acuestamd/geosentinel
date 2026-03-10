@@ -1,11 +1,6 @@
 {
   "scans": [
     {
-      "time": "2026-03-08T23:52:05.110850+00:00",
-      "signals": 19,
-      "hotspots": 18
-    },
-    {
       "time": "2026-03-09T02:39:10.399996+00:00",
       "signals": 12,
       "hotspots": 12
@@ -149,48 +144,53 @@
       "time": "2026-03-10T13:13:36.542109+00:00",
       "signals": 12,
       "hotspots": 12
+    },
+    {
+      "time": "2026-03-10T14:26:40.041743+00:00",
+      "signals": 12,
+      "hotspots": 12
     }
   ],
   "baselines": {
     "ET:marburg": {
-      "avg_weekly": 1.1355932203389831,
-      "samples": 590
+      "avg_weekly": 1.1353637901861253,
+      "samples": 591
     },
     "CD:ebola": {
       "avg_weekly": 1.0,
-      "samples": 590
+      "samples": 591
     },
     "BD:nipah": {
-      "avg_weekly": 1.2271186440677986,
-      "samples": 590
+      "avg_weekly": 1.2267343485617617,
+      "samples": 591
     },
     "IN:nipah": {
-      "avg_weekly": 1.2525423728813565,
-      "samples": 590
+      "avg_weekly": 1.2521150592216588,
+      "samples": 591
     },
     "GN:polio": {
       "avg_weekly": 1.0,
-      "samples": 590
+      "samples": 591
     },
     "KH:h5n1": {
       "avg_weekly": 1.0,
-      "samples": 590
+      "samples": 591
     },
     "TH:anthrax": {
       "avg_weekly": 1.0,
-      "samples": 590
+      "samples": 591
     },
     "MX:h5n1": {
       "avg_weekly": 1.0,
-      "samples": 590
+      "samples": 591
     },
     "SN:rift valley fever": {
       "avg_weekly": 1.0,
-      "samples": 590
+      "samples": 591
     },
     "MA:measles": {
       "avg_weekly": 1.0,
-      "samples": 590
+      "samples": 591
     },
     "ZA:cholera": {
       "avg_weekly": 1.0,
@@ -214,11 +214,11 @@
     },
     "SA:unknown": {
       "avg_weekly": 1.0,
-      "samples": 590
+      "samples": 591
     },
     "UG:unknown": {
       "avg_weekly": 1.0,
-      "samples": 590
+      "samples": 591
     },
     "CD:yellow fever": {
       "avg_weekly": 1.0,
