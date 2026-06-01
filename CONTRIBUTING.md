@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for looking. This is a solo-maintained side project, so response times vary.
+Thanks for looking. This is a solo-maintained open-source project, so response times vary.
 
 ## What I'm especially looking for
 
@@ -12,7 +12,7 @@ Thanks for looking. This is a solo-maintained side project, so response times va
 ## What I'll probably decline
 
 - Anything that requires paid APIs or non-stdlib Python dependencies. The "runs free on GitHub Actions, no infrastructure" property is intentional.
-- Features that would make the dashboard easier to mistake for an authoritative or clinical source. The concept-disclaimer framing is load-bearing.
+- Features that would make the dashboard easier to mistake for an authoritative or clinical source. The non-diagnostic, non-authoritative framing is load-bearing.
 - Aggressive scraping of sources that don't want it (ToS matters; see issue #1 for context).
 
 ## Reporting issues
@@ -23,6 +23,6 @@ For potential security issues, see [SECURITY.md](SECURITY.md).
 
 ## Pull requests
 
-PRs welcome. For anything beyond a typo or small fix, please open an issue first so we can check scope alignment. The project is intentionally narrow — a *concept* for what an OSINT outbreak layer could look like, not a production system.
+PRs welcome. For anything beyond a typo or small fix, please open an issue first so we can check scope alignment. The project is intentionally narrow — an open early-warning *signal layer*, not a production surveillance system.
 
 When in doubt: I'd rather merge something honest about its limitations than something polished that overpromises.

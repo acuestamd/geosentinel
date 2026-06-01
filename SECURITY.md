@@ -1,6 +1,6 @@
 # Security
 
-This project is a personal concept and not intended for production or clinical use. It reads from public APIs and serves a static dashboard via GitHub Pages. There is no user data, no authentication, and no server-side state beyond GitHub Actions runners and Pages artifacts.
+This is an open-source project and not intended for production or clinical use. It reads from public APIs and serves a static dashboard via GitHub Pages. There is no user data, no authentication, and no server-side state beyond GitHub Actions runners and Pages artifacts.
 
 ## Reporting a vulnerability
 
@@ -39,4 +39,4 @@ If any of the above is somehow happening, that's itself a bug — please report 
 
 ## Response time
 
-Solo-maintained side project. Critical issues: aim to acknowledge within a few days. Non-critical: best effort.
+Solo-maintained open-source project. Critical issues: aim to acknowledge within a few days. Non-critical: best effort.

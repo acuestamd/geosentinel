@@ -1,14 +1,16 @@
 # 🌐 GeoSentinel 2.0
 
-> **⚠️ This is a concept / proof-of-concept project.** It demonstrates what a free, fully open-source outbreak early-warning layer *could* look like if built on top of public APIs. It is **not** a clinical or operational decision-making tool. Signals are unverified, geocoding is approximate, and coverage is heavily biased toward English-language sources. Do not use this to make travel, medical, or public-health decisions.
+**An open, self-running OSINT layer for disease-outbreak early warning.**
 
-**Global Disease Surveillance via OSINT**
+GeoSentinel 2.0 aggregates five public sources — the WHO Disease Outbreak News API, PAHO news, GDELT global news, Mastodon, and Reddit — into a single live map of emerging disease signals. It runs itself every 30 minutes on GitHub Actions, costs nothing to operate, and is built entirely on the Python standard library with zero infrastructure. The goal is a fast, transparent, fully reproducible **early-warning layer** that flags signals worth a closer look from validated epidemiological systems.
 
-A weekend-project sketch of a multi-source disease-outbreak monitor. The point isn't the dashboard itself — it's to show that the moving pieces (WHO API, PAHO RSS, GDELT news, Mastodon, Reddit OAuth) can be stitched together with stdlib Python and zero infrastructure cost.
+🔗 **Live dashboard:** https://acuestamd.github.io/project-geosentinel/
 
-<img src="https://img.shields.io/badge/status-concept-yellow" alt="Concept"> <img src="https://img.shields.io/badge/sources-5-blue" alt="Sources"> <img src="https://img.shields.io/badge/updates-every%2030%20min-orange" alt="Updates"> <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT">
+<img src="https://img.shields.io/badge/status-live-brightgreen" alt="Live"> <img src="https://img.shields.io/badge/sources-5-blue" alt="Sources"> <img src="https://img.shields.io/badge/updates-every%2030%20min-orange" alt="Updates"> <img src="https://img.shields.io/badge/infra%20cost-%240-success" alt="Zero infra cost"> <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT">
 
-## 🛰️ Data Sources
+> ℹ️ **Scope:** GeoSentinel 2.0 is **decision-support, not a decision-maker.** It surfaces early, often-unverified open-source signals to help a trained reader decide what to look at next. It is **not** a diagnostic device and **not** a substitute for validated surveillance, clinical judgment, or official public-health guidance. Do not make clinical, operational, or travel decisions from it alone. See [Honest scope & limitations](#-honest-scope--limitations).
+
+## 🛰️ Data sources
 
 | Source | Type | Coverage |
 |--------|------|----------|
@@ -18,88 +20,76 @@ A weekend-project sketch of a multi-source disease-outbreak monitor. The point i
 | 🐘 **Mastodon** | Public hashtag timelines | Symptom reports, early signals |
 | 💬 **Reddit** | Community reports (OAuth, app-only) | Travel health experiences |
 
+Every signal carries a `source` badge, so its provenance is visible at a glance — an official WHO alert is never silently mixed in with an anonymous post.
+
 ## 🔬 Features
 
-- **Real-time scanning** — automated every 30 minutes via GitHub Actions
+- **Self-running** — refreshes automatically every 30 minutes via GitHub Actions, no servers to maintain
 - **Anomaly detection** — historical baseline comparison flags unusual spikes
 - **Traveler signal detection** — NLP patterns identify "came back sick from..." reports
-- **Flight risk modeling** — maps potential disease spread via air routes
-- **Case/death count extraction** — regex pulls counts from source text when present
-- **Free-text search** — substring match across disease, location, summary
-- **Interactive map** — Leaflet-based with severity-coded markers
-- **Source-filtered views** — filter by WHO, PAHO, news, Mastodon, or Reddit
-
-## 🚧 Limitations (read this)
-
-This system has serious limitations as outbreak intelligence. Listed honestly:
-
-- **Single-source signals are unverified.** A Reddit post about feeling sick is not an outbreak. The confidence score reflects source reliability, not signal truth.
-- **Coverage is English-skewed.** A Lassa fever outbreak in rural Mali with no English-language news has zero signal density here for days. Absence of signal ≠ absence of outbreak.
-- **Geocoding is keyword-based and imperfect.** It can misplace a signal to a country mentioned only in passing (e.g. "Q&A session" matching against an abbreviation).
-- **Case/death extraction is regex-only.** When source text says "N cases" it works; when it says "dozens affected" it doesn't. Most WHO DON titles are just "Disease – Country" with no numbers.
-- **No cross-source corroboration tiers.** A single tweet renders with the same visual weight as a WHO DON alert (the `source` badge is the only differentiator).
-- **No notification of national health authorities.** Real outbreak intelligence systems coordinate with the relevant Ministry of Health. This one publishes to GitHub Pages and that's it.
-- **Pipeline depends on third-party feeds staying up.** PAHO RSS, GDELT, Mastodon, Reddit — any of these can change format or rate-limit without notice.
-
-For real outbreak surveillance, look at [WHO EIOS](https://www.who.int/initiatives/eios), [HealthMap](https://healthmap.org/), [ProMED](https://promedmail.org/), and the original clinic-based [GeoSentinel](https://www.istm.org/geosentinel).
+- **Flight-path modeling** — maps potential spread via IATA air-route hubs
+- **Case/death count extraction** — conservative regex pulls counts from source text when present
+- **Free-text search** — substring match across disease, location, and summary
+- **Interactive map** — Leaflet-based, with severity-coded markers
+- **Source-filtered views** — isolate WHO, PAHO, news, Mastodon, or Reddit
+- **Provenance-first & reproducible** — stdlib-only, MIT-licensed, every step auditable in one file
 
 ## 🏗️ Architecture
 
 ```
-GitHub Actions (cron 30 min)
+GitHub Actions (cron, every 30 min)
     → scanner_v2.py (Python stdlib only)
         → WHO + PAHO + GDELT + Mastodon + Reddit OAuth
         → NLP disease detection + geocoding + anomaly scoring
         → case/death count extraction (regex)
-        → signals.json (generated in-runner, not committed)
-    → GitHub Pages (deployed from same job's artifact)
+        → signals.json (generated in-runner)
+    → GitHub Pages (deployed from the same job's artifact)
         → index.html (Leaflet map + dashboard)
 ```
 
 **Zero infrastructure cost.** Runs entirely on GitHub Actions + Pages.
 
-## 🚀 Deployment
+## 📊 Signal-processing pipeline
 
-Auto-deploys via GitHub Pages. Every 30 minutes:
+1. **Collection** — sequential queries across five source APIs
+2. **Disease detection** — word-boundary regex against ~45 disease patterns
+3. **Geocoding** — ~100 city/country database with word-boundary matching for short keys
+4. **Severity scoring** — base disease severity + modifiers (deaths, outbreak scale, traveler)
+5. **Case/death extraction** — conservative regex with sanity caps
+6. **Anomaly detection** — 2× historical baseline comparison
+7. **Deduplication** — hash-based + location clustering
+8. **Flight risk** — IATA hub mapping for affected countries
 
-1. Scanner collects signals from five sources
-2. Processes, deduplicates, scores, geocodes, and extracts case/death counts
-3. Writes `signals.json` to the runner filesystem (not committed)
-4. Pages serves the updated dashboard from the artifact
+## 🔎 Honest scope & limitations
 
-`signal_history.json` (baselines for anomaly detection) is persisted across runs via GitHub Actions cache.
+Transparency about what this does and doesn't do is a design goal, not a footnote. Known limitations, stated plainly:
+
+- **Single-source signals are unverified.** A Reddit post about feeling sick is not an outbreak. The confidence score reflects source reliability, not signal truth — corroboration is the reader's job.
+- **Coverage is English-skewed.** An outbreak with no English-language news has low signal density here for days. Absence of signal ≠ absence of outbreak. (Broader multilingual coverage is the top item on the roadmap.)
+- **Geocoding is keyword-based.** It can misplace a signal to a country mentioned only in passing.
+- **Case/death extraction is regex-only.** "N cases" works; "dozens affected" doesn't. Most WHO DON titles carry no numbers.
+- **No cross-source corroboration tiers yet.** A single post and a WHO DON alert are distinguished only by the `source` badge today; weighted corroboration is on the roadmap.
+- **It publishes; it does not notify.** Operational surveillance systems coordinate with the relevant Ministry of Health. This one publishes to GitHub Pages — it is an open signal layer, not an alerting authority.
+- **It depends on third-party feeds.** Any upstream source can change format or rate-limit without notice.
+
+For validated, operational surveillance, use [WHO EIOS](https://www.who.int/initiatives/eios), [HealthMap](https://healthmap.org/), [ProMED](https://promedmail.org/), and the clinic-based [GeoSentinel](https://www.istm.org/geosentinel) network. GeoSentinel 2.0 is a fast, open *complement* to those — useful for flagging signals that warrant a closer look — not a replacement.
 
 ## ⚙️ Configuration
 
-For Reddit signals, register a "script" app at <https://www.reddit.com/prefs/apps> and add these to **Settings → Secrets and variables → Actions**:
+For Reddit signals, register a "script" app at <https://www.reddit.com/prefs/apps> and add these under **Settings → Secrets and variables → Actions**:
 
 - `REDDIT_CLIENT_ID`
 - `REDDIT_CLIENT_SECRET`
 
-If either is missing, Reddit is skipped silently and the other sources still run.
+If either is missing, Reddit is skipped silently and the other four sources still run.
 
-## 📊 Signal Processing Pipeline
+## ⚕️ Background & affiliation
 
-1. **Collection** — sequential queries across five source APIs
-2. **Disease Detection** — word-boundary regex against ~45 disease patterns
-3. **Geocoding** — ~100 city/country database with word-boundary matching for short keys
-4. **Severity Scoring** — base disease severity + modifiers (deaths, outbreak scale, traveler)
-5. **Case/Death Extraction** — conservative regex with sanity caps
-6. **Anomaly Detection** — 2× historical baseline comparison
-7. **Deduplication** — hash-based + location clustering
-8. **Flight Risk** — IATA hub mapping for affected countries
+The original [GeoSentinel](https://www.istm.org/geosentinel) is the ISTM/CDC travel-medicine surveillance network — ~70 clinics worldwide collecting validated, patient-level data from returning travelers, and the authoritative source for travel-related infectious-disease epidemiology.
 
-## ⚕️ Background
+**GeoSentinel 2.0** is an independent, open-source OSINT layer inspired by that mission: faster and noisier, built to surface signals that merit a closer look from real epi systems. It is a personal project and is **not** affiliated with or endorsed by WHO, PAHO, ISTM, the GeoSentinel network, or any health authority.
 
-The original [GeoSentinel](https://www.istm.org/geosentinel) is the ISTM/CDC travel-medicine surveillance network — ~70 clinics worldwide collecting validated, patient-level data from returning travelers. It is the authoritative source for travel-related infectious disease epidemiology; this project is **not** a substitute for it.
-
-**GeoSentinel 2.0** is a sketch of what an OSINT layer on top of that might look like: faster but noisier, useful for flagging signals that warrant a closer look from real epi systems.
-
-## ⚕️ About this project
-
-This is a personal side project — **not** affiliated with WHO, PAHO, ISTM, the real [GeoSentinel](https://www.istm.org/geosentinel) network, or any health authority. It exists as a sketch of what an OSINT outbreak-detection layer could look like, not as a tool anyone should make decisions from.
-
-If you work in epidemiologic surveillance and see something here that's wrong, misleading, or worse, please open an [issue](https://github.com/acuestamd/project-geosentinel/issues). See [CONTRIBUTING.md](CONTRIBUTING.md) for what kind of feedback is most useful.
+If you work in epidemiologic surveillance and see something here that's wrong or misleading, please open an [issue](https://github.com/acuestamd/project-geosentinel/issues) — that feedback is the most valuable kind. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## 📜 License
 
