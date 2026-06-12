@@ -207,7 +207,7 @@
     <span class="tbar-label">Severity</span>
     <button class="tbtn on" data-f="sev" data-v="all">All</button>
     <button class="tbtn" data-f="sev" data-v="crit">🔴 Critical</button>
-    <button class="tbtn" data-f="sev" data-v="high">🟠 High+</button>
+    <button class="tbtn" data-f="sev" data-v="high">🟠 High</button>
   </div>
   <div class="tsep"></div>
   <div class="tbar-group">
@@ -248,12 +248,12 @@
 
 <div class="ftr">
   <div class="ftr-l">
-    <span>🌐 Sources: WHO · News (GDELT) · Mastodon · Reddit · Google Trends</span>
+    <span>🌐 Sources: WHO · PAHO · News (GDELT) · Mastodon · Reddit</span>
     <span>|</span><span id="fSig">—</span>
     <span>|</span><span id="fCo">—</span>
     <span>|</span><span id="fTrav">—</span>
   </div>
-  <span style="color:var(--un-accent);font-weight:600">GeoSentinel 2.0 — AI-Powered Disease Surveillance</span>
+  <span style="color:var(--un-accent);font-weight:600">GeoSentinel 2.0 — Open OSINT Disease Surveillance</span>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -268,6 +268,13 @@ const SRC_I={who:'🏥',paho:'🌎',mastodon:'🐘',news:'📰',reddit:'💬'};
 function sc(s){return s>=8?'c':s>=6?'h':s>=4?'m':'lo'}
 function sl(s){return s>=8?'critical':s>=6?'high':s>=4?'moderate':'low'}
 function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''}
+// Only allow http(s) links through — source URLs come from user-supplied
+// Reddit/Mastodon posts, so reject javascript:/data: and other schemes.
+function safeUrl(u){
+  if(!u)return '#';
+  try{const p=new URL(u,location.href);return(p.protocol==='http:'||p.protocol==='https:')?u:'#';}
+  catch(e){return '#'}
+}
 
 const map=L.map('map',{center:[20,15],zoom:2.5,minZoom:2,maxZoom:8,zoomControl:true,attributionControl:false,worldCopyJump:true});
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd'}).addTo(map);
@@ -355,12 +362,12 @@ function addMarkers(){
     const c=sc(h.sev),sz=h.sev>=8?24:h.sev>=6?19:14;
     const icon=L.divIcon({className:'',html:`<div class="pmk ${c}" style="width:${sz}px;height:${sz}px"></div>`,iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]});
     // If only 1 signal with a URL, clicking opens it directly
-    const singleUrl=(h.signals.length===1&&h.signals[0].url&&h.signals[0].url!=='#')?h.signals[0].url:null;
+    const singleUrl=(h.signals.length===1&&safeUrl(h.signals[0].url)!=='#')?safeUrl(h.signals[0].url):null;
     const sigLinks=h.signals.map(s=>{
       const src=SRC_I[s.source]||'📡';
-      const url=s.url&&s.url!=='#'?s.url:'';
+      const url=safeUrl(s.url);
       const label=`${src} ${(s.disease||'').charAt(0).toUpperCase()+(s.disease||'').slice(1)} — ${s.severity}/10`;
-      return url?`<a class="pp-link" href="${esc(url)}" target="_blank" rel="noopener">${label} →</a>`
+      return url!=='#'?`<a class="pp-link" href="${esc(url)}" target="_blank" rel="noopener">${label} →</a>`
         :`<div class="pp-link">${label}</div>`;
     }).join('');
     const popup=`<div class="pp-title">${h.name}, ${h.country}</div><div class="pp-disease">${[...h.diseases].join(' · ')}</div><div class="pp-info">Threat: <b style="color:${SEV[sl(h.sev)]}">${sl(h.sev).toUpperCase()}</b> · ${h.count} signal${h.count>1?'s':''}</div>${sigLinks}`;
@@ -431,7 +438,7 @@ function renderSignals(){
     let badges=`<span class="badge ${s.source}">${SRC_I[s.source]||'📡'} ${s.source}</span>`;
     if(s.is_traveler)badges+=`<span class="badge traveler">🧳 traveler</span>`;
     if(s.anomaly)badges+=`<span class="badge anomaly">⚠️ anomaly</span>`;
-    const url=s.url||'#';
+    const url=safeUrl(s.url);
     return `<div class="sig s${c}">
       <a class="sig-link" href="${esc(url)}" target="_blank" rel="noopener">
         <div class="sig-top"><span class="sig-sev ${sl2}">${s.severity}/10</span><span class="sig-disease">${s.emoji||''} ${esc(s.disease)}</span><div class="sig-badges">${badges}</div></div>
