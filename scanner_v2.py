@@ -13,13 +13,20 @@ import urllib.request
 import urllib.parse
 import xml.etree.ElementTree as ET
 import hashlib
+import math
 from datetime import datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
 from collections import defaultdict
 
+VERSION = "2.0"
+
 DIR = os.path.dirname(os.path.abspath(__file__))
 SIGNALS_FILE = os.path.join(DIR, "signals.json")
 HISTORY_FILE = os.path.join(DIR, "signal_history.json")
+
+# Anomaly detection tuning (see detect_anomalies).
+ANOMALY_MIN_COUNT = 3     # noise floor: never flag a surge below this many reports
+ANOMALY_ALPHA = 0.3       # EWMA weight for the per-scan volume baseline
 
 # ═══════════════════════════════════════════
 # GEOCODING DATABASE — City + Country level
@@ -209,6 +216,26 @@ DISEASES = {
     "cchf": {"cat": "hemorrhagic", "sev": 9, "emoji": "🩸"},
     "west nile": {"cat": "vector-borne", "sev": 5, "emoji": "🦟"},
     "japanese encephalitis": {"cat": "vector-borne", "sev": 7, "emoji": "🦟"},
+    # Emerging avian-influenza subtypes under WHO/FAO watch
+    "h7n9": {"cat": "respiratory", "sev": 8, "emoji": "🐦"},
+    "h9n2": {"cat": "respiratory", "sev": 7, "emoji": "🐦"},
+    "h5n2": {"cat": "respiratory", "sev": 7, "emoji": "🐦"},
+    "h5n5": {"cat": "respiratory", "sev": 7, "emoji": "🐦"},
+    "h3n8": {"cat": "respiratory", "sev": 7, "emoji": "🐦"},
+    "h10n3": {"cat": "respiratory", "sev": 7, "emoji": "🐦"},
+    "h10n8": {"cat": "respiratory", "sev": 7, "emoji": "🐦"},
+    # Pertussis (resurgent, vaccine-preventable)
+    "pertussis": {"cat": "vaccine-preventable", "sev": 6, "emoji": "💉"},
+    "whooping cough": {"cat": "vaccine-preventable", "sev": 6, "emoji": "💉"},
+    # Polio-adjacent surveillance terms
+    "acute flaccid paralysis": {"cat": "vaccine-preventable", "sev": 8, "emoji": "💉"},
+    "cvdpv": {"cat": "vaccine-preventable", "sev": 8, "emoji": "💉"},
+    # Sudan ebolavirus (no licensed vaccine — distinct from Zaire ebolavirus)
+    "sudan virus": {"cat": "hemorrhagic", "sev": 10, "emoji": "🩸"},
+    # WHO "Disease X" / unexplained-cluster terminology
+    "disease x": {"cat": "unknown", "sev": 6, "emoji": "🦠"},
+    "mystery illness": {"cat": "unknown", "sev": 6, "emoji": "🦠"},
+    "unexplained illness": {"cat": "unknown", "sev": 6, "emoji": "🦠"},
 }
 
 # ═══ Major international airport hubs by country ═══
@@ -318,14 +345,14 @@ def geocode(text):
     }
 
 def detect_diseases(text):
-    """Detect disease mentions, return sorted by severity."""
+    """Detect disease mentions, sorted by severity (most severe first).
+    Only diseases[0] is consumed downstream; the rest is kept for context.
+    Longer names are tested first so the most specific label wins a severity tie."""
     t = text.lower()
     found = []
-    seen = set()
     for name, info in sorted(DISEASES.items(), key=lambda x: -len(x[0])):
-        if _matches(name, t) and info["cat"] not in seen:
+        if _matches(name, t):
             found.append({"name": name.strip(), "cat": info["cat"], "sev": info["sev"], "emoji": info["emoji"]})
-            seen.add(name.strip())
     return sorted(found, key=lambda d: -d["sev"])
 
 def is_traveler_signal(text):
@@ -347,23 +374,43 @@ def compute_confidence(signal):
     return min(1.0, round(conf, 2))
 
 # Extract crude case/death counts from outbreak text.
-# Conservative: matches "N cases" / "N deaths" with optional qualifier;
-# rejects results > 10M to filter out years, population sizes, etc.
-_CASE_PAT = re.compile(r"\b([\d][\d,]{0,8})\s+(?:confirmed |suspected |new |reported |probable |additional )?cases?\b", re.IGNORECASE)
-_DEATH_PAT = re.compile(r"\b([\d][\d,]{0,8})\s+(?:confirmed |reported |new |additional )?deaths?\b", re.IGNORECASE)
+# Conservative: matches "N cases" / "N deaths" with an optional qualifier, plus
+# the spelled-out "N million/thousand cases" form; rejects results > 10M to
+# filter out years, population sizes, etc.
+_QUAL = r"(?:confirmed |suspected |new |reported |probable |additional )?"
+# Integer grouped in strict 3-digit blocks, or plain digits. Only unambiguous
+# typographic groupers are allowed \u2014 a plain ASCII space would glue an ordinal
+# to a count ("COVID-19 200 cases" -> 19200, "day 3 200 cases" -> 3200).
+_GROUP_SEP = ",\u00a0\u202f"  # comma, nbsp, thin space
+_INT = r"\d{1,3}(?:[" + _GROUP_SEP + r"]\d{3})+|\d+"
+_SEP = re.compile("[" + _GROUP_SEP + "]")
+_MULT = {"thousand": 1_000, "million": 1_000_000}
+_PATS = {
+    "cases": (
+        re.compile(r"\b(\d+(?:\.\d+)?)\s+(million|thousand)\s+" + _QUAL + r"cases?\b", re.IGNORECASE),
+        re.compile(r"\b(" + _INT + r")\s+" + _QUAL + r"cases?\b", re.IGNORECASE),
+    ),
+    "deaths": (
+        re.compile(r"\b(\d+(?:\.\d+)?)\s+(million|thousand)\s+" + _QUAL + r"deaths?\b", re.IGNORECASE),
+        re.compile(r"\b(" + _INT + r")\s+" + _QUAL + r"deaths?\b", re.IGNORECASE),
+    ),
+}
 
 def extract_counts(text):
     """Pull case/death counts from outbreak text. Returns {} if none found or implausible."""
     out = {}
-    for key, pat in (("cases", _CASE_PAT), ("deaths", _DEATH_PAT)):
-        m = pat.search(text)
-        if not m:
-            continue
-        try:
-            n = int(m.group(1).replace(",", ""))
-        except ValueError:
-            continue
-        if 0 < n < 10_000_000:  # reject implausibly large matches
+    for key, (mult_pat, int_pat) in _PATS.items():
+        n = None
+        m = mult_pat.search(text)
+        if m:
+            n = int(float(m.group(1)) * _MULT[m.group(2).lower()])
+        else:
+            m = int_pat.search(text)
+            if m:
+                digits = _SEP.sub("", m.group(1))
+                if digits.isdigit():
+                    n = int(digits)
+        if n is not None and 0 < n < 10_000_000:  # reject implausibly large matches
             out[key] = n
     return out
 
@@ -380,7 +427,7 @@ def fetch_gdelt(query, max_records=25):
         "timespan": "7d",
     })
     url = "https://api.gdeltproject.org/api/v2/doc/doc?" + params
-    req = urllib.request.Request(url, headers={"User-Agent": "geosentinel/2.0", "Accept": "application/json"})
+    req = urllib.request.Request(url, headers={"User-Agent": f"geosentinel/{VERSION}", "Accept": "application/json"})
     try:
         with urllib.request.urlopen(req, timeout=20) as r:
             raw = r.read()
@@ -396,9 +443,9 @@ def fetch_gdelt(query, max_records=25):
                 published = f"{seen[0:4]}-{seen[4:6]}-{seen[6:8]}T{seen[9:11]}:{seen[11:13]}:{seen[13:15]}Z"
             country = a.get("sourcecountry", "")
             out.append({
-                "title": a.get("title", ""),
+                "title": a.get("title") or "",
                 "description": country,
-                "url": a.get("url", ""),
+                "url": a.get("url") or "",
                 "published": published,
             })
         return out
@@ -421,7 +468,7 @@ def fetch_paho(limit=40):
     detect_diseases() filters to outbreak-relevant entries downstream."""
     url = "https://www.paho.org/en/rss.xml"
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "geosentinel/2.0", "Accept": "application/rss+xml,application/xml"})
+        req = urllib.request.Request(url, headers={"User-Agent": f"geosentinel/{VERSION}", "Accept": "application/rss+xml,application/xml"})
         with urllib.request.urlopen(req, timeout=20) as r:
             tree = ET.fromstring(r.read())
     except Exception as e:
@@ -436,7 +483,7 @@ def fetch_paho(limit=40):
         out.append({"title": title, "description": desc[:500], "url": link, "published": pub})
     return out
 
-REDDIT_UA = "geosentinel/2.0 (+https://github.com/acuestamd/project-geosentinel)"
+REDDIT_UA = f"geosentinel/{VERSION} (+https://github.com/acuestamd/project-geosentinel)"
 
 def get_reddit_token():
     """Reddit application-only OAuth (client_credentials).
@@ -479,9 +526,9 @@ def fetch_reddit(query, token, limit=20):
             d = child.get("data", {})
             permalink = d.get("permalink", "")
             out.append({
-                "title": d.get("title", ""),
-                "description": d.get("selftext", "")[:500],
-                "url": "https://www.reddit.com" + permalink if permalink else d.get("url", ""),
+                "title": d.get("title") or "",
+                "description": (d.get("selftext") or "")[:500],
+                "url": "https://www.reddit.com" + permalink if permalink else (d.get("url") or ""),
                 "published": datetime.fromtimestamp(d.get("created_utc", 0), tz=timezone.utc).isoformat() if d.get("created_utc") else "",
             })
         return out
@@ -499,8 +546,13 @@ def fetch_mastodon(tag, limit=40):
         url = f"https://{host}/api/v1/timelines/tag/{safe_tag}?" + params
         req = urllib.request.Request(url, headers={"User-Agent": REDDIT_UA, "Accept": "application/json"})
         try:
-            with urllib.request.urlopen(req, timeout=15) as r:
-                return json.loads(r.read())
+            with urllib.request.urlopen(req, timeout=8) as r:
+                data = json.loads(r.read())
+            if isinstance(data, list):
+                return data
+            # An instance may return an error object ({"error": ...}) instead of
+            # a timeline list — treat it as a miss and fall through to the next.
+            print(f"  [!] Mastodon {host}/{safe_tag} non-list response", file=sys.stderr)
         except Exception as e:
             print(f"  [!] Mastodon {host}/{safe_tag} error: {e}", file=sys.stderr)
             continue
@@ -510,13 +562,21 @@ _HTML_TAG = re.compile(r"<[^>]+>")
 
 def process_mastodon(statuses):
     signals = []
+    skipped = 0
+    if not isinstance(statuses, list):
+        return signals
     for s in statuses:
-        text = _HTML_TAG.sub(" ", s.get("content", "")).strip()
-        if not text:
+        if not isinstance(s, dict):
+            skipped += 1
             continue
-        loc = geocode(text)
-        diseases = detect_diseases(text)
-        if loc and (diseases or is_traveler_signal(text)):
+        try:
+            text = _HTML_TAG.sub(" ", (s.get("content") or "")).strip()
+            if not text:
+                continue
+            loc = geocode(text)
+            diseases = detect_diseases(text)
+            if not (loc and (diseases or is_traveler_signal(text))):
+                continue
             d = diseases[0] if diseases else {"name":"unknown illness","cat":"unknown","sev":4,"emoji":"🌡️"}
             traveler = is_traveler_signal(text)
             counts = extract_counts(text)
@@ -538,22 +598,38 @@ def process_mastodon(statuses):
                 "case_count": counts.get("cases"),
                 "death_count": counts.get("deaths"),
             })
+        except Exception as e:
+            skipped += 1
+            print(f"  [!] skip mastodon item: {e}", file=sys.stderr)
+            continue
+    _warn_skips("mastodon", skipped, len(statuses))
     return signals
 
 # ═══ Processing ═══
 
+def _warn_skips(source, skipped, total):
+    """Surface a SYSTEMATIC upstream change: if most items in a source failed to
+    process, that source is likely silently yielding nothing (a feed reshape),
+    which matters more for a cron biosurveillance tool than a single bad item."""
+    if total and skipped > total // 2:
+        print(f"  [!!] {source}: skipped {skipped}/{total} items — possible upstream format change", file=sys.stderr)
+
 def process_who(items):
     signals = []
+    skipped = 0
     for item in items:
-        title = item.get("Name", item.get("Title", ""))
-        desc = item.get("Description", "")[:500]
-        text = title + " " + desc
-        loc = geocode(text)
-        diseases = detect_diseases(text)
-        if loc:
+        try:
+            title = (item.get("Name") or item.get("Title") or "")
+            desc = (item.get("Description") or "")[:500]
+            text = (title + " " + desc).strip()
+            loc = geocode(text)
+            if not loc:
+                continue
+            diseases = detect_diseases(text)
             d = diseases[0] if diseases else {"name":"unknown","cat":"unknown","sev":5,"emoji":"🦠"}
             sev = min(10, d["sev"] + (1 if "death" in text.lower() else 0))
             counts = extract_counts(text)
+            pub = (item.get("PublicationDate") or "")
             signals.append({
                 "id": make_id(title),
                 "source": "who",
@@ -565,22 +641,30 @@ def process_who(items):
                 "severity": sev,
                 "confidence": 0.95,
                 "summary": title[:300],
-                "url": "https://www.who.int/emergencies/disease-outbreak-news/item/" + item.get("UrlName", ""),
-                "timestamp": item.get("PublicationDate", datetime.now(timezone.utc).isoformat()),
-                "published": item.get("PublicationDate", "")[:10],
+                "url": "https://www.who.int/emergencies/disease-outbreak-news/item/" + (item.get("UrlName") or ""),
+                "timestamp": pub or datetime.now(timezone.utc).isoformat(),
+                "published": pub[:10],
                 "is_traveler": False,
                 "case_count": counts.get("cases"),
                 "death_count": counts.get("deaths"),
             })
+        except Exception as e:
+            skipped += 1
+            print(f"  [!] skip who item: {e}", file=sys.stderr)
+            continue
+    _warn_skips("who", skipped, len(items))
     return signals
 
 def process_paho(items):
     signals = []
+    skipped = 0
     for r in items:
-        text = (r.get("title", "") + " " + r.get("description", "")).strip()
-        loc = geocode(text)
-        diseases = detect_diseases(text)
-        if loc and diseases:
+        try:
+            text = ((r.get("title") or "") + " " + (r.get("description") or "")).strip()
+            loc = geocode(text)
+            diseases = detect_diseases(text)
+            if not (loc and diseases):
+                continue
             d = diseases[0]
             sev = min(10, d["sev"] + (1 if "outbreak" in text.lower() else 0) + (1 if "death" in text.lower() else 0))
             counts = extract_counts(text)
@@ -602,17 +686,25 @@ def process_paho(items):
                 "case_count": counts.get("cases"),
                 "death_count": counts.get("deaths"),
             })
+        except Exception as e:
+            skipped += 1
+            print(f"  [!] skip paho item: {e}", file=sys.stderr)
+            continue
+    _warn_skips("paho", skipped, len(items))
     return signals
 
 def process_news(results, query=""):
     signals = []
+    skipped = 0
     for r in results:
-        # GDELT's 'description' carries the source's country, not the event's
-        # location — geocoding it would mislocate signals, so use the headline.
-        text = r.get("title", "").strip()
-        loc = geocode(text)
-        diseases = detect_diseases(text)
-        if loc and diseases:
+        try:
+            # GDELT's 'description' carries the source's country, not the event's
+            # location — geocoding it would mislocate signals, so use the headline.
+            text = (r.get("title") or "").strip()
+            loc = geocode(text)
+            diseases = detect_diseases(text)
+            if not (loc and diseases):
+                continue
             d = diseases[0]
             sev = min(10, d["sev"] + (1 if "outbreak" in text.lower() else 0) + (1 if "death" in text.lower() else 0))
             traveler = is_traveler_signal(text)
@@ -635,15 +727,23 @@ def process_news(results, query=""):
                 "case_count": counts.get("cases"),
                 "death_count": counts.get("deaths"),
             })
+        except Exception as e:
+            skipped += 1
+            print(f"  [!] skip news item: {e}", file=sys.stderr)
+            continue
+    _warn_skips("news", skipped, len(results))
     return signals
 
 def process_reddit(results):
     signals = []
+    skipped = 0
     for r in results:
-        text = (r.get("title","") + " " + r.get("description","")).strip()
-        loc = geocode(text)
-        diseases = detect_diseases(text)
-        if loc and (diseases or is_traveler_signal(text)):
+        try:
+            text = ((r.get("title") or "") + " " + (r.get("description") or "")).strip()
+            loc = geocode(text)
+            diseases = detect_diseases(text)
+            if not (loc and (diseases or is_traveler_signal(text))):
+                continue
             d = diseases[0] if diseases else {"name":"unknown illness","cat":"unknown","sev":4,"emoji":"🌡️"}
             traveler = is_traveler_signal(text)
             counts = extract_counts(text)
@@ -665,6 +765,11 @@ def process_reddit(results):
                 "case_count": counts.get("cases"),
                 "death_count": counts.get("deaths"),
             })
+        except Exception as e:
+            skipped += 1
+            print(f"  [!] skip reddit item: {e}", file=sys.stderr)
+            continue
+    _warn_skips("reddit", skipped, len(results))
     return signals
 
 # ═══ Deduplication ═══
@@ -686,44 +791,77 @@ def deduplicate(signals):
     return unique
 
 # ═══ Anomaly detection ═══
+def _atomic_write_json(path, obj, **dump_kwargs):
+    """Write JSON to a temp file then os.replace() it into place, so a crash
+    mid-write can never leave a half-written (later un-parseable) file."""
+    tmp = path + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(obj, f, **dump_kwargs)
+    os.replace(tmp, path)
+
 def load_history():
-    if os.path.exists(HISTORY_FILE):
+    """Load the cached baseline history, self-healing to an empty default when
+    the file is missing, truncated, or the wrong shape. A corrupt cache must
+    never crash the scan — otherwise the run would re-cache the corruption and
+    brick every subsequent scan."""
+    try:
         with open(HISTORY_FILE) as f:
-            return json.load(f)
+            h = json.load(f)
+        if isinstance(h, dict) and isinstance(h.get("baselines"), dict) and isinstance(h.get("scans"), list):
+            return h
+    except (ValueError, OSError):
+        pass  # JSONDecodeError / UnicodeDecodeError are ValueError subclasses
     return {"scans": [], "baselines": {}}
 
 def save_history(history):
-    with open(HISTORY_FILE, "w") as f:
-        json.dump(history, f, indent=2)
+    _atomic_write_json(HISTORY_FILE, history, indent=2)
 
-def detect_anomalies(signals, history):
-    """Compare current signals to historical baseline."""
+def score_anomaly(curr, mean):
+    """Decide whether `curr` reports this scan is a surge over the per-scan
+    baseline `mean`. Requires a prior baseline, clears a noise floor, and
+    exceeds a Poisson ~2σ band (mean + 2·√mean). Pure and unit-testable."""
+    if mean <= 0 or curr < ANOMALY_MIN_COUNT:
+        return False
+    return curr > mean + 2 * math.sqrt(mean)
+
+def detect_anomalies(signals, history, raw_counts):
+    """Flag report-volume surges against a per-scan EWMA baseline.
+
+    `raw_counts` maps 'iso:disease' -> number of RAW (pre-deduplication) reports
+    this scan, so we measure report/chatter volume — not how many sources
+    happened to survive dedup (which is at most ~5 and made the old detector
+    fire on novelty, not surges). Two distinct, honest fields are emitted:
+      anomaly  — a genuine surge vs the rolling baseline
+      is_new   — first time this (country, disease) pair is seen (novelty, NOT
+                 a surge; this is what made a cold cache flag everything)."""
     baselines = history.get("baselines", {})
     for s in signals:
         key = s["location"]["iso"] + ":" + s["disease"]
-        prev_count = baselines.get(key, {}).get("avg_weekly", 0)
-        curr_count = sum(1 for x in signals if x["location"]["iso"] == s["location"]["iso"] and x["disease"] == s["disease"])
-
-        if prev_count > 0 and curr_count > prev_count * 2:
+        # Only the new per-scan baseline is comparable. A legacy 'avg_weekly'
+        # entry was computed on POST-dedup counts (≤5), so reusing it against
+        # raw volume would fire a false surge — treat such pairs as unseen.
+        mean = baselines.get(key, {}).get("avg_signals_per_scan", 0)
+        curr = raw_counts.get(key, 1)
+        if score_anomaly(curr, mean):
             s["anomaly"] = True
-            s["anomaly_factor"] = round(curr_count / max(prev_count, 0.1), 1)
-            s["severity"] = min(10, s["severity"] + 1)
+            s["anomaly_factor"] = round(curr / max(mean, 0.1), 1)
+            s["is_new"] = False
         else:
-            s["anomaly"] = curr_count > 0 and prev_count == 0
+            s["anomaly"] = False
             s["anomaly_factor"] = None
+            s["is_new"] = mean == 0
 
-    counts = defaultdict(int)
-    for s in signals:
-        key = s["location"]["iso"] + ":" + s["disease"]
-        counts[key] += 1
-
-    for key, count in counts.items():
-        if key not in baselines:
-            baselines[key] = {"avg_weekly": count, "samples": 1}
+    # Update the per-scan EWMA baseline from raw report volume. Legacy entries
+    # (avg_weekly only) and brand-new pairs are seeded fresh, not blended onto
+    # the wrong scale.
+    for key, count in raw_counts.items():
+        b = baselines.get(key)
+        prev_mean = b.get("avg_signals_per_scan") if b else None
+        if prev_mean is None:
+            baselines[key] = {"avg_signals_per_scan": float(count), "samples": 1}
         else:
-            n = baselines[key]["samples"]
-            baselines[key]["avg_weekly"] = (baselines[key]["avg_weekly"] * n + count) / (n + 1)
-            baselines[key]["samples"] = n + 1
+            b["avg_signals_per_scan"] = (1 - ANOMALY_ALPHA) * prev_mean + ANOMALY_ALPHA * count
+            b["samples"] = b.get("samples", 1) + 1
 
     history["baselines"] = baselines
     return signals
@@ -792,7 +930,7 @@ def run_scan():
     t0 = time.time()
 
     print("=" * 60)
-    print("🛰️  GeoSentinel 2.0 Scanner — Full Spectrum Scan")
+    print(f"🛰️  GeoSentinel {VERSION} Scanner — Full Spectrum Scan")
     print("=" * 60)
 
     all_signals = []
@@ -814,12 +952,14 @@ def run_scan():
     news_queries = [
         '"dengue outbreak"',
         '"cholera outbreak"',
-        '("H5N1" OR "avian flu") outbreak',
-        '("ebola" OR "marburg") outbreak',
+        '("H5N1" OR "H5N2" OR "H9N2" OR "avian flu" OR "bird flu") outbreak',
+        '("ebola" OR "marburg" OR "sudan virus") outbreak',
         '"mpox" outbreak',
         '("nipah" OR "lassa fever") outbreak',
         '"yellow fever" outbreak',
         '"measles outbreak"',
+        '("pertussis" OR "whooping cough") outbreak',
+        '("mystery illness" OR "unexplained illness" OR "disease x")',
     ]
     print(f"\n🔍 [3/5] News search ({len(news_queries)} queries via GDELT)...")
     for i, q in enumerate(news_queries):
@@ -856,7 +996,7 @@ def run_scan():
     mastodon_tags = [
         "dengue", "malaria", "cholera", "ebola", "mpox", "measles",
         "outbreak", "h5n1", "avianflu", "nipah", "marburg", "yellowfever",
-        "publichealth", "travelhealth",
+        "pertussis", "diseasex", "publichealth", "travelhealth",
     ]
     print(f"\n🐘 [5/5] Mastodon ({len(mastodon_tags)} hashtags)...")
     for tag in mastodon_tags:
@@ -873,16 +1013,27 @@ def run_scan():
     for s in all_signals:
         s["confidence"] = compute_confidence(s)
 
+    # Raw report volume per (country, disease) BEFORE dedup — this is what the
+    # anomaly detector compares against its baseline (dedup would flatten it).
+    raw_counts = defaultdict(int)
+    for s in all_signals:
+        raw_counts[s["location"]["iso"] + ":" + s["disease"]] += 1
+
     before = len(all_signals)
     all_signals = deduplicate(all_signals)
     print(f"   Dedup: {before} → {len(all_signals)}")
 
-    all_signals.sort(key=lambda x: -(x["severity"] * x["confidence"]))
-
     history = load_history()
-    all_signals = detect_anomalies(all_signals, history)
+    all_signals = detect_anomalies(all_signals, history, raw_counts)
     anomalies = sum(1 for s in all_signals if s.get("anomaly"))
-    print(f"   Anomalies: {anomalies}")
+    # Distinct (country, disease) pairs seen for the first time — the dashboard
+    # labels this "New (country, disease) Pairs", so count pairs, not signals
+    # (one pair can survive dedup as several rows when multiple sources report it).
+    new_signals = len({s["location"]["iso"] + ":" + s["disease"] for s in all_signals if s.get("is_new")})
+    print(f"   Surge anomalies: {anomalies} | new pairs: {new_signals}")
+
+    # Sort after anomaly detection so the canonical order reflects final state.
+    all_signals.sort(key=lambda x: -(x["severity"] * x["confidence"]))
 
     hotspots = compute_hotspots(all_signals)
     flight_routes = compute_flight_risk(hotspots)
@@ -899,6 +1050,7 @@ def run_scan():
         "countries_affected": len(hotspots),
         "traveler_signals": traveler_count,
         "anomalies_detected": anomalies,
+        "new_signals": new_signals,
         "scan_duration_sec": round(time.time() - t0, 1),
     }
     for s in all_signals:
@@ -913,7 +1065,7 @@ def run_scan():
         else: stats["by_severity"]["low"] += 1
 
     output = {
-        "version": "2.0",
+        "version": VERSION,
         "lastScan": datetime.now(timezone.utc).isoformat(),
         "scanDuration": stats["scan_duration_sec"],
         "signals": all_signals,
@@ -923,8 +1075,7 @@ def run_scan():
     }
 
     os.makedirs(os.path.dirname(SIGNALS_FILE), exist_ok=True)
-    with open(SIGNALS_FILE, "w") as f:
-        json.dump(output, f, indent=2)
+    _atomic_write_json(SIGNALS_FILE, output, separators=(",", ":"))  # minified for the served file
 
     history["scans"].append({"time": output["lastScan"], "signals": len(all_signals), "hotspots": len(hotspots)})
     history["scans"] = history["scans"][-30:]

@@ -15,7 +15,7 @@ GeoSentinel 2.0 aggregates five public sources — the WHO Disease Outbreak News
 | Source | Type | Coverage |
 |--------|------|----------|
 | 🏥 **WHO** | Disease Outbreak News API | Official alerts, global |
-| 🌎 **PAHO** | News RSS (WHO Americas region) | Faster than HQ for the Americas |
+| 🌎 **PAHO** | News RSS (WHO Americas region) | Regional health news, Americas |
 | 📰 **GDELT** | Global news (CDC, Reuters, AFP, Al Jazeera...) | Breaking outbreaks |
 | 🐘 **Mastodon** | Public hashtag timelines | Symptom reports, early signals |
 | 💬 **Reddit** | Community reports (OAuth, app-only) | Travel health experiences |
@@ -52,11 +52,11 @@ GitHub Actions (cron, every 30 min)
 ## 📊 Signal-processing pipeline
 
 1. **Collection** — sequential queries across five source APIs
-2. **Disease detection** — word-boundary regex against ~45 disease patterns
-3. **Geocoding** — ~100 city/country database; resolves each signal to the location named *first* in the text (the headline's subject, not a country mentioned in passing), preferring city over country, with word-boundary matching for short keys
+2. **Disease detection** — word-boundary regex against ~65 disease patterns
+3. **Geocoding** — ~130 city/country database; resolves each signal to the location named *first* in the text (the headline's subject, not a country mentioned in passing), preferring city over country, with word-boundary matching for short keys
 4. **Severity scoring** — base disease severity + modifiers (deaths, outbreak scale, traveler)
-5. **Case/death extraction** — conservative regex with sanity caps
-6. **Anomaly detection** — 2× historical baseline comparison
+5. **Case/death extraction** — conservative regex with sanity caps (handles "N cases", "N,NNN", and "N million/thousand")
+6. **Anomaly detection** — per-scan report-volume baseline (EWMA); flags a surge past a Poisson band, and separately flags first-seen (country, disease) pairs as *new*
 7. **Deduplication** — hash-based + location clustering
 8. **Flight risk** — IATA hub mapping for affected countries
 
@@ -66,7 +66,7 @@ Transparency about what this does and doesn't do is a design goal, not a footnot
 
 - **Single-source signals are unverified.** A Reddit post about feeling sick is not an outbreak. The confidence score reflects source reliability, not signal truth — corroboration is the reader's job.
 - **Coverage is English-skewed.** An outbreak with no English-language news has low signal density here for days. Absence of signal ≠ absence of outbreak. (Broader multilingual coverage is the top item on the roadmap.)
-- **Geocoding is keyword-based.** It resolves to the location named first in the headline, which handles passing mentions of other countries — but it can still misplace a signal when the first location named isn't the outbreak's, and it only knows the ~100 places in its database.
+- **Geocoding is keyword-based.** It resolves to the location named first in the headline, which handles passing mentions of other countries — but it can still misplace a signal when the first location named isn't the outbreak's, and it only knows the ~130 places in its database.
 - **Case/death extraction is regex-only.** "N cases" works; "dozens affected" doesn't. Most WHO DON titles carry no numbers.
 - **No cross-source corroboration tiers yet.** A single post and a WHO DON alert are distinguished only by the `source` badge today; weighted corroboration is on the roadmap.
 - **It publishes; it does not notify.** Operational surveillance systems coordinate with the relevant Ministry of Health. This one publishes to GitHub Pages — it is an open signal layer, not an alerting authority.
