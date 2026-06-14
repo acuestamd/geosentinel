@@ -6,7 +6,7 @@ GeoSentinel 2.0 aggregates five public sources — the WHO Disease Outbreak News
 
 🔗 **Live dashboard:** https://acuestamd.github.io/project-geosentinel/
 
-<img src="https://img.shields.io/badge/status-live-brightgreen" alt="Live"> <img src="https://img.shields.io/badge/sources-5-blue" alt="Sources"> <img src="https://img.shields.io/badge/updates-every%2030%20min-orange" alt="Updates"> <img src="https://img.shields.io/badge/infra%20cost-%240-success" alt="Zero infra cost"> <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT">
+<img src="https://img.shields.io/badge/status-live-brightgreen" alt="Live"> <img src="https://github.com/acuestamd/project-geosentinel/actions/workflows/test.yml/badge.svg" alt="Tests"> <img src="https://img.shields.io/badge/sources-5-blue" alt="Sources"> <img src="https://img.shields.io/badge/updates-every%2030%20min-orange" alt="Updates"> <img src="https://img.shields.io/badge/infra%20cost-%240-success" alt="Zero infra cost"> <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT">
 
 > ℹ️ **Scope:** GeoSentinel 2.0 is **decision-support, not a decision-maker.** It surfaces early, often-unverified open-source signals to help a trained reader decide what to look at next. It is **not** a diagnostic device and **not** a substitute for validated surveillance, clinical judgment, or official public-health guidance. Do not make clinical, operational, or travel decisions from it alone. See [Honest scope & limitations](#-honest-scope--limitations).
 
@@ -53,7 +53,7 @@ GitHub Actions (cron, every 30 min)
 
 1. **Collection** — sequential queries across five source APIs
 2. **Disease detection** — word-boundary regex against ~45 disease patterns
-3. **Geocoding** — ~100 city/country database with word-boundary matching for short keys
+3. **Geocoding** — ~100 city/country database; resolves each signal to the location named *first* in the text (the headline's subject, not a country mentioned in passing), preferring city over country, with word-boundary matching for short keys
 4. **Severity scoring** — base disease severity + modifiers (deaths, outbreak scale, traveler)
 5. **Case/death extraction** — conservative regex with sanity caps
 6. **Anomaly detection** — 2× historical baseline comparison
@@ -66,7 +66,7 @@ Transparency about what this does and doesn't do is a design goal, not a footnot
 
 - **Single-source signals are unverified.** A Reddit post about feeling sick is not an outbreak. The confidence score reflects source reliability, not signal truth — corroboration is the reader's job.
 - **Coverage is English-skewed.** An outbreak with no English-language news has low signal density here for days. Absence of signal ≠ absence of outbreak. (Broader multilingual coverage is the top item on the roadmap.)
-- **Geocoding is keyword-based.** It can misplace a signal to a country mentioned only in passing.
+- **Geocoding is keyword-based.** It resolves to the location named first in the headline, which handles passing mentions of other countries — but it can still misplace a signal when the first location named isn't the outbreak's, and it only knows the ~100 places in its database.
 - **Case/death extraction is regex-only.** "N cases" works; "dozens affected" doesn't. Most WHO DON titles carry no numbers.
 - **No cross-source corroboration tiers yet.** A single post and a WHO DON alert are distinguished only by the `source` badge today; weighted corroboration is on the roadmap.
 - **It publishes; it does not notify.** Operational surveillance systems coordinate with the relevant Ministry of Health. This one publishes to GitHub Pages — it is an open signal layer, not an alerting authority.

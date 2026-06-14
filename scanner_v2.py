@@ -14,6 +14,7 @@ import urllib.parse
 import xml.etree.ElementTree as ET
 import hashlib
 from datetime import datetime, timezone, timedelta
+from email.utils import parsedate_to_datetime
 from collections import defaultdict
 
 DIR = os.path.dirname(os.path.abspath(__file__))
@@ -254,26 +255,67 @@ TRAVELER_PATTERNS = [
 def make_id(text):
     return hashlib.md5(text.encode()).hexdigest()[:12]
 
-def _matches(key, text_lower):
-    """Substring match for long keys; word-boundary match for short ones (≤4 chars)
-    so ambiguous abbreviations like 'car', 'uk', 'rio', 'tb' don't false-positive
-    inside longer words ('cargo', 'puke', 'trio', 'subtle')."""
+def _to_iso(raw):
+    """Normalize an RFC-822 date (RSS pubDate, e.g. 'Wed, 11 Jun 2026 14:03:00 GMT')
+    to a UTC ISO-8601 string the dashboard's time filter can parse. Returns the
+    raw string unchanged if it can't be parsed, and '' for empty input."""
+    raw = (raw or "").strip()
+    if not raw:
+        return ""
+    try:
+        dt = parsedate_to_datetime(raw)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc).isoformat()
+    except (TypeError, ValueError):
+        return raw
+
+def _match_pos(key, text_lower):
+    """Return the start index of `key` in `text_lower`, or None if absent.
+    Short keys (≤4 chars) use word-boundary matching so ambiguous abbreviations
+    like 'car', 'uk', 'rio', 'tb' don't false-positive inside longer words
+    ('cargo', 'puke', 'trio', 'subtle')."""
     if len(key) <= 4:
-        return re.search(r"\b" + re.escape(key) + r"\b", text_lower) is not None
-    return key in text_lower
+        m = re.search(r"\b" + re.escape(key) + r"\b", text_lower)
+        return m.start() if m else None
+    i = text_lower.find(key)
+    return i if i >= 0 else None
+
+def _matches(key, text_lower):
+    return _match_pos(key, text_lower) is not None
 
 def geocode(text):
-    """City-level geocoding with priority to more specific matches."""
+    """Resolve a signal to a single location.
+
+    Picks the location named EARLIEST in the text. The subject of an outbreak
+    headline is almost always stated before any country mentioned in passing,
+    so 'cholera in DR Congo, spreading toward Uganda' resolves to DR Congo —
+    not Uganda, which an earlier first-match-wins scan would have returned.
+    Within the chosen country, prefers the most specific match (city over
+    country, since cities precede countries in GEO_DB), so 'dengue in Bangkok,
+    Thailand' resolves to Bangkok rather than Thailand."""
     t = text.lower()
-    for entry in GEO_DB:
+    matches = []  # (text_position, db_index, entry)
+    for idx, entry in enumerate(GEO_DB):
+        pos = None
         for key in entry["keys"]:
-            if _matches(key, t):
-                return {
-                    "lat": entry["lat"], "lng": entry["lng"],
-                    "name": entry["name"], "country": entry["country"],
-                    "iso": entry["iso"], "region": entry.get("region", "")
-                }
-    return None
+            p = _match_pos(key, t)
+            if p is not None and (pos is None or p < pos):
+                pos = p
+        if pos is not None:
+            matches.append((pos, idx, entry))
+    if not matches:
+        return None
+    # Primary country = the one named earliest in the text.
+    primary_iso = min(matches, key=lambda m: m[0])[2]["iso"]
+    # Within it, the most specific entry wins (lowest db_index = city).
+    entry = min((m for m in matches if m[2]["iso"] == primary_iso),
+                key=lambda m: m[1])[2]
+    return {
+        "lat": entry["lat"], "lng": entry["lng"],
+        "name": entry["name"], "country": entry["country"],
+        "iso": entry["iso"], "region": entry.get("region", "")
+    }
 
 def detect_diseases(text):
     """Detect disease mentions, return sorted by severity."""
@@ -390,7 +432,7 @@ def fetch_paho(limit=40):
         title = (item.findtext("title") or "").strip()
         desc = _HTML_TAG.sub(" ", (item.findtext("description") or "")).strip()
         link = (item.findtext("link") or "").strip()
-        pub = (item.findtext("pubDate") or "").strip()
+        pub = _to_iso(item.findtext("pubDate"))
         out.append({"title": title, "description": desc[:500], "url": link, "published": pub})
     return out
 
@@ -565,7 +607,9 @@ def process_paho(items):
 def process_news(results, query=""):
     signals = []
     for r in results:
-        text = (r.get("title","") + " " + r.get("description","")).strip()
+        # GDELT's 'description' carries the source's country, not the event's
+        # location — geocoding it would mislocate signals, so use the headline.
+        text = r.get("title", "").strip()
         loc = geocode(text)
         diseases = detect_diseases(text)
         if loc and diseases:
