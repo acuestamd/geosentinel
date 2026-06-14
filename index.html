@@ -13,7 +13,7 @@
 <meta name="twitter:title" content="GeoSentinel 2.0 — Open OSINT Disease-Outbreak Monitor">
 <meta name="twitter:description" content="Open, self-running OSINT dashboard for disease-outbreak early warning. WHO + PAHO + GDELT + Mastodon + Reddit. Decision-support only, not for clinical use.">
 <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;🛰️&lt;/text&gt;&lt;/svg&gt;">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
@@ -42,11 +42,15 @@
   .pill{padding:6px 14px;border-radius:20px;font-size:.65rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:5px;cursor:pointer;transition:all .15s;opacity:.7;border:2px solid transparent}
   .pill:hover{opacity:.9;transform:scale(1.05)}.pill.active{opacity:1;border-color:#fff;transform:scale(1.08)}
   .pill .n{font-size:.85rem}
-  .pill.cr{background:var(--critical)}.pill.hi{background:var(--high)}.pill.mo{background:rgba(249,168,37,.85)}.pill.lo{background:var(--low)}
+  .pill.cr{background:var(--critical)}.pill.hi{background:var(--high)}.pill.mo{background:#c77f00}.pill.lo{background:var(--low)}
   .hdr-right{display:flex;align-items:center;gap:12px}
   .scan-badge{font-size:.55rem;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:5px}
   .scan-dot{width:7px;height:7px;border-radius:50%;background:#4caf50;animation:pulse-dot 2s infinite}
+  .scan-dot.stale{background:#f9a825;animation:none}
+  .scan-dot.dead{background:var(--critical);animation:none}
   @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+  :focus-visible{outline:2px solid var(--un-blue);outline-offset:2px}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
   /* Toolbar */
   .tbar{background:var(--white);border-bottom:1px solid var(--light-border);padding:8px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap}
@@ -60,6 +64,7 @@
   .ttoggle.on{border-color:var(--un-accent);color:var(--un-accent);background:var(--un-light)}
   .searchbox{font-size:.65rem;padding:5px 10px;border:1px solid var(--light-border);border-radius:16px;background:var(--white);color:var(--text);font-family:inherit;width:200px;outline:none;transition:border-color .15s,width .15s}
   .searchbox:focus{border-color:var(--un-blue);width:260px}
+  .searchbox:focus-visible{outline:2px solid var(--un-blue);outline-offset:1px}
   .searchbox::placeholder{color:var(--dim)}
 
   /* Main */
@@ -87,7 +92,7 @@
   /* Side panel */
   .side{width:380px;flex-shrink:0;border-left:1px solid var(--light-border);display:flex;flex-direction:column;background:var(--white);overflow:hidden}
   .tabs{display:flex;border-bottom:1px solid var(--light-border);flex-shrink:0;background:var(--bg)}
-  .tab{flex:1;padding:10px 0;text-align:center;font-size:.6rem;font-weight:600;color:var(--dim);cursor:pointer;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid transparent;transition:all .15s}
+  .tab{flex:1;padding:10px 0;text-align:center;font-size:.6rem;font-weight:600;color:var(--dim);cursor:pointer;text-transform:uppercase;letter-spacing:.5px;background:none;border:0;border-bottom:2px solid transparent;font-family:inherit;transition:all .15s}
   .tab:hover{color:var(--text)}.tab.on{color:var(--un-blue);border-bottom-color:var(--un-blue);background:var(--white)}
   .panel{flex:1;overflow-y:auto;scrollbar-width:thin}
 
@@ -113,8 +118,10 @@
   .badge.reddit{color:#ff4500;background:#fff0e6}
   .badge.traveler{color:#d81b60;background:#fce4ec}
   .badge.anomaly{color:var(--critical);background:var(--crit-bg);animation:pulse-anom 1.5s infinite}
+  .badge.fresh{color:#00695c;background:#e0f2f1}
   @keyframes pulse-anom{0%,100%{opacity:1}50%{opacity:.5}}
   .sig-loc{font-size:.6rem;color:var(--un-accent);margin-bottom:3px;font-weight:500;cursor:pointer}
+  .sig-loc:focus-visible{outline:2px solid var(--un-blue);outline-offset:1px}
   .sig-loc:hover{text-decoration:underline}
   .sig-loc::before{content:'📍';font-size:.55rem;margin-right:3px}
   .sig-sum{font-size:.55rem;color:var(--dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -138,11 +145,14 @@
   .region-card .rthreat{font-weight:800;font-size:.5rem;padding:2px 6px;border-radius:10px;margin-left:6px}
   .region-card .rthreat.cr{background:var(--crit-bg);color:var(--critical)}
   .region-card .rthreat.hi{background:var(--high-bg);color:var(--high)}
+  .region-card .rthreat.mo{background:var(--mod-bg);color:#c77f00}
+  .region-card .rthreat.lo{background:var(--low-bg);color:var(--low)}
   .region-stats{display:flex;gap:14px;font-size:.52rem;color:var(--dim);margin-bottom:4px}
   .region-stats b{color:var(--text)}
   .region-diseases{font-size:.48rem;color:var(--un-accent);font-weight:500}
   .region-countries{font-size:.48rem;color:var(--dim);margin-top:3px}
   .region-countries span{cursor:pointer}.region-countries span:hover{color:var(--un-blue);text-decoration:underline}
+  .region-countries span:focus-visible{outline:2px solid var(--un-blue);outline-offset:1px}
 
   /* Pulse markers */
   .pmk{border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3)}
@@ -168,8 +178,17 @@
   /* Footer */
   .ftr{border-top:1px solid var(--light-border);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-size:.5rem;color:var(--dim);flex-shrink:0;background:var(--white)}
   .ftr-l{display:flex;gap:12px;align-items:center}.ftr span{display:flex;align-items:center;gap:3px}
+  .vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
-  @media(max-width:900px){.main{flex-direction:column}.side{width:100%;height:40vh;border-left:none;border-top:1px solid var(--light-border)}.map-wrap{height:60vh}.tbar{display:none}}
+  @media(max-width:900px){
+    .main{flex-direction:column}
+    .side{width:100%;height:42vh;border-left:none;border-top:1px solid var(--light-border)}
+    .map-wrap{height:58vh}
+    /* Keep filters on mobile: one horizontally-scrollable row instead of hiding them. */
+    .tbar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:6px;padding:6px 12px}
+    .tbar-group{flex-shrink:0}
+    .searchbox,.searchbox:focus{width:150px}
+  }
 </style>
 </head>
 <body>
@@ -179,17 +198,18 @@
 <div class="hdr">
   <div class="logo">
     <div class="logo-mark">🌐</div>
-    <div><h1>GeoSentinel</h1><span class="sub">Global Disease Surveillance Network 2.0</span></div>
+    <div><h1>GeoSentinel 2.0</h1><span class="sub">Open OSINT Disease-Outbreak Monitor</span></div>
   </div>
-  <div class="hdr-pills">
-    <div class="pill cr active" onclick="filterBySev(this,'crit')"><span class="n" id="hC">—</span> Critical</div>
-    <div class="pill hi active" onclick="filterBySev(this,'high')"><span class="n" id="hH">—</span> High</div>
-    <div class="pill mo active" onclick="filterBySev(this,'mod')"><span class="n" id="hM">—</span> Moderate</div>
-    <div class="pill lo active" onclick="filterBySev(this,'low')"><span class="n" id="hL">—</span> Low</div>
+  <div class="hdr-pills" role="group" aria-label="Filter by severity">
+    <div class="pill cr active" role="button" tabindex="0" aria-pressed="true" aria-label="Critical signals" onclick="filterBySev(this,'crit')"><span class="n" id="hC">—</span> Critical</div>
+    <div class="pill hi active" role="button" tabindex="0" aria-pressed="true" aria-label="High signals" onclick="filterBySev(this,'high')"><span class="n" id="hH">—</span> High</div>
+    <div class="pill mo active" role="button" tabindex="0" aria-pressed="true" aria-label="Moderate signals" onclick="filterBySev(this,'mod')"><span class="n" id="hM">—</span> Moderate</div>
+    <div class="pill lo active" role="button" tabindex="0" aria-pressed="true" aria-label="Low signals" onclick="filterBySev(this,'low')"><span class="n" id="hL">—</span> Low</div>
   </div>
   <div class="hdr-right">
-    <div class="scan-badge"><span class="scan-dot"></span><span id="scanT">Loading...</span></div>
+    <div class="scan-badge"><span class="scan-dot" id="scanDot"></span><span id="scanT">Loading…</span></div>
   </div>
+  <span class="vh" id="liveStatus" role="status" aria-live="polite"></span>
 </div>
 
 <div class="tbar" id="tbar">
@@ -204,13 +224,6 @@
   </div>
   <div class="tsep"></div>
   <div class="tbar-group">
-    <span class="tbar-label">Severity</span>
-    <button class="tbtn on" data-f="sev" data-v="all">All</button>
-    <button class="tbtn" data-f="sev" data-v="crit">🔴 Critical</button>
-    <button class="tbtn" data-f="sev" data-v="high">🟠 High</button>
-  </div>
-  <div class="tsep"></div>
-  <div class="tbar-group">
     <span class="tbar-label">Time</span>
     <button class="tbtn on" data-f="time" data-v="30d">30 days</button>
     <button class="tbtn" data-f="time" data-v="7d">7 days</button>
@@ -219,7 +232,7 @@
   </div>
   <div class="tsep"></div>
   <div class="tbar-group">
-    <input type="text" id="searchBox" class="searchbox" placeholder="🔍 search disease, country, summary…" autocomplete="off">
+    <input type="text" id="searchBox" class="searchbox" placeholder="🔍 search disease, country, summary…" aria-label="Search signals by disease, country, or summary" autocomplete="off">
   </div>
   <div class="tsep"></div>
   <div class="tbar-group">
@@ -230,19 +243,19 @@
 
 <div class="main">
   <div class="map-wrap">
-    <div id="map"></div>
+    <div id="map" role="region" aria-label="Map of disease-outbreak signals"></div>
     <div class="overlay">
       <h3>⚠️ Active Hotspots</h3>
       <div id="hotList" class="hot-list"></div>
     </div>
   </div>
   <div class="side">
-    <div class="tabs">
-      <div class="tab on" data-t="signals">⚡ Signals</div>
-      <div class="tab" data-t="stats">📊 Analytics</div>
-      <div class="tab" data-t="regions">🌍 Regions</div>
+    <div class="tabs" role="tablist" aria-label="Side panel views">
+      <button type="button" class="tab on" role="tab" aria-selected="true" data-t="signals">⚡ Signals</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-t="stats">📊 Analytics</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-t="regions">🌍 Regions</button>
     </div>
-    <div class="panel" id="panel"></div>
+    <div class="panel" id="panel" role="tabpanel"></div>
   </div>
 </div>
 
@@ -253,10 +266,10 @@
     <span>|</span><span id="fCo">—</span>
     <span>|</span><span id="fTrav">—</span>
   </div>
-  <span style="color:var(--un-accent);font-weight:600">GeoSentinel 2.0 — Open OSINT Disease Surveillance</span>
+  <span style="color:var(--un-accent);font-weight:600">GeoSentinel <span id="fVer">2.0</span> — Open OSINT Disease Surveillance</span>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 let D=null,activeTab='signals',markers=[],flightLines=[],showFlights=false,showTravelers=false;
 let filterSource='all',filterSev='all',filterTime='30d',searchQuery='';
@@ -267,19 +280,28 @@ const SRC_I={who:'🏥',paho:'🌎',mastodon:'🐘',news:'📰',reddit:'💬'};
 
 function sc(s){return s>=8?'c':s>=6?'h':s>=4?'m':'lo'}
 function sl(s){return s>=8?'critical':s>=6?'high':s>=4?'moderate':'low'}
-function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''}
-// Only allow http(s) links through — source URLs come from user-supplied
-// Reddit/Mastodon posts, so reject javascript:/data: and other schemes.
+function esc(s){return s==null?'':String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+// Allow only http(s) links, and return the WHATWG-normalized href so a stray
+// quote in a source URL is percent-encoded before it ever reaches esc().
+// Source URLs come from user-supplied Reddit/Mastodon posts.
 function safeUrl(u){
   if(!u)return '#';
-  try{const p=new URL(u,location.href);return(p.protocol==='http:'||p.protocol==='https:')?u:'#';}
+  try{const p=new URL(u,location.href);return(p.protocol==='http:'||p.protocol==='https:')?p.href:'#';}
   catch(e){return '#'}
 }
+// Make a flyTo target keyboard-operable: focusable button semantics + data hook.
+function flyAttr(lat,lng,label){return `role="button" tabindex="0" aria-label="Zoom map to ${esc(label)}" data-fly="${lat},${lng}"`}
+function relTime(ms){const d=Date.now()-ms;if(!isFinite(d)||d<0)return '';const m=Math.round(d/60000);if(m<1)return 'just now';if(m<60)return m+'m ago';const h=Math.round(m/60);if(h<24)return h+'h ago';return Math.round(h/24)+'d ago'}
+function panelMsg(text,err){return `<div style="padding:30px;text-align:center;color:${err?'var(--critical)':'var(--dim)'};font-size:.7rem">${esc(text)}</div>`}
 
 const map=L.map('map',{center:[20,15],zoom:2.5,minZoom:2,maxZoom:8,zoomControl:true,attributionControl:false,worldCopyJump:true});
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd'}).addTo(map);
 
-function flyTo(lat,lng){map.flyTo([lat,lng],5,{duration:1})}
+function flyTo(lat,lng){
+  // Honor reduced-motion: jump instantly instead of animating the camera.
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)map.setView([lat,lng],5);
+  else map.flyTo([lat,lng],5,{duration:1});
+}
 
 let pillAllActive=true;
 function filterBySev(el,level){
@@ -301,6 +323,7 @@ function filterBySev(el,level){
     allPills.forEach(p=>p.classList.remove('active'));
     el.classList.add('active');
   }
+  allPills.forEach(p=>p.setAttribute('aria-pressed',p.classList.contains('active')));
   refresh();
 }
 
@@ -366,12 +389,13 @@ function addMarkers(){
     const sigLinks=h.signals.map(s=>{
       const src=SRC_I[s.source]||'📡';
       const url=safeUrl(s.url);
-      const label=`${src} ${(s.disease||'').charAt(0).toUpperCase()+(s.disease||'').slice(1)} — ${s.severity}/10`;
+      const dz=esc((s.disease||'').charAt(0).toUpperCase()+(s.disease||'').slice(1));
+      const label=`${src} ${dz} — ${s.severity}/10`;
       return url!=='#'?`<a class="pp-link" href="${esc(url)}" target="_blank" rel="noopener">${label} →</a>`
         :`<div class="pp-link">${label}</div>`;
     }).join('');
-    const popup=`<div class="pp-title">${h.name}, ${h.country}</div><div class="pp-disease">${[...h.diseases].join(' · ')}</div><div class="pp-info">Threat: <b style="color:${SEV[sl(h.sev)]}">${sl(h.sev).toUpperCase()}</b> · ${h.count} signal${h.count>1?'s':''}</div>${sigLinks}`;
-    const mk=L.marker([h.lat,h.lng],{icon}).addTo(map);
+    const popup=`<div class="pp-title">${esc(h.name)}, ${esc(h.country)}</div><div class="pp-disease">${[...h.diseases].map(esc).join(' · ')}</div><div class="pp-info">Threat: <b style="color:${SEV[sl(h.sev)]}">${sl(h.sev).toUpperCase()}</b> · ${h.count} signal${h.count>1?'s':''}</div>${sigLinks}`;
+    const mk=L.marker([h.lat,h.lng],{icon,title:`${h.name}, ${h.country} — ${sl(h.sev).toUpperCase()}, ${h.count} signal${h.count>1?'s':''}`}).addTo(map);
     if(singleUrl){mk.on('click',()=>window.open(singleUrl,'_blank'))}
     else{mk.bindPopup(popup,{maxWidth:300})}
     markers.push(mk);
@@ -398,15 +422,28 @@ document.querySelectorAll('.tbtn[data-f]').forEach(b=>{
     document.querySelectorAll(`.tbtn[data-f="${g}"]`).forEach(x=>x.classList.remove('on'));
     b.classList.add('on');
     if(g==='source')filterSource=b.dataset.v;
-    if(g==='sev')filterSev=b.dataset.v;
     if(g==='time')filterTime=b.dataset.v;
     refresh();
   };
 });
 
 document.querySelectorAll('.tab').forEach(t=>{
-  t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');activeTab=t.dataset.t;renderPanel()};
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>{x.classList.remove('on');x.setAttribute('aria-selected','false')});
+    t.classList.add('on');t.setAttribute('aria-selected','true');
+    activeTab=t.dataset.t;renderPanel();
+  };
 });
+
+// Header severity pills are role=button divs — give them keyboard activation.
+document.querySelectorAll('.pill').forEach(p=>{
+  p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();p.click()}});
+});
+
+// Delegated handler for the keyboard-operable map-jump targets (data-fly).
+function flyFromEl(t){const[la,ln]=t.dataset.fly.split(',').map(Number);if(isFinite(la)&&isFinite(ln))flyTo(la,ln)}
+document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('[data-fly]');if(t)flyFromEl(t)});
+document.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const t=e.target.closest&&e.target.closest('[data-fly]');if(t){e.preventDefault();flyFromEl(t)}});
 
 (function(){
   const sb=document.getElementById('searchBox');
@@ -424,7 +461,9 @@ document.querySelectorAll('.tab').forEach(t=>{
 function renderPanel(){if(activeTab==='signals')renderSignals();else if(activeTab==='stats')renderStats();else renderRegions()}
 
 function renderSignals(){
-  const el=document.getElementById('panel'),sigs=getFiltered();
+  const el=document.getElementById('panel');
+  if(!D){el.innerHTML=panelMsg('Loading signals…');return}
+  const sigs=getFiltered();
   // Sort newest first
   sigs.sort((a,b)=>{
     const da=parseAge(a.published),db=parseAge(b.published);
@@ -435,32 +474,33 @@ function renderSignals(){
   if(!sigs.length){el.innerHTML='<div style="padding:30px;text-align:center;color:var(--dim);font-size:.7rem">No signals match current filters</div>';return}
   el.innerHTML=sigs.map(s=>{
     const c=sc(s.severity),sl2=c;
-    let badges=`<span class="badge ${s.source}">${SRC_I[s.source]||'📡'} ${s.source}</span>`;
+    let badges=`<span class="badge ${esc(s.source)}">${SRC_I[s.source]||'📡'} ${esc(s.source)}</span>`;
     if(s.is_traveler)badges+=`<span class="badge traveler">🧳 traveler</span>`;
-    if(s.anomaly)badges+=`<span class="badge anomaly">⚠️ anomaly</span>`;
+    if(s.anomaly)badges+=`<span class="badge anomaly">⚠️ surge</span>`;
+    else if(s.is_new)badges+=`<span class="badge fresh">🆕 new</span>`;
     const url=safeUrl(s.url);
     return `<div class="sig s${c}">
       <a class="sig-link" href="${esc(url)}" target="_blank" rel="noopener">
-        <div class="sig-top"><span class="sig-sev ${sl2}">${s.severity}/10</span><span class="sig-disease">${s.emoji||''} ${esc(s.disease)}</span><div class="sig-badges">${badges}</div></div>
+        <div class="sig-top"><span class="sig-sev ${sl2}">${s.severity}/10</span><span class="sig-disease">${esc(s.emoji)} ${esc(s.disease)}</span><div class="sig-badges">${badges}</div></div>
         <div class="sig-sum">${esc(s.summary)}</div>
       </a>
-      <div class="sig-loc" onclick="flyTo(${s.location.lat},${s.location.lng})">${esc(s.location.name)}, ${esc(s.location.country)}</div>
-      <div class="sig-meta"><span>🕐 ${s.published||'unknown'}</span><span>· 🎯 ${(s.confidence*100).toFixed(0)}%</span><span>· ${s.type.replace(/_/g,' ')}</span>${s.case_count?`<span>· 🩺 ${s.case_count.toLocaleString()} cases</span>`:''}${s.death_count?`<span>· 💀 ${s.death_count.toLocaleString()} deaths</span>`:''}</div>
+      <div class="sig-loc" ${flyAttr(s.location.lat,s.location.lng,s.location.name+', '+s.location.country)}>${esc(s.location.name)}, ${esc(s.location.country)}</div>
+      <div class="sig-meta"><span>🕐 ${esc(s.published||'unknown')}</span><span>· 🎯 ${(s.confidence*100).toFixed(0)}%</span><span>· ${esc(s.type.replace(/_/g,' '))}</span>${s.case_count?`<span>· 🩺 ${s.case_count.toLocaleString()} cases</span>`:''}${s.death_count?`<span>· 💀 ${s.death_count.toLocaleString()} deaths</span>`:''}</div>
     </div>`;
   }).join('');
 }
 
 function renderStats(){
-  const el=document.getElementById('panel');if(!D)return;
+  const el=document.getElementById('panel');if(!D){el.innerHTML=panelMsg('No data yet — waiting for the first scan…');return}
   const st=D.stats,maxC=Math.max(...Object.values(st.by_category||{}),1),maxS=Math.max(...Object.values(st.by_source||{}),1);
   let catH='';
   Object.entries(st.by_category||{}).sort((a,b)=>b[1]-a[1]).forEach(([c,n])=>{
     const col=CAT_C[c]||'#90a4ae';
-    catH+=`<div class="cat-row"><div class="cat-dot" style="background:${col}"></div><span class="cat-name">${c}</span><span class="cat-ct">${n}</span></div><div class="sbar"><div class="sbar-fill" style="width:${n/maxC*100}%;background:${col}"></div></div>`;
+    catH+=`<div class="cat-row"><div class="cat-dot" style="background:${col}"></div><span class="cat-name">${esc(c)}</span><span class="cat-ct">${n}</span></div><div class="sbar"><div class="sbar-fill" style="width:${n/maxC*100}%;background:${col}"></div></div>`;
   });
   let srcH='';
   Object.entries(st.by_source||{}).sort((a,b)=>b[1]-a[1]).forEach(([s,n])=>{
-    srcH+=`<div class="cat-row"><span style="font-size:.65rem">${SRC_I[s]||'📡'}</span><span class="cat-name">${s.toUpperCase()}</span><span class="cat-ct">${n}</span></div><div class="sbar"><div class="sbar-fill" style="width:${n/maxS*100}%;background:var(--un-blue)"></div></div>`;
+    srcH+=`<div class="cat-row"><span style="font-size:.65rem">${SRC_I[s]||'📡'}</span><span class="cat-name">${esc(s.toUpperCase())}</span><span class="cat-ct">${n}</span></div><div class="sbar"><div class="sbar-fill" style="width:${n/maxS*100}%;background:var(--un-blue)"></div></div>`;
   });
   el.innerHTML=`<div class="stats">
     <div class="stat-sec"><h4>Threat Distribution</h4>
@@ -479,14 +519,15 @@ function renderStats(){
       <div class="stat-row"><span class="k">Total Signals</span><span class="v" style="color:var(--un-blue)">${st.total_signals}</span></div>
       <div class="stat-row"><span class="k">Countries Affected</span><span class="v">${st.countries_affected}</span></div>
       <div class="stat-row"><span class="k">Traveler Signals</span><span class="v" style="color:#d81b60">${st.traveler_signals||0}</span></div>
-      <div class="stat-row"><span class="k">Anomalies Detected</span><span class="v" style="color:var(--critical)">${st.anomalies_detected||0}</span></div>
+      <div class="stat-row"><span class="k">Surge Anomalies</span><span class="v" style="color:var(--critical)">${st.anomalies_detected||0}</span></div>
+      <div class="stat-row"><span class="k">New (country, disease) Pairs</span><span class="v" style="color:#00695c">${st.new_signals||0}</span></div>
       <div class="stat-row"><span class="k">Scan Duration</span><span class="v">${st.scan_duration_sec||'—'}s</span></div>
     </div>
   </div>`;
 }
 
 function renderRegions(){
-  const el=document.getElementById('panel');if(!D)return;
+  const el=document.getElementById('panel');if(!D){el.innerHTML=panelMsg('No data yet — waiting for the first scan…');return}
   const regions={};
   D.hotspots.forEach(h=>{
     const r=h.region||'Other';
@@ -496,13 +537,14 @@ function renderRegions(){
     regions[r].totalSig+=h.signals;
     h.diseases.forEach(d=>regions[r].diseases.add(d));
   });
+  if(!Object.keys(regions).length){el.innerHTML=panelMsg('No active regions in the current scan.');return}
   el.innerHTML='<div class="stats">'+Object.values(regions).sort((a,b)=>b.maxSev-a.maxSev).map(r=>{
-    const tc=r.maxSev>=8?'cr':'hi';
+    const tc={c:'cr',h:'hi',m:'mo',lo:'lo'}[sc(r.maxSev)];
     return `<div class="region-card">
-      <h5>${r.name}<span class="rthreat ${tc}">${sl(r.maxSev).toUpperCase()}</span></h5>
+      <h5>${esc(r.name)}<span class="rthreat ${tc}">${sl(r.maxSev).toUpperCase()}</span></h5>
       <div class="region-stats"><span>Hotspots: <b>${r.hotspots.length}</b></span><span>Signals: <b>${r.totalSig}</b></span></div>
-      <div class="region-diseases">${[...r.diseases].join(' · ')}</div>
-      <div class="region-countries">${r.hotspots.map(h=>`<span onclick="flyTo(${h.lat},${h.lng})">${h.name} (${h.signals})</span>`).join(' · ')}</div>
+      <div class="region-diseases">${[...r.diseases].map(esc).join(' · ')}</div>
+      <div class="region-countries">${r.hotspots.map(h=>`<span ${flyAttr(h.lat,h.lng,h.name)}>${esc(h.name)} (${h.signals})</span>`).join(' · ')}</div>
     </div>`;
   }).join('')+'</div>';
 }
@@ -511,10 +553,10 @@ function renderHotspots(){
   const el=document.getElementById('hotList');if(!D)return;
   el.innerHTML=D.hotspots.slice(0,15).map(h=>{
     const c=sc(h.max_severity);
-    return `<div class="hot" onclick="flyTo(${h.lat},${h.lng})">
+    return `<div class="hot" ${flyAttr(h.lat,h.lng,h.name)}>
       <div class="hdot s${c}"></div>
-      <span class="hname">${h.name}</span>
-      <span class="htags">${h.diseases.slice(0,2).join(', ')}</span>
+      <span class="hname">${esc(h.name)}</span>
+      <span class="htags">${h.diseases.slice(0,2).map(esc).join(', ')}</span>
       <span class="hct">${h.signals}</span>
     </div>`;
   }).join('');
@@ -529,14 +571,28 @@ function updateHeader(){
   document.getElementById('fSig').textContent=s.total_signals+' signals';
   document.getElementById('fCo').textContent=s.countries_affected+' countries';
   document.getElementById('fTrav').textContent='🧳 '+(s.traveler_signals||0)+' traveler signals';
-  document.getElementById('scanT').textContent='Last scan: '+new Date(D.lastScan).toLocaleTimeString();
+  const fv=document.getElementById('fVer');if(fv&&D.version)fv.textContent=D.version;
+  const age=Date.parse(D.lastScan),dot=document.getElementById('scanDot');
+  document.getElementById('scanT').textContent='Last scan: '+(isFinite(age)?relTime(age):'—');
+  // Amber dot after ~3 missed cycles (90 min) so a stalled scanner is visible.
+  if(dot){dot.classList.remove('dead');dot.classList.toggle('stale',isFinite(age)&&(Date.now()-age)>90*60000)}
+  const ls=document.getElementById('liveStatus');
+  if(ls)ls.textContent=`${s.total_signals} signals across ${s.countries_affected} countries; updated ${isFinite(age)?relTime(age):'unknown'}`;
 }
 
 function refresh(){addMarkers();drawFlights();renderHotspots();renderPanel();updateHeader()}
 
 async function loadData(){
-  try{const r=await fetch('signals.json?t='+Date.now());D=await r.json();refresh();}
-  catch(e){document.getElementById('panel').innerHTML='<div style="padding:30px;text-align:center;color:var(--critical)">⚠️ Error loading data</div>'}
+  if(!D)document.getElementById('panel').innerHTML=panelMsg('Loading signals…');
+  try{
+    const r=await fetch('signals.json?t='+Date.now());
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    D=await r.json();refresh();
+  }catch(e){
+    const dot=document.getElementById('scanDot');
+    if(!D){if(dot)dot.classList.add('dead');document.getElementById('panel').innerHTML=panelMsg('⚠️ Scan data unavailable — retrying automatically…',true);}
+    else if(dot){dot.classList.add('stale')}  // keep showing the last good data, just flag it
+  }
 }
 loadData();setInterval(loadData,120000);
 </script>
