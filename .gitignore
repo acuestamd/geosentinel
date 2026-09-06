@@ -6,6 +6,8 @@ signals.json
 signal_history.json
 signal_documents.json
 environment_context.json
+dengue_forecast.json
+dengue_history_cache.json
 _site/
 evaluation-report.json
 *.json.tmp

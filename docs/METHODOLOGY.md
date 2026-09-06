@@ -40,7 +40,7 @@ The environmental panel uses [Open-Meteo](https://open-meteo.com/en/docs) modele
 
 Flight-data integration is explicitly **not connected**. The integration should supply dated origin/destination airport pairs, passenger counts or seat-capacity estimates, time window, provenance, licensing and uncertainty. Static airport hubs or historical routes must not be represented as current passenger flows. Additional prerequisites include local incidence, infectious-period assumptions, traveler movement and destination susceptibility. No exportation probability is emitted without these inputs and model validation.
 
-The current deployment supports inspecting environmental drivers and identifying missing inputs. It does not claim validated prediction. The [evaluation protocol](EVALUATION.md) covers prospective and retrospective validation needed for such a model.
+The global report workspace supports inspecting environmental drivers and identifying missing inputs. A separate [experimental Rio de Janeiro dengue pilot](DENGUE_PILOT.md) forecasts weekly notifications from structured epidemiological data; it does not turn report mentions into case counts or attach its municipal predictions to arbitrary global reports. It compares a statistical baseline with models using lagged cases, seasonality and climate. The latest revised source series is used for the historical comparison, so this is not a reconstruction of information actually available on every historical issuance date. No validated clinical severity, epidemic-threshold or international-spread probability is claimed. The [evaluation protocol](EVALUATION.md) and pilot protocol distinguish retrospective checks from the prospective validation still required.
 
 ## Known limitations
 

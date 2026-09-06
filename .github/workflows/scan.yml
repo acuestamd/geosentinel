@@ -40,7 +40,7 @@ jobs:
         run: |
           python -m unittest discover -v
           python evaluate.py --check
-          node --test test_dashboard.cjs
+          node --test test_*.cjs
       - name: Restore document history
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         continue-on-error: true
@@ -48,6 +48,7 @@ jobs:
           path: |
             signal_documents.json
             environment_context.json
+            dengue_history_cache.json
           key: geosentinel-documents-v3-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: geosentinel-documents-v3-
       - name: Collect and validate sources
@@ -55,6 +56,8 @@ jobs:
           REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
         run: python scanner_v2.py
+      - name: Build experimental dengue forecast
+        run: python dengue_forecast.py --output dengue_forecast.json --cache dengue_history_cache.json
       - name: Save document history
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         continue-on-error: true
@@ -62,6 +65,7 @@ jobs:
           path: |
             signal_documents.json
             environment_context.json
+            dengue_history_cache.json
           key: geosentinel-documents-v3-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Build allowlisted static site
         run: python scripts/build_site.py
@@ -76,3 +80,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/record_operations.py
+      - name: Preserve weekly dengue forecast for future evaluation
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/record_dengue_forecast.py

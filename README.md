@@ -4,6 +4,8 @@
 
 [Open the public dashboard](https://acuestamd.github.io/project-geosentinel/) · [Methodology](docs/METHODOLOGY.md) · [Evaluation](docs/EVALUATION.md) · [Operations](docs/OPERATIONS.md)
 
+**Experimental dengue pilot:** [Rio de Janeiro forecasts](https://acuestamd.github.io/project-geosentinel/#dengue-pilot) combine a weekly InfoDengue notification series with a comparison of statistical models with and without historical climate. The panel reports the selected model, date-specific forecasts, uncertainty and retrospective errors. [Pilot protocol](docs/DENGUE_PILOT.md).
+
 GeoSentinel collects public WHO, PAHO, news and community reports, separates possible current events from resolved, negated, historical and ambiguous material, and gives each document a source trail. The map shows reported locations; the evidence ledger helps a reader inspect the original report and the reasons for automated triage.
 
 **All automated records remain unverified.** This is an independent research prototype, not a WHO product, validated surveillance system or clinical decision tool. It is not affiliated with WHO, PAHO, ISTM, CDC or the GeoSentinel clinical surveillance network. Do not make clinical, operational or travel decisions from it alone.
@@ -40,8 +42,9 @@ GitHub Actions (target: every 30 minutes)
   scanner_v2.py       normalized documents and evidence metadata
   signal_store.py     document identity, 30-day retention, schema checks
   context_signals.py  optional local weather and explicit forecasting gaps
+  dengue_forecast.py  Rio dengue series, historical model comparison, experimental forecasts
   scripts/build_site.py
-    -> index.html + dashboard.js + signals.json + manifest.json
+    -> dashboard + signal dataset + dengue pilot + integrity manifest
     -> GitHub Pages
 ```
 
@@ -54,13 +57,18 @@ Python 3.11 and Node 22 are used in CI. No Python or Node package installation i
 ```sh
 python3 -m unittest discover -v
 python3 evaluate.py --check
-node --test test_dashboard.cjs
+node --test test_*.cjs
 python3 scanner_v2.py
+python3 dengue_forecast.py --output dengue_forecast.json --cache dengue_history_cache.json
 python3 scripts/build_site.py
 python3 -m http.server 8000 --directory _site --bind 127.0.0.1
 ```
 
 The scanner accesses public feeds. All-source failure preserves the previously published site and fails the run. Optional weather requests may fail independently, without making missing weather look normal or safe.
+
+The dengue module is independent of extracted news/social counts. It uses aggregated municipal notifications and temperature/humidity from InfoDengue, caches its source response for 24 hours and publishes explicit stale/unavailable states on failure. Historical data are revised by the provider: the retrospective comparison is **not an as-issued or prospective accuracy estimate**. First weekly ready forecasts and their aggregate input series are preserved in [reports/dengue](https://github.com/acuestamd/project-geosentinel/tree/main/reports/dengue) from deployment onward for later evaluation; no prospective performance is claimed yet.
+
+Google Trends is not connected or used by the model. The [alpha application draft](docs/GOOGLE_TRENDS_APPLICATION.md) describes a future incremental-value experiment, subject to access, geographic coverage and Google's testing conditions. X and airline mobility remain excluded.
 
 For Reddit, configure `REDDIT_CLIENT_ID` and `REDDIT_CLIENT_SECRET` in repository Actions secrets. Never commit credentials. No flight-data provider is configured; see the [forecasting roadmap and data contract](docs/METHODOLOGY.md#forecasting-and-mobility).
 
@@ -75,3 +83,5 @@ Rules currently favor English with selected Spanish/French aliases and phrasing.
 Useful contributions include false-positive/false-negative examples, feed-format fixtures, independently reviewed geography, multilingual evaluation and surveillance validation. See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
 
 Code is MIT licensed. Source publications and map/weather data retain their respective licenses and attribution requirements.
+
+Dengue data: [InfoDengue / Fiocruz and FGV](https://info.dengue.mat.br/informacoes/), using Ministry of Health notification data and climate series sourced through Mosqlimate / ERA5. These are notified cases, only some laboratory-confirmed. Cite the data provider as specified in the pilot protocol; GeoSentinel does not claim to produce InfoDengue's nowcasts or official alert levels.
