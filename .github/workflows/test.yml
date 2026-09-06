@@ -28,4 +28,4 @@ jobs:
       - name: Synthetic triage quality gates
         run: python evaluate.py --check
       - name: Dashboard behavior
-        run: node --test test_dashboard.cjs
+        run: node --test test_*.cjs

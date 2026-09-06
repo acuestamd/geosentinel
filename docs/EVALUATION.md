@@ -1,5 +1,7 @@
 # Evaluation and its limits
 
+The [dengue pilot](DENGUE_PILOT.md) has a separate temporal forecasting evaluation based on an aggregated weekly case series. Its model comparison is unrelated to the synthetic text-extraction scores below. Historical inputs are the provider's latest revised data; results must be labeled retrospective rather than operational or prospective. The first ready forecast issued each UTC week is archived from deployment onward, allowing future scoring against subsequent notifications. These newly archived records do not supply historical vintages retroactively.
+
 The included corpus is **60 synthetic examples written and labeled by an AI coding assistant**. It is a development regression suite, not real outbreak data, an independent review, or an estimate of epidemiological performance. Passing it does not establish operational readiness, WHO quality, endorsement, real-world sensitivity, or an ability to forecast spread.
 
 Each label has a written rationale based on what the text asserts. The corpus includes initial cases and adversarial cases added during development. The software can be improved against these examples, so they are a training/development set; they must never be presented as a held-out test set. They have fixed publication dates and make no assertion that the named events occurred. They must not be ingested into the public dashboard.

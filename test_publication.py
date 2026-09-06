@@ -13,6 +13,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts import build_site, record_operations
+from dengue_forecast import build_payload
 
 NOW = datetime(2026, 9, 6, 12, tzinfo=timezone.utc)
 
@@ -33,7 +34,10 @@ class StaticArtifactTests(unittest.TestCase):
         self.destination = self.root / "_site"
         for name, body in (("index.html", "<h1>Public dashboard</h1>"),
                            ("dashboard.js", "'use strict';"), ("LICENSE", "License text"),
+                           ("dengue-pilot.js", "'use strict';"),
+                           ("dengue_forecast.json", json.dumps(build_payload(None, "unavailable", now=NOW))),
                            ("signals.json", json.dumps(snapshot())),
+                           ("dengue_history_cache.json", "PRIVATE PROVIDER CACHE MARKER"),
                            ("signal_documents.json", "PRIVATE CACHE MARKER"),
                            (".env", "PRIVATE CREDENTIAL MARKER"),
                            ("scanner_v2.py", "PRIVATE RUNNER SOURCE MARKER")):
@@ -47,7 +51,7 @@ class StaticArtifactTests(unittest.TestCase):
         (self.destination / "leftover-secret.txt").write_text("PRIVATE PREVIOUS BUILD MARKER")
         build_site.build()
         self.assertEqual({file.name for file in self.destination.iterdir()},
-                         {"index.html", "dashboard.js", "signals.json", "LICENSE",
+                         {"index.html", "dashboard.js", "dengue-pilot.js", "signals.json", "dengue_forecast.json", "LICENSE",
                           ".nojekyll", "manifest.json"})
         for file in self.destination.iterdir():
             self.assertNotIn(b"PRIVATE", file.read_bytes())
@@ -82,6 +86,22 @@ class StaticArtifactTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             build_site.build()
         self.assertFalse(self.destination.exists())
+
+    def test_invalid_dengue_payload_preserves_previous_artifact(self):
+        self.destination.mkdir()
+        sentinel = self.destination / "index.html"
+        sentinel.write_text("Previous good artifact")
+        (self.root / "dengue_forecast.json").write_text('{"schema_version": 999}')
+        with self.assertRaises(ValueError):
+            build_site.build()
+        self.assertEqual(sentinel.read_text(), "Previous good artifact")
+
+    def test_unavailable_dengue_does_not_remove_global_evidence_workspace(self):
+        manifest = build_site.build()
+        self.assertEqual(manifest["dengue"]["status"], "unavailable")
+        self.assertTrue((self.destination / "signals.json").exists())
+        payload = json.loads((self.destination / "dengue_forecast.json").read_text())
+        self.assertEqual(payload["forecasts"], [])
 
 
 class OperationalAuditTests(unittest.TestCase):
