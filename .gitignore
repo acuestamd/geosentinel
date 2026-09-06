@@ -4,4 +4,8 @@ __pycache__/
 .DS_Store
 signals.json
 signal_history.json
+signal_documents.json
+environment_context.json
+_site/
+evaluation-report.json
 *.json.tmp

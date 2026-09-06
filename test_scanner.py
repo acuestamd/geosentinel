@@ -28,9 +28,9 @@ class GeocodeTests(unittest.TestCase):
         loc = gs.geocode("Dengue cases surge in Bangkok, Thailand")
         self.assertEqual(loc["name"], "Bangkok")
 
-    def test_earliest_country_wins_across_borders(self):
+    def test_ambiguous_cross_border_text_abstains(self):
         loc = gs.geocode("Dengue in Bangkok and a separate cluster in Lagos")
-        self.assertEqual(loc["iso"], "TH")
+        self.assertIsNone(loc)  # Two plausible event locations need analyst review.
 
     def test_no_location_returns_none(self):
         self.assertIsNone(gs.geocode("a general statement about public health"))

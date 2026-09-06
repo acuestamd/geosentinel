@@ -1,0 +1,911 @@
+{
+  "version": 1,
+  "kind": "synthetic_regression",
+  "created": "2026-09-06",
+  "reference_date": "2026-09-05T12:00:00Z",
+  "labeling": "Synthetic examples authored and labeled by an AI coding assistant from stated text semantics; not real incident records, not blinded labels, and not independent epidemiological validation.",
+  "scope": "Development regression suite for event triage, entity attribution and geographic abstention. Disease and country expectations are explicit when unambiguous. No claims about real-world sensitivity, predictive value, lead time or WHO endorsement.",
+  "cases": [
+    {
+      "id": "active_cholera_kenya",
+      "category": "active",
+      "text": "Cholera outbreak confirmed in Kenya.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "KE",
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "Affirmative outbreak statement with one explicit country."
+    },
+    {
+      "id": "active_measles_ghana",
+      "category": "active",
+      "text": "Ghana reports 25 new measles cases.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "GH",
+        "is_traveler": false,
+        "disease": "measles"
+      },
+      "rationale": "New case report identifies one disease and one country."
+    },
+    {
+      "id": "active_dengue_bangkok",
+      "category": "active",
+      "text": "Dengue cases surge in Bangkok, Thailand.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "TH",
+        "is_traveler": false,
+        "disease": "dengue"
+      },
+      "rationale": "City and country describe the same event location."
+    },
+    {
+      "id": "active_ebola_drc",
+      "category": "active",
+      "text": "Ebola outbreak in the Democratic Republic of the Congo.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "CD",
+        "is_traveler": false,
+        "disease": "ebola"
+      },
+      "rationale": "The full country name unambiguously identifies DR Congo."
+    },
+    {
+      "id": "active_mpox_nigeria",
+      "category": "active",
+      "text": "Nigeria confirms 12 new mpox cases.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "NG",
+        "is_traveler": false,
+        "disease": "mpox"
+      },
+      "rationale": "Affirmative count, explicit disease and country."
+    },
+    {
+      "id": "active_h5n1_vietnam",
+      "category": "active",
+      "text": "H5N1 avian flu detected in poultry in Vietnam.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "VN",
+        "is_traveler": false,
+        "disease": "h5n1"
+      },
+      "rationale": "Animal detections are reviewable event signals; the subtype takes precedence over its generic alias."
+    },
+    {
+      "id": "active_nipah_bangladesh",
+      "category": "active",
+      "text": "Nipah outbreak reported in Bangladesh.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "BD",
+        "is_traveler": false,
+        "disease": "nipah"
+      },
+      "rationale": "Direct outbreak claim; review is not verification of truth."
+    },
+    {
+      "id": "active_cholera_yemen",
+      "category": "active",
+      "text": "Yemen reports a cholera outbreak with 42 cases.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "YE",
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "The country precedes the disease but remains the sole event location."
+    },
+    {
+      "id": "active_lassa_nigeria",
+      "category": "active",
+      "text": "Lassa fever cases confirmed in Nigeria.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "NG",
+        "is_traveler": false,
+        "disease": "lassa fever"
+      },
+      "rationale": "The specific disease must suppress its overlapping short alias."
+    },
+    {
+      "id": "active_pertussis_spain",
+      "category": "active",
+      "text": "Whooping cough outbreak confirmed in Spain.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "ES",
+        "is_traveler": false,
+        "disease": "pertussis"
+      },
+      "rationale": "A known disease synonym should canonicalize without changing the event meaning."
+    },
+    {
+      "id": "active_spanish_cholera",
+      "category": "multilingual",
+      "text": "Brote de cólera confirmado en Argentina.",
+      "source": "PAHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "AR",
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "Spanish explicitly reports a confirmed cholera outbreak."
+    },
+    {
+      "id": "active_french_measles",
+      "category": "multilingual",
+      "text": "Épidémie de rougeole confirmée en France.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "FR",
+        "is_traveler": false,
+        "disease": "measles"
+      },
+      "rationale": "French explicitly reports a confirmed measles outbreak."
+    },
+    {
+      "id": "resolved_uganda_ebola",
+      "category": "resolved",
+      "text": "Uganda declares its Ebola outbreak over.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "resolved",
+        "triage": "context",
+        "location_iso": "UG",
+        "is_traveler": false,
+        "disease": "ebola"
+      },
+      "rationale": "A declaration that an outbreak is over must never become a new active alert."
+    },
+    {
+      "id": "resolved_rwanda_marburg",
+      "category": "resolved",
+      "text": "Rwanda declares the end of the Marburg outbreak.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "resolved",
+        "triage": "context",
+        "location_iso": "RW",
+        "is_traveler": false,
+        "disease": "marburg"
+      },
+      "rationale": "The event is explicitly ended, although the pathogen has high intrinsic severity."
+    },
+    {
+      "id": "resolved_tanzania_cholera",
+      "category": "resolved",
+      "text": "The cholera outbreak in Tanzania has ended.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "resolved",
+        "triage": "context",
+        "location_iso": "TZ",
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "Past event resolution is explicit."
+    },
+    {
+      "id": "resolved_liberia_ebola",
+      "category": "resolved",
+      "text": "Liberia declared Ebola-free after the outbreak.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "resolved",
+        "triage": "context",
+        "location_iso": "LR",
+        "is_traveler": false,
+        "disease": "ebola"
+      },
+      "rationale": "An Ebola-free declaration is resolution context, not transmission evidence."
+    },
+    {
+      "id": "resolved_spanish_ebola",
+      "category": "multilingual",
+      "text": "Uganda declara el fin del brote de ébola.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "resolved",
+        "triage": "context",
+        "location_iso": "UG",
+        "is_traveler": false,
+        "disease": "ebola"
+      },
+      "rationale": "Spanish outbreak-end declaration must retain its negating event meaning."
+    },
+    {
+      "id": "resolved_title_body_counts",
+      "category": "resolved",
+      "text": "Uganda declares the Ebola outbreak over. The response recorded 12 cases and four deaths.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "title": "Uganda declares the Ebola outbreak over.",
+      "expected": {
+        "event_status": "resolved",
+        "triage": "context",
+        "location_iso": "UG",
+        "is_traveler": false,
+        "disease": "ebola"
+      },
+      "rationale": "Historical counts in the body do not overturn an explicit resolution headline."
+    },
+    {
+      "id": "negated_no_ebola",
+      "category": "negated",
+      "text": "No Ebola cases have been reported in Uganda.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "negated",
+        "triage": "context",
+        "location_iso": "UG",
+        "is_traveler": false,
+        "disease": "ebola"
+      },
+      "rationale": "The sentence explicitly denies the occurrence of cases."
+    },
+    {
+      "id": "negated_no_cholera_outbreak",
+      "category": "negated",
+      "text": "Kenya reports no cholera outbreak.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "negated",
+        "triage": "context",
+        "location_iso": "KE",
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "An outbreak keyword inside a denial must not trigger review."
+    },
+    {
+      "id": "negated_tests_negative",
+      "category": "negated",
+      "text": "Suspected Ebola case in Uganda tests negative.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "negated",
+        "triage": "context",
+        "location_iso": "UG",
+        "is_traveler": false,
+        "disease": "ebola"
+      },
+      "rationale": "A negative diagnostic result resolves this suspected event against the named disease."
+    },
+    {
+      "id": "negated_ruled_out",
+      "category": "negated",
+      "text": "Cholera ruled out after investigation in Kenya.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "negated",
+        "triage": "context",
+        "location_iso": "KE",
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "The named disease has been explicitly ruled out."
+    },
+    {
+      "id": "negated_spanish",
+      "category": "multilingual",
+      "text": "No se han confirmado casos de cólera en Argentina.",
+      "source": "PAHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "negated",
+        "triage": "context",
+        "location_iso": "AR",
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "Spanish explicitly denies confirmed cases."
+    },
+    {
+      "id": "negated_french",
+      "category": "multilingual",
+      "text": "Aucun cas de choléra signalé en France.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "negated",
+        "triage": "context",
+        "location_iso": "FR",
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "French explicitly reports absence of cases."
+    },
+    {
+      "id": "context_vaccine_trial",
+      "category": "context",
+      "text": "Ebola vaccine trial launches in Uganda.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "location_iso": "UG",
+        "is_traveler": false,
+        "disease": "ebola"
+      },
+      "rationale": "A vaccine trial is not evidence of a current outbreak."
+    },
+    {
+      "id": "context_funding",
+      "category": "context",
+      "text": "Funding announced for cholera preparedness in Kenya.",
+      "source": "PAHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "location_iso": "KE",
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "Preparedness funding alone does not report an event."
+    },
+    {
+      "id": "context_training",
+      "category": "context",
+      "text": "Nigeria hosts training on Lassa fever surveillance.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "location_iso": "NG",
+        "is_traveler": false,
+        "disease": "lassa fever"
+      },
+      "rationale": "Training news is background context."
+    },
+    {
+      "id": "context_historical_research",
+      "category": "context",
+      "text": "Study reviews the 2014 Ebola outbreak in Liberia.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "location_iso": "LR",
+        "is_traveler": false,
+        "disease": "ebola"
+      },
+      "rationale": "A retrospective study does not establish present transmission."
+    },
+    {
+      "id": "context_prevention_advice",
+      "category": "context",
+      "text": "How to prevent dengue when traveling to Thailand.",
+      "source": "Reddit",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "location_iso": "TH",
+        "is_traveler": false,
+        "disease": "dengue"
+      },
+      "rationale": "Preventive travel advice is not a report of an ill traveler."
+    },
+    {
+      "id": "context_traveler_guide",
+      "category": "context",
+      "text": "Travel health guide: malaria prevention for visitors to Kenya.",
+      "source": "Mastodon",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "location_iso": "KE",
+        "is_traveler": false,
+        "disease": "malaria"
+      },
+      "rationale": "Mentioning visitors does not imply an individual became ill."
+    },
+    {
+      "id": "context_simulation",
+      "category": "context",
+      "text": "Uganda runs an Ebola outbreak simulation exercise.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "location_iso": "UG",
+        "is_traveler": false,
+        "disease": "ebola"
+      },
+      "rationale": "A simulated outbreak must not enter the current-event review queue."
+    },
+    {
+      "id": "context_workshop",
+      "category": "context",
+      "text": "Workshop on measles vaccination held in Ghana.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "location_iso": "GH",
+        "is_traveler": false,
+        "disease": "measles"
+      },
+      "rationale": "Vaccination workshop reports an activity rather than cases."
+    },
+    {
+      "id": "ambiguous_roundup",
+      "category": "roundup",
+      "text": "Weekly roundup: dengue in Thailand; cholera in Kenya; mpox in Nigeria.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "uncertain",
+        "triage": "context",
+        "location_iso": null,
+        "is_traveler": false
+      },
+      "rationale": "Three independent disease-country pairs cannot be collapsed into one inferred event."
+    },
+    {
+      "id": "ambiguous_two_countries",
+      "category": "roundup",
+      "text": "Cholera outbreaks reported in Kenya and Tanzania.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "uncertain",
+        "triage": "context",
+        "location_iso": null,
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "Two equally asserted event countries require abstention from a single map assignment."
+    },
+    {
+      "id": "geo_url_domain",
+      "category": "url_contamination",
+      "text": "Dengue outbreak in Thailand. https://www.bbc.co.uk/news/world-123",
+      "source": "Mastodon",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "TH",
+        "is_traveler": false,
+        "disease": "dengue"
+      },
+      "rationale": "A publisher's .co.uk domain is not an event location."
+    },
+    {
+      "id": "geo_url_without_place",
+      "category": "url_contamination",
+      "text": "Dengue outbreak reported. https://www.bbc.co.uk/news/world-123",
+      "source": "Mastodon",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "context",
+        "location_iso": null,
+        "is_traveler": false,
+        "disease": "dengue"
+      },
+      "rationale": "A URL cannot provide a missing outbreak country; active language alone cannot be mapped."
+    },
+    {
+      "id": "geo_url_path",
+      "category": "url_contamination",
+      "text": "Measles outbreak confirmed in Ghana. https://example.org/kenya/uganda",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "GH",
+        "is_traveler": false,
+        "disease": "measles"
+      },
+      "rationale": "Country strings in link paths must be excluded from geographic evidence."
+    },
+    {
+      "id": "geo_crimean_congo_spain",
+      "category": "disease_place_collision",
+      "text": "Crimean-Congo hemorrhagic fever case confirmed in Spain.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "ES",
+        "is_traveler": false,
+        "disease": "crimean-congo"
+      },
+      "rationale": "Congo within a disease name must not override Spain as the event country."
+    },
+    {
+      "id": "geo_crimean_congo_missing",
+      "category": "disease_place_collision",
+      "text": "Crimean-Congo hemorrhagic fever case confirmed.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "context",
+        "location_iso": null,
+        "is_traveler": false,
+        "disease": "crimean-congo"
+      },
+      "rationale": "The disease name supplies no actual place of occurrence."
+    },
+    {
+      "id": "geo_sudan_virus_uganda",
+      "category": "disease_place_collision",
+      "text": "Sudan virus disease outbreak confirmed in Uganda.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "UG",
+        "is_traveler": false,
+        "disease": "sudan virus"
+      },
+      "rationale": "Sudan is part of the pathogen name, while Uganda is the explicit outbreak location."
+    },
+    {
+      "id": "geo_south_sudan",
+      "category": "geography",
+      "text": "Cholera outbreak reported in South Sudan.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "SS",
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "The full country name must prevent a false Sudan assignment."
+    },
+    {
+      "id": "geo_guinea_bissau",
+      "category": "geography",
+      "text": "Measles outbreak confirmed in Guinea-Bissau.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "GW",
+        "is_traveler": false,
+        "disease": "measles"
+      },
+      "rationale": "A distinct country must not be silently assigned to Guinea."
+    },
+    {
+      "id": "geo_papua_new_guinea",
+      "category": "geography",
+      "text": "Cholera outbreak reported in Papua New Guinea.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "PG",
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "Papua New Guinea is not Guinea."
+    },
+    {
+      "id": "geo_missing_country",
+      "category": "abstention",
+      "text": "Measles outbreak confirmed in an unnamed district.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "context",
+        "location_iso": null,
+        "is_traveler": false,
+        "disease": "measles"
+      },
+      "rationale": "No usable country is stated; assigning one would invent evidence."
+    },
+    {
+      "id": "geo_congo_ambiguous",
+      "category": "abstention",
+      "text": "Cholera outbreak reported in Congo.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "uncertain",
+        "triage": "context",
+        "location_iso": null,
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "Bare Congo does not uniquely distinguish the two sovereign countries."
+    },
+    {
+      "id": "traveler_return_thailand",
+      "category": "traveler",
+      "text": "I returned from Thailand sick with fever.",
+      "source": "Reddit",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "TH",
+        "is_traveler": true,
+        "disease": "fever"
+      },
+      "rationale": "A first-person return plus current illness is a traveler report, without claiming a diagnosis."
+    },
+    {
+      "id": "traveler_dengue_bali",
+      "category": "traveler",
+      "text": "I came back from Bali sick with dengue.",
+      "source": "Mastodon",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "location_iso": "ID",
+        "is_traveler": true,
+        "disease": "dengue"
+      },
+      "rationale": "One destination and an explicit personal illness support traveler triage."
+    },
+    {
+      "id": "traveler_advice_not_case",
+      "category": "traveler",
+      "text": "If you return from Thailand with fever, seek medical advice.",
+      "source": "Reddit",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "location_iso": "TH",
+        "is_traveler": false,
+        "disease": "fever"
+      },
+      "rationale": "A conditional recommendation is not a claim that a traveler is currently ill."
+    },
+    {
+      "id": "unknown_plain_text",
+      "category": "abstention",
+      "text": "The museum in Thailand opens a new exhibition.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "location_iso": "TH",
+        "is_traveler": false,
+        "disease": null
+      },
+      "rationale": "A place name without any disease or illness event cannot become a health signal."
+    },
+    {
+      "id": "unknown_disease_url",
+      "category": "url_contamination",
+      "text": "New art exhibition in Spain. https://example.org/ebola",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "location_iso": "ES",
+        "is_traveler": false,
+        "disease": null
+      },
+      "rationale": "A disease word present only in a URL is not evidence of disease in the article."
+    },
+    {
+      "id": "who_brief_title",
+      "category": "source_context",
+      "text": "Cholera - Kenya",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "title": "Cholera - Kenya",
+      "expected": {
+        "event_status": "uncertain",
+        "triage": "review",
+        "location_iso": "KE",
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "A disease-country WHO DON headline warrants review without inventing explicit active event language."
+    },
+    {
+      "id": "social_disease_place_only",
+      "category": "source_context",
+      "text": "Cholera - Kenya",
+      "source": "Mastodon",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "uncertain",
+        "triage": "context",
+        "location_iso": "KE",
+        "is_traveler": false,
+        "disease": "cholera"
+      },
+      "rationale": "The same bare words on social media do not establish an occurrence."
+    },
+    {
+      "id": "context_historical_year",
+      "category": "context",
+      "text": "In 2014, an Ebola outbreak caused 100 cases in Liberia.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "disease": "ebola",
+        "location_iso": "LR",
+        "is_traveler": false
+      },
+      "rationale": "A past year and past-tense event description do not report a current event."
+    },
+    {
+      "id": "context_simulation_count",
+      "category": "context",
+      "text": "Uganda conducts an exercise simulating 500 cases of Ebola.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "disease": "ebola",
+        "location_iso": "UG",
+        "is_traveler": false
+      },
+      "rationale": "Numeric case counts in a simulation are hypothetical and cannot establish an outbreak."
+    },
+    {
+      "id": "context_model_projection",
+      "category": "context",
+      "text": "Study models 100 cases of cholera in Kenya under a hypothetical scenario.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "disease": "cholera",
+        "location_iso": "KE",
+        "is_traveler": false
+      },
+      "rationale": "A modeled count is not an observed case count or an active event."
+    },
+    {
+      "id": "active_no_deaths",
+      "category": "negation_scope",
+      "text": "Kenya confirms a cholera outbreak with 12 cases and no deaths.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "disease": "cholera",
+        "location_iso": "KE",
+        "is_traveler": false
+      },
+      "rationale": "No deaths negates the death count, not the explicitly affirmed outbreak."
+    },
+    {
+      "id": "active_vaccination_response",
+      "category": "context_scope",
+      "text": "Kenya reports 100 new cholera cases as a vaccination campaign begins.",
+      "source": "WHO",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "active",
+        "triage": "review",
+        "disease": "cholera",
+        "location_iso": "KE",
+        "is_traveler": false
+      },
+      "rationale": "A response activity does not negate explicitly reported new cases."
+    },
+    {
+      "id": "geo_funding_country",
+      "category": "geography",
+      "text": "France funds cholera preparedness in Kenya.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "context",
+        "triage": "context",
+        "disease": "cholera",
+        "location_iso": "KE",
+        "is_traveler": false
+      },
+      "rationale": "France is a funder; Kenya is the program location, and preparedness remains context."
+    },
+    {
+      "id": "traveler_without_illness",
+      "category": "negation_scope",
+      "text": "I returned from Thailand with no fever.",
+      "source": "Reddit",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "negated",
+        "triage": "context",
+        "disease": "fever",
+        "location_iso": "TH",
+        "is_traveler": false
+      },
+      "rationale": "Explicit absence of the only symptom must not create a sick-traveler signal."
+    },
+    {
+      "id": "negated_historical_body",
+      "category": "negation_scope",
+      "text": "No Ebola cases are currently reported in Liberia. The 2014 Ebola outbreak in Liberia involved 100 cases.",
+      "source": "GDELT",
+      "published": "2026-09-05T12:00:00Z",
+      "expected": {
+        "event_status": "negated",
+        "triage": "context",
+        "disease": "ebola",
+        "location_iso": "LR",
+        "is_traveler": false
+      },
+      "rationale": "An explicit current denial is not overturned by a separate retrospective description."
+    }
+  ]
+}
