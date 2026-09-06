@@ -7,7 +7,7 @@ Thanks for looking. This is a solo-maintained open-source project, so response t
 - **Corrections from people with actual epi-surveillance background.** If a signal is misleading, a confidence score is wrong, or the framing of something in the README implies more than it should, please tell me. I'd rather be embarrassed in an issue than wrong in the dashboard.
 - **New data sources** that publish reliable, free, public feeds. ProMED's RSS broke in 2026 — I'm watching for it to come back, and any other authoritative free source is welcome.
 - **Geocoder improvements.** It's currently a keyword list with word-boundary matching for short keys. Better: an actual NER pass or a real gazetteer.
-- **Cross-source corroboration tiers.** A WHO DON alert and a single Reddit post currently render with the same visual weight. UI work to fix that would be valuable.
+- **Cross-source corroboration tiers.** The UI distinguishes source provenance, while every extraction remains unverified. Independent corroboration needs document-origin tracking and an evaluation protocol.
 
 ## What I'll probably decline
 

@@ -1,21 +1,31 @@
-name: Tests
+name: Quality checks
 
 on:
   push:
-    paths:
-      - 'scanner_v2.py'
-      - 'test_scanner.py'
-      - '.github/workflows/test.yml'
+    paths: ['**.py', '**.js', '**.cjs', '**.html', 'fixtures/**', '.github/workflows/**']
   pull_request:
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.11'
-      - name: Run unit tests
-        run: python -m unittest -v test_scanner
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - name: Python and publication regressions
+        run: python -m unittest discover -v
+      - name: Synthetic triage quality gates
+        run: python evaluate.py --check
+      - name: Dashboard behavior
+        run: node --test test_dashboard.cjs

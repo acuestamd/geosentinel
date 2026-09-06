@@ -1,6 +1,6 @@
 # Security
 
-This is an open-source project and not intended for production or clinical use. It reads from public APIs and serves a static dashboard via GitHub Pages. There is no user data, no authentication, and no server-side state beyond GitHub Actions runners and Pages artifacts.
+This is an open-source project and not intended for production or clinical use. It reads from public APIs and serves a static dashboard via GitHub Pages. There are no user accounts or submitted clinical records. Public feed excerpts and source URLs can contain identifying information already present in those publications. Document and optional weather caches live on GitHub Actions runners/cache; only the allowlisted static artifact is published.
 
 ## Reporting a vulnerability
 
@@ -30,7 +30,7 @@ Out of scope:
 ## What this project doesn't do
 
 - It doesn't authenticate users (there are none)
-- It doesn't store personal health information
+- It does not solicit private health information; public social posts may mention personal health experiences
 - It doesn't make clinical or travel recommendations
 - It doesn't notify any health authority of detected signals
 - It doesn't claim to be a substitute for real surveillance systems

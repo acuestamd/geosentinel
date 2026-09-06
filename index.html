@@ -3,598 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GeoSentinel 2.0 — Open OSINT Disease-Outbreak Monitor</title>
-<meta name="description" content="Open, self-running OSINT dashboard for disease-outbreak early warning. Aggregates WHO, PAHO, GDELT news, Mastodon, and Reddit, refreshed every 30 minutes. Decision-support only — not a clinical or operational decision-making tool.">
-<meta name="robots" content="index, follow">
-<meta property="og:type" content="website">
-<meta property="og:title" content="GeoSentinel 2.0 — Open OSINT Disease-Outbreak Monitor">
-<meta property="og:description" content="Open, self-running OSINT dashboard for disease-outbreak early warning. WHO + PAHO + GDELT + Mastodon + Reddit. Refreshes every 30 minutes.">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GeoSentinel 2.0 — Open OSINT Disease-Outbreak Monitor">
-<meta name="twitter:description" content="Open, self-running OSINT dashboard for disease-outbreak early warning. WHO + PAHO + GDELT + Mastodon + Reddit. Decision-support only, not for clinical use.">
-<link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;🛰️&lt;/text&gt;&lt;/svg&gt;">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#123f50">
+<title>GeoSentinel — Public health signal review</title>
+<meta name="description" content="An independent, open-source workspace for reviewing public health signals. Explore source evidence, collection health and reported locations. Automated signals are unverified.">
+<meta property="og:title" content="GeoSentinel — Public health signal review">
+<meta property="og:description" content="An open evidence ledger for emerging health signals. Independent, transparent and built for analyst review.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23123f50'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M12 32h40M32 12c-15 12-15 28 0 40M32 12c15 12 15 28 0 40' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  :root{
-    --un-blue:#009EDB;--un-dark:#003B73;--un-light:#E8F4FD;--un-accent:#0072BC;
-    --bg:#f7f9fc;--white:#ffffff;--card:#ffffff;
-    --text:#1a2332;--dim:#6b7b8d;--light-border:#e2e8f0;
-    --critical:#d32f2f;--high:#e65100;--moderate:#f9a825;--low:#2e7d32;
-    --crit-bg:#fce4ec;--high-bg:#fff3e0;--mod-bg:#fffde7;--low-bg:#e8f5e9;
-    --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
-    --shadow-lg:0 4px 12px rgba(0,0,0,.1);
-  }
-  body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+:root{--ink:#153544;--petrol:#123f50;--accent:#17677d;--muted:#586f7b;--line:#d8e3e8;--wash:#eff4f6;--paper:#fff;--soft:#f7fafb;--official:#185c75;--media:#75643a;--community:#715982;--amber:#8b5b12;--amber-bg:#fff5df;--red:#9d3642;--red-bg:#fff0f0;--green:#216550;--green-bg:#eaf5ef;--radius:8px}
+*{box-sizing:border-box}body{margin:0;background:var(--wash);color:var(--ink);font-family:'Source Sans 3',Arial,sans-serif;font-size:15px;line-height:1.45}button,input,select{font:inherit}button,a,input,select,summary{-webkit-tap-highlight-color:transparent}button{cursor:pointer}a{color:var(--accent);text-underline-offset:3px}a:hover{text-decoration-thickness:2px}button:disabled{cursor:wait;opacity:.6}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:3px solid #2385b5;outline-offset:3px}button{color:inherit}svg{display:block}h1,h2,h3,p{margin:0}button{touch-action:manipulation}.mono{font-family:'IBM Plex Mono',monospace;font-size:12px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.skip{position:absolute;z-index:4000;top:-60px;left:12px;background:white;padding:12px}.skip:focus{top:12px}[hidden]{display:none!important}
+.masthead{background:var(--paper);border-top:4px solid var(--petrol);border-bottom:1px solid var(--line)}.masthead-inner{max-width:1760px;margin:auto;min-height:82px;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none}.brand-symbol{width:43px;height:43px;background:var(--petrol);color:white;border-radius:10px;padding:7px}.brand-name{font-family:'Barlow',sans-serif;font-size:25px;font-weight:600;letter-spacing:.1px;line-height:1.1}.brand-note{font-size:12px;letter-spacing:1.1px;text-transform:uppercase;color:var(--muted);margin-top:4px}.header-nav{display:flex;align-items:center;gap:24px;font-size:14px}.header-nav a{color:var(--muted);text-decoration:none}.header-nav a:hover{color:var(--accent)}.version{color:var(--muted);border-left:1px solid var(--line);padding-left:22px}
+main{max-width:1760px;margin:auto;padding:26px 32px 24px}.intro{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-bottom:22px}.eyebrow{font-size:12px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:var(--accent);margin-bottom:5px}h1{font-family:'Barlow',sans-serif;font-size:32px;font-weight:600;letter-spacing:-.5px;line-height:1.15}.intro-copy{color:var(--muted);margin-top:7px;font-size:15px}.intro-actions{display:flex;gap:8px;flex-shrink:0}.btn{min-height:40px;padding:8px 15px;border:1px solid var(--line);background:var(--paper);border-radius:6px;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-weight:600;font-size:14px;text-decoration:none}.btn:hover{background:var(--soft);border-color:#9cb4c0}.btn-primary{background:var(--petrol);color:white;border-color:var(--petrol)}.btn-primary:hover{background:#1b5668;color:white;border-color:#1b5668}.btn-quiet{background:transparent;border-color:transparent;color:var(--accent)}.btn svg{width:16px;height:16px}.scope{display:flex;gap:9px;align-items:flex-start;color:#496470;font-size:13px;background:#e8f0f4;border:1px solid #d4e2e9;border-radius:6px;padding:10px 14px;margin-bottom:16px}.scope svg{width:16px;height:16px;margin-top:2px;flex-shrink:0}.scope strong{font-weight:600}.scope a{color:inherit}
+.health{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:16px;overflow:hidden}.health-head{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}.health-head h2{font-size:14px;font-weight:600}.status{font-size:12px;font-weight:600;border-radius:4px;padding:3px 8px;display:inline-flex;align-items:center;gap:6px;background:var(--wash);color:var(--muted)}.status::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}.status.ok{background:var(--green-bg);color:var(--green)}.status.warn{background:var(--amber-bg);color:var(--amber)}.status.error{background:var(--red-bg);color:var(--red)}.scan-time{font-size:12px;color:var(--muted);margin-left:auto}.health-toggle{border:0;background:none;color:var(--accent);padding:2px 0;font-size:13px;text-decoration:underline;text-underline-offset:3px}.sources{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}.source-cell{padding:12px 16px;border-right:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}.source-cell:last-child{border-right:0}.source-name{font-weight:600;font-size:14px;white-space:nowrap}.source-caption{font-size:12px;color:var(--muted);margin-top:2px}.source-dot{width:7px;height:7px;display:inline-block;background:#8a9ca4;border-radius:50%;margin-right:7px}.source-dot.ok{background:var(--green)}.source-dot.warn{background:#b98633}.source-dot.error{background:#b95561}.source-state{font-size:12px;color:var(--muted);white-space:nowrap}.health-detail{border-top:1px solid var(--line);padding:15px 16px;background:var(--soft);font-size:13px;color:var(--muted)}.health-detail ul{margin:10px 0 0;padding-left:18px}.health-detail li{margin:6px 0}.notice{padding:10px 16px;background:var(--amber-bg);color:var(--amber);font-size:13px;border-top:1px solid #ead9b4}.notice.error{background:var(--red-bg);color:var(--red)}
+.filters{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;display:grid;grid-template-columns:minmax(220px,2fr) repeat(3,minmax(130px,1fr)) auto;gap:14px;align-items:end;margin-bottom:16px}.field label{display:block;font-size:12px;font-weight:600;margin-bottom:5px;color:var(--muted)}.field input,.field select{height:40px;width:100%;min-width:0;background:var(--paper);border:1px solid #beced6;border-radius:5px;padding:8px 10px;color:var(--ink)}.field input::placeholder{color:#71838b}.search-wrap{position:relative}.search-wrap svg{position:absolute;left:11px;top:12px;width:16px;height:16px;color:var(--muted)}.search-wrap input{padding-left:35px}.reset{height:40px;padding:8px 5px;white-space:nowrap}.filter-context{font-size:12px;color:var(--muted);margin:0 0 12px 2px}.filter-context button{font-size:inherit;border:0;background:none;color:var(--accent);text-decoration:underline;padding:0}
+.workspace{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(400px,1fr);gap:16px;align-items:start}.geo-panel,.ledger-panel{border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);overflow:hidden}.panel-heading{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line)}.panel-heading h2{font-family:'Barlow',sans-serif;font-size:19px;font-weight:600}.panel-subtitle{font-size:12px;color:var(--muted);margin-top:2px}.panel-index{width:24px;height:24px;display:flex;align-items:center;justify-content:center;background:var(--wash);border:1px solid var(--line);border-radius:4px;color:var(--accent);font-size:13px}.heading-label{display:flex;align-items:center;gap:10px}.map-stage{height:410px;position:relative;background:#e6eef1}.map-stage #map{height:100%;width:100%;z-index:0}.map-fallback{height:100%;display:flex;align-items:center;justify-content:center;padding:40px;text-align:center;color:var(--muted)}.map-overlay{position:absolute;z-index:500;bottom:28px;left:12px;background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:5px;padding:8px 10px;max-width:245px;font-size:12px;color:var(--muted);box-shadow:0 2px 10px #123f5009}.map-overlay b{display:block;color:var(--ink);font-weight:600}.map-legend{display:flex;gap:14px;padding:11px 16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:12px;color:var(--muted);flex-wrap:wrap}.legend-item{display:flex;align-items:center;gap:6px}.legend-dot{width:8px;height:8px;border-radius:50%;background:var(--official)}.legend-dot.media{background:var(--media)}.legend-dot.community{background:var(--community)}.legend-caption{margin-left:auto}.locations{padding:15px 16px 16px}.locations-title{font-size:12px;letter-spacing:.4px;font-weight:600;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;gap:10px}.location-list{display:flex;gap:7px;flex-wrap:wrap;max-height:103px;overflow:auto;padding:2px}.location-chip{border:1px solid var(--line);border-radius:5px;background:var(--soft);font-size:13px;display:flex;align-items:center;gap:9px;padding:6px 9px;max-width:100%}.location-chip:hover{border-color:var(--accent);background:#edf5f8}.location-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.location-chip b{font-family:'IBM Plex Mono',monospace;font-weight:400;font-size:11px;background:white;min-width:19px;text-align:center;border-radius:3px}.unlocated{padding:0 16px 16px;font-size:13px;color:var(--muted)}.unlocated button{border:0;background:none;color:var(--accent);padding:0;font:inherit;text-decoration:underline;text-underline-offset:3px}
+.metric-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line);background:var(--soft)}.metric{padding:15px 16px;border-right:1px solid var(--line)}.metric:last-child{border-right:0}.metric strong{display:block;font-family:'Barlow',sans-serif;font-size:27px;font-weight:500;line-height:1.1;letter-spacing:-.7px}.metric span{display:block;font-size:12px;color:var(--muted);margin-top:4px}.ledger-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 16px;border-bottom:1px solid var(--line)}.view-tabs{display:flex;gap:4px}.view-tab{font-size:13px;font-weight:600;border:0;background:none;padding:6px 10px;border-radius:4px;color:var(--muted)}.view-tab[aria-selected=true]{background:#e7eff3;color:var(--petrol)}.ledger-order{font-size:11px;color:var(--muted)}.ledger{max-height:468px;min-height:365px;overflow:auto;scrollbar-width:thin}.record{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);border-left:3px solid transparent;background:var(--paper);padding:14px 17px 14px 14px}.record:hover{background:#f4f8fa;border-left-color:var(--accent)}.record:focus-visible{outline-offset:-3px}.record-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:7px}.evidence{display:inline-flex;font-size:11px;font-weight:600;border-radius:3px;padding:2px 6px;color:var(--official);background:#e8f1f5}.evidence.media{color:var(--media);background:#f3f0e5}.evidence.community{color:var(--community);background:#f0ebf4}.record-source{font-size:12px;font-weight:600;color:var(--muted)}.record-date{margin-left:auto;color:var(--muted);font-size:11px}.record-title{font-size:16px;font-weight:600;line-height:1.35;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.record-bottom{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);margin-top:9px;flex-wrap:wrap}.disease{color:var(--accent);font-weight:600;text-transform:capitalize}.record-arrow{margin-left:auto;color:var(--accent);font-size:17px;line-height:1}.ledger-footer{padding:11px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);background:var(--soft);display:flex;align-items:center;gap:8px}.empty{padding:50px 28px;text-align:center;color:var(--muted)}.empty h3{font-size:18px;font-weight:600;color:var(--ink);margin-bottom:8px}.empty p{max-width:330px;margin:0 auto 16px;font-size:14px}.loading-line{height:9px;border-radius:3px;background:#edf2f5;width:62%;margin-top:10px}.loading-line.short{width:34%}.loading-record{padding:24px 18px;border-bottom:1px solid var(--line)}.analytics{padding:20px;max-height:468px;min-height:365px;overflow:auto}.analytics h3{font-size:15px;font-weight:600;margin:0 0 14px}.chart-group+.chart-group{margin-top:26px}.chart-row{margin:11px 0}.chart-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}.bar-track{height:5px;background:var(--wash);border-radius:3px;overflow:hidden}.bar-fill{height:100%;background:var(--accent);border-radius:3px}.analysis-note{font-size:12px;color:var(--muted);padding-top:18px}
+.footer{display:flex;align-items:flex-start;justify-content:space-between;gap:30px;padding:23px 0 0;font-size:12px;color:var(--muted)}.footer p{max-width:680px}.footer-links{display:flex;gap:18px;flex-shrink:0}.footer a{color:var(--muted)}
+.leaflet-container{font-family:'Source Sans 3',sans-serif}.leaflet-control-attribution{font-size:11px!important;background:rgba(255,255,255,.95)!important}.leaflet-control-zoom{border:1px solid #c3d3dc!important;box-shadow:0 2px 8px #143c4d12!important}.leaflet-control-zoom a{color:var(--ink)!important}.leaflet-popup-content-wrapper{border-radius:7px;box-shadow:0 8px 30px #13374624}.leaflet-popup-content{font-size:14px;margin:16px}.popup-title{font-weight:700;font-size:15px;margin-bottom:3px}.popup-caption{font-size:12px;color:var(--muted);margin-bottom:10px}.popup-record{border:0;border-top:1px solid var(--line);display:block;width:100%;text-align:left;background:white;color:var(--accent);padding:10px 0;font-size:13px}.map-pin{width:29px;height:29px;border:2px solid white;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 5px #123f5045;background:var(--official);color:white;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500}.map-pin.media{background:var(--media)}.map-pin.community{background:var(--community)}
+.drawer{border:0;margin:0 0 0 auto;padding:0;width:min(580px,100%);height:100dvh;max-height:100dvh;max-width:100%;color:var(--ink);background:white;box-shadow:-12px 0 60px #123f502b}.drawer::backdrop{background:#0d2d3f66}.drawer-header{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:17px 24px;background:white;border-bottom:1px solid var(--line)}.drawer-header span{font-size:12px;letter-spacing:1px;font-weight:600;text-transform:uppercase;color:var(--muted)}.drawer-close{border:1px solid var(--line);background:white;border-radius:5px;font-size:23px;line-height:1;width:36px;height:36px}.drawer-content{padding:25px 26px 30px}.drawer-content h2{font-family:'Barlow',sans-serif;font-size:27px;line-height:1.18;font-weight:600;margin:14px 0}.detail-deck{color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:20px}.detail-warning{background:var(--amber-bg);color:var(--amber);border-radius:5px;padding:12px 14px;font-size:13px;margin:16px 0}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0;margin:23px 0}.detail-grid dt{font-size:12px;color:var(--muted);margin-bottom:4px}.detail-grid dd{margin:0;font-size:14px;overflow-wrap:anywhere}.detail-section{margin:23px 0}.detail-section h3{font-size:14px;font-weight:700;margin-bottom:10px}.detail-section p{color:var(--muted);font-size:14px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}.detail-section ul{margin:0;padding-left:19px;font-size:14px;color:var(--muted)}.detail-section li{padding-left:3px;margin:7px 0}.detail-id{font-size:11px;overflow-wrap:anywhere;color:var(--muted);line-height:1.7}.detail-actions{display:flex;gap:10px;flex-wrap:wrap}.detail-candidates{margin-top:12px;font-size:13px;color:var(--muted)}.detail-candidates summary{cursor:pointer}.detail-candidates p{font-size:13px;margin-top:8px}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:5000;background:var(--petrol);color:white;padding:12px 20px;border-radius:6px;box-shadow:0 5px 25px #123f5026;font-size:14px;max-width:calc(100vw - 32px)}
+@media(min-width:1500px){.map-stage{height:460px}.ledger,.analytics{max-height:518px;min-height:415px}.record{padding-top:16px;padding-bottom:16px}}
+@media(max-width:1150px){main{padding:22px 22px}.masthead-inner{padding:14px 22px}.workspace{grid-template-columns:minmax(0,1fr) minmax(365px,1fr)}.source-cell{padding:11px}.source-state{display:none}.filters{gap:10px}.map-legend{gap:10px}.legend-caption{width:100%;margin-left:0}.metric{padding:14px 11px}.record-date{font-size:10px}.header-nav{gap:16px}}
+@media(max-width:900px){.workspace{grid-template-columns:1fr}.map-stage{height:370px}.ledger,.analytics{max-height:560px;min-height:220px}.filters{grid-template-columns:repeat(3,minmax(0,1fr)) auto}.field-search{grid-column:1/-1}.intro{align-items:flex-start}.intro-copy{max-width:390px}.intro-actions{margin-top:8px}.intro-actions .btn{padding:8px 11px}.source-state{display:none}.footer{flex-direction:column;gap:12px}.legend-caption{width:auto;margin-left:auto}.record-date{font-size:11px}.sources{grid-template-columns:repeat(5,minmax(0,1fr))}.source-caption{font-size:11px}}
+@media(max-width:600px){.masthead-inner{min-height:73px;padding:12px 16px}.brand-name{font-size:23px}.brand-note{font-size:9px;letter-spacing:.8px}.brand-symbol{width:37px;height:37px}.header-nav .method-link,.version{display:none}.header-nav{font-size:12px}.brand{gap:9px}main{padding:20px 14px}.intro{display:block;margin-bottom:18px}h1{font-size:28px}.intro-copy{font-size:14px;max-width:none}.eyebrow{font-size:11px}.intro-actions{margin-top:16px}.scope{font-size:12px;padding:10px}.sources{grid-template-columns:repeat(2,minmax(0,1fr))}.source-cell{border-bottom:1px solid var(--line);padding:10px 14px}.source-cell:nth-child(even){border-right:0}.source-cell:last-child{grid-column:1/-1;border-bottom:0}.source-state{display:block}.source-caption{font-size:12px}.health-head{gap:8px;padding:11px 14px}.scan-time{order:4;flex-basis:100%;margin-left:0}.health-toggle{margin-left:auto}.filters{grid-template-columns:1fr 1fr;padding:13px;gap:10px}.field-search{grid-column:1/-1}.field-queue{grid-column:1}.reset{align-self:end;justify-self:end}.field label{font-size:12px}.filter-context{font-size:12px}.panel-heading{padding:14px}.panel-heading h2{font-size:18px}.panel-index{display:none}.map-stage{height:320px}.map-overlay{max-width:215px;font-size:11px}.map-legend{gap:10px;padding:10px 13px}.legend-caption{display:none}.metric{padding:14px 10px}.metric strong{font-size:26px}.metric span{font-size:11px}.ledger-order{font-size:10px}.ledger-toolbar{padding:10px}.record{padding:14px 12px 14px 10px}.record-title{font-size:15px}.record-date{font-size:10px}.record-top{gap:6px}.record-source{font-size:11px}.evidence{font-size:10px}.record-bottom{font-size:12px}.drawer-content{padding:20px}.drawer-header{padding:14px 20px}.drawer-content h2{font-size:25px}.detail-grid{gap:16px 12px}.footer{font-size:11px}.footer-links{gap:14px}.locations-title{font-size:11px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 
-  /* Header */
-  .hdr{background:var(--un-dark);padding:0 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;height:56px}
-  .banner{background:#fff8e1;color:#7a4a00;border-bottom:1px solid #f5d98a;padding:6px 14px;font-size:.62rem;text-align:center;flex-shrink:0;line-height:1.4}
-  .banner b{color:#5a3500;font-weight:600}
-  .banner a{color:#5a3500;text-decoration:underline;font-weight:500}
-  .banner a:hover{color:#2a1500}
-  .logo{display:flex;align-items:center;gap:12px}
-  .logo-mark{width:36px;height:36px;background:var(--un-blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
-  .logo h1{font-size:.95rem;font-weight:700;color:#fff;letter-spacing:.5px}
-  .logo .sub{font-size:.55rem;color:rgba(255,255,255,.6);font-weight:400;display:block;margin-top:-2px}
-  .hdr-pills{display:flex;gap:8px}
-  .pill{padding:6px 14px;border-radius:20px;font-size:.65rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:5px;cursor:pointer;transition:all .15s;opacity:.7;border:2px solid transparent}
-  .pill:hover{opacity:.9;transform:scale(1.05)}.pill.active{opacity:1;border-color:#fff;transform:scale(1.08)}
-  .pill .n{font-size:.85rem}
-  .pill.cr{background:var(--critical)}.pill.hi{background:var(--high)}.pill.mo{background:#c77f00}.pill.lo{background:var(--low)}
-  .hdr-right{display:flex;align-items:center;gap:12px}
-  .scan-badge{font-size:.55rem;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:5px}
-  .scan-dot{width:7px;height:7px;border-radius:50%;background:#4caf50;animation:pulse-dot 2s infinite}
-  .scan-dot.stale{background:#f9a825;animation:none}
-  .scan-dot.dead{background:var(--critical);animation:none}
-  @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
-  :focus-visible{outline:2px solid var(--un-blue);outline-offset:2px}
-  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* The operational console keeps evidence in the first screen. */
+.masthead-inner{min-height:62px;padding:9px 24px}.brand-symbol{width:36px;height:36px;border-radius:8px}.brand-name{font-size:23px}.brand-note{font-size:10px;letter-spacing:1px}.brand{gap:10px}main{padding:16px 24px 24px}.intro{margin-bottom:12px;gap:16px}h1{font-size:26px}.intro-copy{font-size:14px;margin-top:2px}.intro-actions .btn{min-height:36px;padding:6px 13px}.scope{padding:7px 12px;margin-bottom:10px;font-size:12px;background:transparent;border:0;border-left:2px solid #b1c6d0;border-radius:0}.scope svg{display:none}.health{margin-bottom:10px;border-radius:6px}.health-head{min-height:46px;padding:8px 13px;gap:10px;border-bottom:0}.health-head h2{font-size:13px}.health-toggle{font-size:12px}.health-detail{font-size:14px}.source-mini{display:flex;gap:11px;align-items:center;margin-left:8px}.source-mini-item{display:inline-flex;align-items:center;font-size:12px;color:var(--muted);white-space:nowrap}.source-mini-item .source-dot{width:6px;height:6px;margin-right:5px}.scan-time{font-size:11px}.notice{font-size:12px;padding:7px 13px}.sources{border-top:1px solid var(--line)}.filters{padding:10px 13px;gap:12px;margin-bottom:8px;border-radius:6px}.field label{font-size:12px;margin-bottom:4px}.field input,.field select{height:36px;font-size:14px;padding-top:6px;padding-bottom:6px}.search-wrap svg{top:10px}.reset{height:36px}.filter-context{font-size:12px;margin-bottom:10px}.panel-heading{padding:12px 15px}.panel-heading h2{font-size:19px}.panel-subtitle{font-size:12px}.panel-index{display:none}.metric{padding:11px 14px}.metric strong{font-size:26px}.ledger-toolbar{padding:8px 13px}.ledger,.analytics{max-height:448px;min-height:300px}.map-stage{height:384px}.geo-panel,.ledger-panel{border-radius:6px}.driver-tag{border-left:1px solid var(--line);padding-left:7px;color:#47626f;font-size:12px}.workspace .record-source,.workspace .record-bottom{font-size:13px}.record-title{font-size:16px}
+.outlook{margin:20px 0 24px;border:1px solid #ccdde5;border-radius:7px;overflow:hidden;background:#fbfdfe}.outlook-header{padding:14px 16px;border-bottom:1px solid var(--line);background:#edf4f7;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.outlook-header h3{font-family:'Barlow',sans-serif;font-size:20px;font-weight:600}.outlook-header p{font-size:12px;color:var(--muted);margin-top:2px}.outlook-status{padding:13px 16px;border-bottom:1px solid var(--line);font-size:14px}.outlook-status strong{display:block;font-size:14px;color:var(--ink);margin-bottom:4px}.outlook-status p{color:var(--muted);font-size:13px;line-height:1.5}.driver-block{padding:16px;border-bottom:1px solid var(--line)}.driver-block:last-child{border-bottom:0}.driver-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}.driver-heading h4{font-size:14px;font-weight:700;margin:0}.driver-state{font-size:11px;font-weight:600;color:var(--muted);background:var(--wash);padding:3px 6px;border-radius:3px}.driver-state.available{color:#216550;background:#e9f4ee}.driver-note{font-size:13px;color:var(--muted);line-height:1.5;margin:0}.weather-table{width:100%;border-collapse:collapse;margin:12px 0 10px;font-size:13px}.weather-table th{text-align:right;font-size:11px;font-weight:600;color:var(--muted);padding:0 0 8px 10px}.weather-table th:first-child{text-align:left;padding-left:0}.weather-table td{padding:9px 0 9px 10px;border-top:1px solid var(--line);text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px}.weather-table td:first-child{text-align:left;padding-left:0;font-family:inherit;font-size:13px;color:var(--muted)}.weather-table small{display:block;font-family:'Source Sans 3',sans-serif;font-size:10px;font-weight:400;margin-top:3px}.driver-source{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5}.driver-source a{color:var(--accent)}.input-list{list-style:none;margin:10px 0 0;padding:0}.input-list li{font-size:13px;color:var(--muted);padding:6px 0 6px 17px;position:relative;border-top:1px solid #e5edf1}.input-list li::before{content:'○';position:absolute;left:0;color:#7f929c}.outlook-link{font-size:12px;white-space:nowrap}.detail-warning{font-size:13px}.detail-grid{margin:18px 0;padding:16px 0;gap:15px}.detail-section p{font-size:14px}
+@media(min-width:1500px){.map-stage{height:430px}.ledger,.analytics{max-height:494px}}
+@media(max-width:1150px){.source-mini{gap:8px}.source-mini-item{font-size:11px}.scan-time{display:none}}
+@media(max-width:900px){.masthead-inner{padding:9px 18px}main{padding:14px 18px 20px}.intro-actions{margin-top:0}.source-mini{margin-left:auto}.health-head{gap:8px}.filters{gap:9px}.intro-copy{font-size:13px}.map-stage{height:330px}.ledger,.analytics{max-height:480px}.scope{font-size:12px}.filter-context{font-size:12px}}
+@media(max-width:600px){.masthead-inner{min-height:57px;padding:8px 14px}.brand-name{font-size:22px}.brand-note{font-size:9px}.brand-symbol{width:34px;height:34px}.header-nav{font-size:12px}main{padding:13px 12px 18px}.intro{display:flex;align-items:center;gap:8px;margin-bottom:10px}h1{font-size:22px}.intro-copy{font-size:12px;max-width:210px;line-height:1.3}.intro-actions{gap:5px;flex-direction:column}.intro-actions .btn{min-height:30px;padding:4px 8px;font-size:12px}.intro-actions .btn svg{width:13px;height:13px}.scope{font-size:11px;padding:5px 9px;margin-bottom:9px}.health-head{padding:9px 11px;gap:7px}.health-head h2{font-size:12px}.health-head .status{font-size:11px}.source-mini{order:5;width:100%;margin:3px 0 0;justify-content:space-between;gap:5px}.source-mini-item{font-size:11px}.health-toggle{margin-left:auto}.notice{font-size:11px;padding:6px 11px}.filters{padding:10px;gap:8px;margin-bottom:8px}.field label{font-size:11px}.field input,.field select{font-size:14px}.reset{font-size:12px}.filter-context{font-size:11px;line-height:1.4;margin-bottom:9px}.panel-heading{padding:11px 12px}.panel-heading h2{font-size:18px}.panel-subtitle{font-size:11px}.map-stage{height:280px}.map-legend{font-size:11px}.locations{padding:12px}.unlocated{padding:0 12px 12px;font-size:12px}.metric{padding:10px}.metric strong{font-size:25px}.metric span{font-size:11px}.workspace .record-source{font-size:11px}.workspace .record-bottom{font-size:12px}.record-title{font-size:15px}.outlook-header{padding:13px}.driver-block,.outlook-status{padding:13px}.outlook-header h3{font-size:19px}.weather-table{font-size:12px}.weather-table td{font-size:11px}.weather-table td:first-child{font-size:12px}.outlook-link{font-size:11px}.detail-grid{gap:14px 10px}}
 
-  /* Toolbar */
-  .tbar{background:var(--white);border-bottom:1px solid var(--light-border);padding:8px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap}
-  .tbar-group{display:flex;align-items:center;gap:4px}
-  .tbar-label{font-size:.6rem;color:var(--dim);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-right:4px}
-  .tbtn{font-size:.6rem;padding:4px 10px;border:1px solid var(--light-border);border-radius:16px;background:var(--white);color:var(--dim);cursor:pointer;font-family:inherit;font-weight:500;transition:all .15s}
-  .tbtn:hover{border-color:var(--un-blue);color:var(--un-blue)}
-  .tbtn.on{border-color:var(--un-blue);color:#fff;background:var(--un-blue)}
-  .tsep{width:1px;height:20px;background:var(--light-border);margin:0 6px}
-  .ttoggle{font-size:.6rem;padding:4px 10px;border:1px solid var(--light-border);border-radius:16px;background:var(--white);color:var(--dim);cursor:pointer;font-family:inherit;font-weight:500}
-  .ttoggle.on{border-color:var(--un-accent);color:var(--un-accent);background:var(--un-light)}
-  .searchbox{font-size:.65rem;padding:5px 10px;border:1px solid var(--light-border);border-radius:16px;background:var(--white);color:var(--text);font-family:inherit;width:200px;outline:none;transition:border-color .15s,width .15s}
-  .searchbox:focus{border-color:var(--un-blue);width:260px}
-  .searchbox:focus-visible{outline:2px solid var(--un-blue);outline-offset:1px}
-  .searchbox::placeholder{color:var(--dim)}
-
-  /* Main */
-  .main{flex:1;display:flex;overflow:hidden;min-height:0}
-
-  /* Map */
-  .map-wrap{flex:1;position:relative;min-width:0}
-  #map{width:100%;height:100%}
-  .leaflet-control-zoom{border:1px solid var(--light-border)!important;box-shadow:var(--shadow)!important}
-  .leaflet-control-zoom a{background:var(--white)!important;color:var(--un-dark)!important;border-color:var(--light-border)!important;font-family:'Inter',sans-serif!important}
-  .leaflet-control-attribution{display:none!important}
-
-  /* Map overlay */
-  .overlay{position:absolute;top:12px;left:12px;z-index:1000;background:rgba(255,255,255,.95);border:1px solid var(--light-border);border-radius:10px;padding:12px 14px;backdrop-filter:blur(8px);box-shadow:var(--shadow-lg);max-width:230px}
-  .overlay h3{font-size:.6rem;color:var(--un-dark);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:4px}
-  .hot-list{max-height:240px;overflow-y:auto;scrollbar-width:thin}
-  .hot{display:flex;align-items:center;gap:6px;padding:4px 0;font-size:.6rem;cursor:pointer;border-bottom:1px solid rgba(226,232,240,.5);transition:color .1s}
-  .hot:hover{color:var(--un-blue)}.hot:last-child{border:none}
-  .hdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-  .hdot.sc{background:var(--critical)}.hdot.sh{background:var(--high)}.hdot.sm{background:var(--moderate)}.hdot.sl{background:var(--low)}
-  .hname{flex:1;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .htags{font-size:.5rem;color:var(--dim);max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .hct{font-size:.48rem;color:var(--dim);background:var(--bg);padding:1px 5px;border-radius:8px}
-
-  /* Side panel */
-  .side{width:380px;flex-shrink:0;border-left:1px solid var(--light-border);display:flex;flex-direction:column;background:var(--white);overflow:hidden}
-  .tabs{display:flex;border-bottom:1px solid var(--light-border);flex-shrink:0;background:var(--bg)}
-  .tab{flex:1;padding:10px 0;text-align:center;font-size:.6rem;font-weight:600;color:var(--dim);cursor:pointer;text-transform:uppercase;letter-spacing:.5px;background:none;border:0;border-bottom:2px solid transparent;font-family:inherit;transition:all .15s}
-  .tab:hover{color:var(--text)}.tab.on{color:var(--un-blue);border-bottom-color:var(--un-blue);background:var(--white)}
-  .panel{flex:1;overflow-y:auto;scrollbar-width:thin}
-
-  /* Signal cards */
-  .sig{padding:12px 16px;border-bottom:1px solid var(--light-border);cursor:pointer;transition:background .1s;position:relative}
-  .sig:hover{background:var(--un-light)}
-  .sig::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:0 2px 2px 0}
-  .sig.sc::before{background:var(--critical)}.sig.sh::before{background:var(--high)}
-  .sig.sm::before{background:var(--moderate)}.sig.sl::before{background:var(--low)}
-  .sig-link{text-decoration:none;color:inherit;display:block}
-  .sig-link:hover .sig-disease{color:var(--un-blue)}
-  .sig-top{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-  .sig-sev{font-size:.5rem;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:.3px}
-  .sig-sev.c{background:var(--crit-bg);color:var(--critical)}.sig-sev.h{background:var(--high-bg);color:var(--high)}
-  .sig-sev.m{background:var(--mod-bg);color:#e65100}.sig-sev.lo{background:var(--low-bg);color:var(--low)}
-  .sig-disease{font-size:.7rem;font-weight:700;color:var(--text);text-transform:capitalize}
-  .sig-badges{margin-left:auto;display:flex;gap:3px}
-  .badge{font-size:.42rem;padding:2px 6px;border-radius:10px;font-weight:600}
-  .badge.who{color:var(--un-blue);background:var(--un-light)}
-  .badge.paho{color:#0c7c59;background:#e0f2eb}
-  .badge.mastodon{color:#6364ff;background:#eaeaff}
-  .badge.news{color:#7c3aed;background:#ede9fe}
-  .badge.reddit{color:#ff4500;background:#fff0e6}
-  .badge.traveler{color:#d81b60;background:#fce4ec}
-  .badge.anomaly{color:var(--critical);background:var(--crit-bg);animation:pulse-anom 1.5s infinite}
-  .badge.fresh{color:#00695c;background:#e0f2f1}
-  @keyframes pulse-anom{0%,100%{opacity:1}50%{opacity:.5}}
-  .sig-loc{font-size:.6rem;color:var(--un-accent);margin-bottom:3px;font-weight:500;cursor:pointer}
-  .sig-loc:focus-visible{outline:2px solid var(--un-blue);outline-offset:1px}
-  .sig-loc:hover{text-decoration:underline}
-  .sig-loc::before{content:'📍';font-size:.55rem;margin-right:3px}
-  .sig-sum{font-size:.55rem;color:var(--dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .sig-meta{display:flex;gap:10px;margin-top:4px;font-size:.48rem;color:var(--dim)}
-
-  /* Stats */
-  .stats{padding:16px}
-  .stat-sec{margin-bottom:16px}
-  .stat-sec h4{font-size:.6rem;color:var(--un-dark);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid var(--un-blue)}
-  .stat-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:.62rem}
-  .stat-row .k{color:var(--dim)}.stat-row .v{font-weight:700}
-  .sbar{height:6px;background:var(--bg);border-radius:3px;margin-top:2px;overflow:hidden}
-  .sbar-fill{height:100%;border-radius:3px;transition:width .5s}
-  .cat-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:.58rem}
-  .cat-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-  .cat-name{flex:1;font-weight:500}.cat-ct{font-weight:700}
-
-  /* Region cards */
-  .region-card{background:var(--bg);border:1px solid var(--light-border);border-radius:8px;padding:10px 12px;margin-bottom:8px}
-  .region-card h5{font-size:.6rem;color:var(--un-dark);font-weight:700;margin-bottom:4px}
-  .region-card .rthreat{font-weight:800;font-size:.5rem;padding:2px 6px;border-radius:10px;margin-left:6px}
-  .region-card .rthreat.cr{background:var(--crit-bg);color:var(--critical)}
-  .region-card .rthreat.hi{background:var(--high-bg);color:var(--high)}
-  .region-card .rthreat.mo{background:var(--mod-bg);color:#c77f00}
-  .region-card .rthreat.lo{background:var(--low-bg);color:var(--low)}
-  .region-stats{display:flex;gap:14px;font-size:.52rem;color:var(--dim);margin-bottom:4px}
-  .region-stats b{color:var(--text)}
-  .region-diseases{font-size:.48rem;color:var(--un-accent);font-weight:500}
-  .region-countries{font-size:.48rem;color:var(--dim);margin-top:3px}
-  .region-countries span{cursor:pointer}.region-countries span:hover{color:var(--un-blue);text-decoration:underline}
-  .region-countries span:focus-visible{outline:2px solid var(--un-blue);outline-offset:1px}
-
-  /* Pulse markers */
-  .pmk{border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3)}
-  .pmk::after{content:'';position:absolute;width:100%;height:100%;border-radius:50%;animation:pmk-ring 2.5s ease-out infinite}
-  .pmk.c{background:var(--critical)}.pmk.c::after{border:2px solid var(--critical)}
-  .pmk.h{background:var(--high)}.pmk.h::after{border:2px solid var(--high)}
-  .pmk.m{background:var(--moderate)}.pmk.m::after{border:2px solid var(--moderate)}
-  .pmk.lo{background:var(--low)}.pmk.lo::after{border:2px solid var(--low)}
-  @keyframes pmk-ring{0%{transform:scale(1);opacity:.4}100%{transform:scale(2.5);opacity:0}}
-
-  /* Popup */
-  .leaflet-popup-content-wrapper{background:var(--white)!important;color:var(--text)!important;border:1px solid var(--light-border)!important;border-radius:10px!important;font-family:'Inter',sans-serif!important;box-shadow:var(--shadow-lg)!important}
-  .leaflet-popup-tip{background:var(--white)!important}
-  .leaflet-popup-close-button{color:var(--dim)!important}
-  .pp-title{font-size:.72rem;font-weight:700;color:var(--un-dark);margin-bottom:2px}
-  .pp-disease{font-size:.58rem;color:var(--un-accent);margin-bottom:4px;font-weight:500}
-  .pp-info{font-size:.52rem;color:var(--dim);line-height:1.5;margin-bottom:6px}
-  .pp-info b{color:var(--text)}
-  .pp-link{display:block;color:var(--un-blue);text-decoration:none;padding:10px 8px;font-size:.7rem;font-weight:600;border-bottom:1px solid var(--light-border);border-radius:6px;margin:2px 0;transition:background .1s}
-  .pp-link:hover,.pp-link:active{background:var(--un-light);text-decoration:none}
-  .pp-link:last-child{border:none}
-
-  /* Footer */
-  .ftr{border-top:1px solid var(--light-border);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-size:.5rem;color:var(--dim);flex-shrink:0;background:var(--white)}
-  .ftr-l{display:flex;gap:12px;align-items:center}.ftr span{display:flex;align-items:center;gap:3px}
-  .vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-
-  @media(max-width:900px){
-    .main{flex-direction:column}
-    .side{width:100%;height:42vh;border-left:none;border-top:1px solid var(--light-border)}
-    .map-wrap{height:58vh}
-    /* Keep filters on mobile: one horizontally-scrollable row instead of hiding them. */
-    .tbar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:6px;padding:6px 12px}
-    .tbar-group{flex-shrink:0}
-    .searchbox,.searchbox:focus{width:150px}
-  }
 </style>
+<script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script defer src="dashboard.js"></script>
 </head>
 <body>
-
-<div class="banner">ℹ️ <b>Open early-warning prototype</b> — early signals are unverified; decision-support only. <b>Not for clinical, operational, or travel decisions.</b> <a href="https://github.com/acuestamd/project-geosentinel#-honest-scope--limitations" target="_blank" rel="noopener">Scope &amp; limitations</a></div>
-
-<div class="hdr">
-  <div class="logo">
-    <div class="logo-mark">🌐</div>
-    <div><h1>GeoSentinel 2.0</h1><span class="sub">Open OSINT Disease-Outbreak Monitor</span></div>
-  </div>
-  <div class="hdr-pills" role="group" aria-label="Filter by severity">
-    <div class="pill cr active" role="button" tabindex="0" aria-pressed="true" aria-label="Critical signals" onclick="filterBySev(this,'crit')"><span class="n" id="hC">—</span> Critical</div>
-    <div class="pill hi active" role="button" tabindex="0" aria-pressed="true" aria-label="High signals" onclick="filterBySev(this,'high')"><span class="n" id="hH">—</span> High</div>
-    <div class="pill mo active" role="button" tabindex="0" aria-pressed="true" aria-label="Moderate signals" onclick="filterBySev(this,'mod')"><span class="n" id="hM">—</span> Moderate</div>
-    <div class="pill lo active" role="button" tabindex="0" aria-pressed="true" aria-label="Low signals" onclick="filterBySev(this,'low')"><span class="n" id="hL">—</span> Low</div>
-  </div>
-  <div class="hdr-right">
-    <div class="scan-badge"><span class="scan-dot" id="scanDot"></span><span id="scanT">Loading…</span></div>
-  </div>
-  <span class="vh" id="liveStatus" role="status" aria-live="polite"></span>
+<a class="skip" href="#evidence">Skip to signal review</a>
+<header class="masthead"><div class="masthead-inner">
+<a class="brand" href="./" aria-label="GeoSentinel home"><span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.25"><circle cx="16" cy="16" r="12"/><path d="M4 16h24M6.5 9h19M6.5 23h19M16 4c-9 7-9 17 0 24M16 4c9 7 9 17 0 24"/></svg></span><span><span class="brand-name">GeoSentinel</span><span class="brand-note" style="display:block">Public health intelligence</span></span></a>
+<nav class="header-nav" aria-label="Project information"><a class="method-link" href="https://github.com/acuestamd/project-geosentinel/blob/main/docs/METHODOLOGY.md" target="_blank" rel="noopener noreferrer">Method &amp; limitations ↗</a><a href="https://github.com/acuestamd/project-geosentinel" target="_blank" rel="noopener noreferrer">Open source ↗</a><span class="mono version">v3.0</span></nav>
+</div></header>
+<main>
+<section class="intro" aria-labelledby="page-title"><div><h1 id="page-title">Intelligence workspace</h1><p class="intro-copy">Source evidence &amp; environmental drivers</p></div><div class="intro-actions"><button class="btn" id="refreshButton"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 7a6.5 6.5 0 1 0 .3 5M16 3v4h-4"/></svg>Refresh</button><button class="btn btn-primary" id="exportButton" disabled><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 2v10m-4-4 4 4 4-4M3 12v5h14v-5"/></svg>Export view</button></div></section>
+<div class="scope"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 9v5m0-9v1"/></svg><p><strong>Unverified signals.</strong> Automated extraction requires review. Source labels indicate provenance. Independent project; not for clinical, operational or travel decisions.</p></div>
+<section class="health" aria-labelledby="health-title"><div class="health-head"><h2 id="health-title">Collection health</h2><span class="status warn" id="healthStatus">Checking feeds</span><div class="source-mini" id="sourceMini" aria-label="Source availability"></div><span class="scan-time mono" id="scanTime">Awaiting collection data</span><button class="health-toggle" id="healthToggle" aria-expanded="false" aria-controls="sourceHealth healthDetail">Details</button></div><div class="sources" id="sourceHealth" hidden><div class="source-cell"><span class="source-name">WHO</span><span class="source-state">Checking</span></div><div class="source-cell"><span class="source-name">PAHO</span><span class="source-state">Checking</span></div><div class="source-cell"><span class="source-name">GDELT</span><span class="source-state">Checking</span></div><div class="source-cell"><span class="source-name">Mastodon</span><span class="source-state">Checking</span></div><div class="source-cell"><span class="source-name">Reddit</span><span class="source-state">Checking</span></div></div><div class="health-detail" id="healthDetail" hidden></div><div class="notice" id="healthNotice" hidden></div></section>
+<form class="filters" id="filterForm" aria-label="Filter signals"><div class="field field-search"><label for="search">Search the evidence</label><div class="search-wrap"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="5.5"/><path d="m12 12 5 5"/></svg><input id="search" type="search" placeholder="Disease, location or report title" autocomplete="off"></div></div><div class="field"><label for="source">Source</label><select id="source"><option value="all">All sources</option><option value="who">WHO</option><option value="paho">PAHO</option><option value="news">GDELT / news</option><option value="mastodon">Mastodon</option><option value="reddit">Reddit</option></select></div><div class="field"><label for="time">Report date</label><select id="time"><option value="30d">Last 30 days</option><option value="7d">Last 7 days</option><option value="24h">Last 24 hours</option><option value="all">Any date, including unknown</option><option value="unknown">Unknown date only</option></select></div><div class="field field-queue"><label for="triage">Review scope</label><select id="triage"><option value="review">Review queue</option><option value="context">Context / excluded</option><option value="all">All collected signals</option></select></div><button class="btn btn-quiet reset" type="button" id="resetButton">Reset filters</button></form>
+<p class="filter-context" id="filterContext">All counts, locations and analysis follow these filters. Dates use source publication or the labelled GDELT index date.</p>
+<div class="workspace" id="workspace" tabindex="-1">
+<section class="geo-panel" aria-labelledby="map-title"><div class="panel-heading"><div class="heading-label"><span class="panel-index" aria-hidden="true">⌖</span><div><h2 id="map-title">Reported locations</h2><p class="panel-subtitle">Locations mentioned in source reports</p></div></div><button class="btn btn-quiet" id="fitMap" aria-label="Fit map to filtered locations">Fit view</button></div><div class="map-stage"><div id="map" role="region" aria-label="Map of reported locations. Use arrow keys to pan and plus or minus to zoom."></div><div class="map-overlay"><b>Geographic context, not a risk map</b>Automated location matching may be wrong.</div></div><div class="map-legend"><span class="legend-item"><span class="legend-dot"></span>Official</span><span class="legend-item"><span class="legend-dot media"></span>Media</span><span class="legend-item"><span class="legend-dot community"></span>Community</span><span class="legend-caption">Numbers = signals at a location</span></div><div class="locations"><div class="locations-title"><span>Locations in this view</span><span id="locationCount" class="mono">—</span></div><div class="location-list" id="locationList"><span style="font-size:13px;color:var(--muted)">Awaiting collection data</span></div></div><p class="unlocated" id="unlocatedNote">Reports without a usable location remain in the ledger.</p></section>
+<section class="ledger-panel" id="evidence" tabindex="-1" aria-labelledby="ledger-title"><div class="panel-heading"><div class="heading-label"><span class="panel-index" aria-hidden="true">≡</span><div><h2 id="ledger-title">Evidence ledger</h2><p class="panel-subtitle" id="ledgerSubtitle">Open a report to examine its evidence</p></div></div><span class="mono" id="visibleCount" aria-label="Filtered signal count">—</span></div><div class="metric-strip" aria-label="Totals for the filtered view"><div class="metric"><strong id="metricSignals">—</strong><span>Signals</span></div><div class="metric"><strong id="metricOfficial">—</strong><span>Official reports</span></div><div class="metric"><strong id="metricLocations">—</strong><span>Locations</span></div><div class="metric"><strong id="metricUnlocated">—</strong><span>Unlocated</span></div></div><div class="ledger-toolbar"><div class="view-tabs" role="tablist" aria-label="Evidence view"><button class="view-tab" id="ledgerTab" role="tab" aria-selected="true" aria-controls="ledger" data-view="ledger">Reports</button><button class="view-tab" id="analysisTab" role="tab" aria-selected="false" aria-controls="analytics" data-view="analytics" tabindex="-1">Analysis</button></div><span class="mono ledger-order">Newest report date first</span></div><div class="ledger" id="ledger" role="tabpanel" aria-labelledby="ledgerTab"><div class="loading-record"><div class="loading-line"></div><div class="loading-line short"></div></div><div class="loading-record"><div class="loading-line"></div><div class="loading-line short"></div></div><div class="loading-record"><div class="loading-line"></div><div class="loading-line short"></div></div></div><div class="analytics" id="analytics" role="tabpanel" aria-labelledby="analysisTab" hidden></div><div class="ledger-footer"><span aria-hidden="true">↗</span>Every record links back to its source. No signal is independently verified.</div></section>
 </div>
-
-<div class="tbar" id="tbar">
-  <div class="tbar-group">
-    <span class="tbar-label">Source</span>
-    <button class="tbtn on" data-f="source" data-v="all">All</button>
-    <button class="tbtn" data-f="source" data-v="who">🏥 WHO</button>
-    <button class="tbtn" data-f="source" data-v="paho">🌎 PAHO</button>
-    <button class="tbtn" data-f="source" data-v="news">📰 News</button>
-    <button class="tbtn" data-f="source" data-v="mastodon">🐘 Mastodon</button>
-    <button class="tbtn" data-f="source" data-v="reddit">💬 Reddit</button>
-  </div>
-  <div class="tsep"></div>
-  <div class="tbar-group">
-    <span class="tbar-label">Time</span>
-    <button class="tbtn on" data-f="time" data-v="30d">30 days</button>
-    <button class="tbtn" data-f="time" data-v="7d">7 days</button>
-    <button class="tbtn" data-f="time" data-v="24h">24h</button>
-    <button class="tbtn" data-f="time" data-v="all">All time</button>
-  </div>
-  <div class="tsep"></div>
-  <div class="tbar-group">
-    <input type="text" id="searchBox" class="searchbox" placeholder="🔍 search disease, country, summary…" aria-label="Search signals by disease, country, or summary" autocomplete="off">
-  </div>
-  <div class="tsep"></div>
-  <div class="tbar-group">
-    <button class="ttoggle" id="flightToggle" onclick="toggleFlights()">✈️ Flight Routes</button>
-    <button class="ttoggle" id="travelerToggle" onclick="toggleTravelers()">🧳 Travelers Only</button>
-  </div>
-</div>
-
-<div class="main">
-  <div class="map-wrap">
-    <div id="map" role="region" aria-label="Map of disease-outbreak signals"></div>
-    <div class="overlay">
-      <h3>⚠️ Active Hotspots</h3>
-      <div id="hotList" class="hot-list"></div>
-    </div>
-  </div>
-  <div class="side">
-    <div class="tabs" role="tablist" aria-label="Side panel views">
-      <button type="button" class="tab on" role="tab" aria-selected="true" data-t="signals">⚡ Signals</button>
-      <button type="button" class="tab" role="tab" aria-selected="false" data-t="stats">📊 Analytics</button>
-      <button type="button" class="tab" role="tab" aria-selected="false" data-t="regions">🌍 Regions</button>
-    </div>
-    <div class="panel" id="panel" role="tabpanel"></div>
-  </div>
-</div>
-
-<div class="ftr">
-  <div class="ftr-l">
-    <span>🌐 Sources: WHO · PAHO · News (GDELT) · Mastodon · Reddit</span>
-    <span>|</span><span id="fSig">—</span>
-    <span>|</span><span id="fCo">—</span>
-    <span>|</span><span id="fTrav">—</span>
-  </div>
-  <span style="color:var(--un-accent);font-weight:600">GeoSentinel <span id="fVer">2.0</span> — Open OSINT Disease Surveillance</span>
-</div>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-let D=null,activeTab='signals',markers=[],flightLines=[],showFlights=false,showTravelers=false;
-let filterSource='all',filterSev='all',filterTime='30d',searchQuery='';
-
-const SEV={critical:'#d32f2f',high:'#e65100',moderate:'#f9a825',low:'#2e7d32'};
-const CAT_C={'vector-borne':'#e65100',waterborne:'#0288d1',respiratory:'#7c3aed',viral:'#d32f2f',hemorrhagic:'#b71c1c',bacterial:'#f9a825','vaccine-preventable':'#2e7d32',parasitic:'#ff6f00',unknown:'#90a4ae'};
-const SRC_I={who:'🏥',paho:'🌎',mastodon:'🐘',news:'📰',reddit:'💬'};
-
-function sc(s){return s>=8?'c':s>=6?'h':s>=4?'m':'lo'}
-function sl(s){return s>=8?'critical':s>=6?'high':s>=4?'moderate':'low'}
-function esc(s){return s==null?'':String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
-// Allow only http(s) links, and return the WHATWG-normalized href so a stray
-// quote in a source URL is percent-encoded before it ever reaches esc().
-// Source URLs come from user-supplied Reddit/Mastodon posts.
-function safeUrl(u){
-  if(!u)return '#';
-  try{const p=new URL(u,location.href);return(p.protocol==='http:'||p.protocol==='https:')?p.href:'#';}
-  catch(e){return '#'}
-}
-// Make a flyTo target keyboard-operable: focusable button semantics + data hook.
-function flyAttr(lat,lng,label){return `role="button" tabindex="0" aria-label="Zoom map to ${esc(label)}" data-fly="${lat},${lng}"`}
-function relTime(ms){const d=Date.now()-ms;if(!isFinite(d)||d<0)return '';const m=Math.round(d/60000);if(m<1)return 'just now';if(m<60)return m+'m ago';const h=Math.round(m/60);if(h<24)return h+'h ago';return Math.round(h/24)+'d ago'}
-function panelMsg(text,err){return `<div style="padding:30px;text-align:center;color:${err?'var(--critical)':'var(--dim)'};font-size:.7rem">${esc(text)}</div>`}
-
-const map=L.map('map',{center:[20,15],zoom:2.5,minZoom:2,maxZoom:8,zoomControl:true,attributionControl:false,worldCopyJump:true});
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd'}).addTo(map);
-
-function flyTo(lat,lng){
-  // Honor reduced-motion: jump instantly instead of animating the camera.
-  if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)map.setView([lat,lng],5);
-  else map.flyTo([lat,lng],5,{duration:1});
-}
-
-let pillAllActive=true;
-function filterBySev(el,level){
-  const allPills=document.querySelectorAll('.pill');
-  if(pillAllActive){
-    // First click: isolate to this level
-    filterSev=level;
-    allPills.forEach(p=>p.classList.remove('active'));
-    el.classList.add('active');
-    pillAllActive=false;
-  }else if(el.classList.contains('active')){
-    // Clicking the already-active pill: reset to show all
-    filterSev='all';
-    allPills.forEach(p=>p.classList.add('active'));
-    pillAllActive=true;
-  }else{
-    // Clicking a different pill: switch to that level
-    filterSev=level;
-    allPills.forEach(p=>p.classList.remove('active'));
-    el.classList.add('active');
-  }
-  allPills.forEach(p=>p.setAttribute('aria-pressed',p.classList.contains('active')));
-  refresh();
-}
-
-function parseAge(pub){
-  if(!pub)return null;
-  // ISO date: 2026-01-26
-  if(/^\d{4}-\d{2}/.test(pub))return new Date(pub);
-  // Relative: "4 hours ago", "2 days ago", "1 week ago", "last 7 day"
-  const now=Date.now();
-  const m=pub.match(/(\d+)\s*(hour|day|week|month)/i);
-  if(m){
-    const n=parseInt(m[1]),u=m[2].toLowerCase();
-    const ms={hour:3600000,day:86400000,week:604800000,month:2592000000};
-    return new Date(now-(n*(ms[u]||86400000)));
-  }
-  if(/last\s*7/i.test(pub))return new Date(now-604800000);
-  if(/last\s*30/i.test(pub))return new Date(now-2592000000);
-  return null;
-}
-
-function getFiltered(){
-  if(!D)return[];
-  const now=Date.now();
-  const cutoffs={all:0,'24h':86400000,'7d':604800000,'30d':2592000000};
-  const cut=cutoffs[filterTime]||2592000000;
-  return D.signals.filter(s=>{
-    if(filterSource!=='all'&&s.source!==filterSource)return false;
-    if(filterSev==='crit'&&s.severity<8)return false;
-    if(filterSev==='high'&&(s.severity<6||s.severity>=8))return false;
-    if(filterSev==='mod'&&(s.severity<4||s.severity>=6))return false;
-    if(filterSev==='low'&&s.severity>=4)return false;
-    if(showTravelers&&!s.is_traveler)return false;
-    if(filterTime!=='all'&&cut>0){
-      const d=parseAge(s.published);
-      if(d&&(now-d.getTime())>cut)return false;
-    }
-    if(searchQuery){
-      const hay=`${s.disease||''} ${s.location.country||''} ${s.location.name||''} ${s.summary||''}`.toLowerCase();
-      if(!hay.includes(searchQuery))return false;
-    }
-    return true;
-  });
-}
-
-function addMarkers(){
-  markers.forEach(m=>map.removeLayer(m));markers=[];
-  if(!D)return;
-  const filt=getFiltered();
-  const locs={};
-  filt.forEach(s=>{
-    const k=s.location.iso;
-    if(!locs[k])locs[k]={...s.location,sev:0,diseases:new Set(),count:0,signals:[]};
-    locs[k].sev=Math.max(locs[k].sev,s.severity);
-    locs[k].diseases.add(s.disease);
-    locs[k].count++;
-    if(locs[k].signals.length<5)locs[k].signals.push(s);
-  });
-  Object.values(locs).forEach(h=>{
-    const c=sc(h.sev),sz=h.sev>=8?24:h.sev>=6?19:14;
-    const icon=L.divIcon({className:'',html:`<div class="pmk ${c}" style="width:${sz}px;height:${sz}px"></div>`,iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]});
-    // If only 1 signal with a URL, clicking opens it directly
-    const singleUrl=(h.signals.length===1&&safeUrl(h.signals[0].url)!=='#')?safeUrl(h.signals[0].url):null;
-    const sigLinks=h.signals.map(s=>{
-      const src=SRC_I[s.source]||'📡';
-      const url=safeUrl(s.url);
-      const dz=esc((s.disease||'').charAt(0).toUpperCase()+(s.disease||'').slice(1));
-      const label=`${src} ${dz} — ${s.severity}/10`;
-      return url!=='#'?`<a class="pp-link" href="${esc(url)}" target="_blank" rel="noopener">${label} →</a>`
-        :`<div class="pp-link">${label}</div>`;
-    }).join('');
-    const popup=`<div class="pp-title">${esc(h.name)}, ${esc(h.country)}</div><div class="pp-disease">${[...h.diseases].map(esc).join(' · ')}</div><div class="pp-info">Threat: <b style="color:${SEV[sl(h.sev)]}">${sl(h.sev).toUpperCase()}</b> · ${h.count} signal${h.count>1?'s':''}</div>${sigLinks}`;
-    const mk=L.marker([h.lat,h.lng],{icon,title:`${h.name}, ${h.country} — ${sl(h.sev).toUpperCase()}, ${h.count} signal${h.count>1?'s':''}`}).addTo(map);
-    if(singleUrl){mk.on('click',()=>window.open(singleUrl,'_blank'))}
-    else{mk.bindPopup(popup,{maxWidth:300})}
-    markers.push(mk);
-  });
-}
-
-function drawFlights(){
-  flightLines.forEach(l=>map.removeLayer(l));flightLines=[];
-  if(!showFlights||!D||!D.flightRoutes)return;
-  D.flightRoutes.forEach(r=>{
-    const color=r.severity>=8?'rgba(211,47,47,.25)':r.severity>=6?'rgba(230,81,0,.18)':'rgba(249,168,37,.12)';
-    const line=L.polyline([[r.from.lat,r.from.lng],[r.to.lat,r.to.lng]],{color,weight:1.5,dashArray:'6 4'}).addTo(map);
-    line.bindTooltip(`${r.from.iata} → ${r.to.iata}`,{direction:'center'});
-    flightLines.push(line);
-  });
-}
-
-function toggleFlights(){showFlights=!showFlights;document.getElementById('flightToggle').classList.toggle('on',showFlights);drawFlights()}
-function toggleTravelers(){showTravelers=!showTravelers;document.getElementById('travelerToggle').classList.toggle('on',showTravelers);refresh()}
-
-document.querySelectorAll('.tbtn[data-f]').forEach(b=>{
-  b.onclick=()=>{
-    const g=b.dataset.f;
-    document.querySelectorAll(`.tbtn[data-f="${g}"]`).forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-    if(g==='source')filterSource=b.dataset.v;
-    if(g==='time')filterTime=b.dataset.v;
-    refresh();
-  };
-});
-
-document.querySelectorAll('.tab').forEach(t=>{
-  t.onclick=()=>{
-    document.querySelectorAll('.tab').forEach(x=>{x.classList.remove('on');x.setAttribute('aria-selected','false')});
-    t.classList.add('on');t.setAttribute('aria-selected','true');
-    activeTab=t.dataset.t;renderPanel();
-  };
-});
-
-// Header severity pills are role=button divs — give them keyboard activation.
-document.querySelectorAll('.pill').forEach(p=>{
-  p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();p.click()}});
-});
-
-// Delegated handler for the keyboard-operable map-jump targets (data-fly).
-function flyFromEl(t){const[la,ln]=t.dataset.fly.split(',').map(Number);if(isFinite(la)&&isFinite(ln))flyTo(la,ln)}
-document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('[data-fly]');if(t)flyFromEl(t)});
-document.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const t=e.target.closest&&e.target.closest('[data-fly]');if(t){e.preventDefault();flyFromEl(t)}});
-
-(function(){
-  const sb=document.getElementById('searchBox');
-  if(!sb)return;
-  let timer=null;
-  sb.addEventListener('input',e=>{
-    clearTimeout(timer);
-    timer=setTimeout(()=>{searchQuery=e.target.value.trim().toLowerCase();refresh();},120);
-  });
-  sb.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){sb.value='';searchQuery='';refresh();sb.blur();}
-  });
-})();
-
-function renderPanel(){if(activeTab==='signals')renderSignals();else if(activeTab==='stats')renderStats();else renderRegions()}
-
-function renderSignals(){
-  const el=document.getElementById('panel');
-  if(!D){el.innerHTML=panelMsg('Loading signals…');return}
-  const sigs=getFiltered();
-  // Sort newest first
-  sigs.sort((a,b)=>{
-    const da=parseAge(a.published),db=parseAge(b.published);
-    if(da&&db)return db.getTime()-da.getTime();
-    if(da)return -1;if(db)return 1;
-    return b.severity-a.severity;
-  });
-  if(!sigs.length){el.innerHTML='<div style="padding:30px;text-align:center;color:var(--dim);font-size:.7rem">No signals match current filters</div>';return}
-  el.innerHTML=sigs.map(s=>{
-    const c=sc(s.severity),sl2=c;
-    let badges=`<span class="badge ${esc(s.source)}">${SRC_I[s.source]||'📡'} ${esc(s.source)}</span>`;
-    if(s.is_traveler)badges+=`<span class="badge traveler">🧳 traveler</span>`;
-    if(s.anomaly)badges+=`<span class="badge anomaly">⚠️ surge</span>`;
-    else if(s.is_new)badges+=`<span class="badge fresh">🆕 new</span>`;
-    const url=safeUrl(s.url);
-    return `<div class="sig s${c}">
-      <a class="sig-link" href="${esc(url)}" target="_blank" rel="noopener">
-        <div class="sig-top"><span class="sig-sev ${sl2}">${s.severity}/10</span><span class="sig-disease">${esc(s.emoji)} ${esc(s.disease)}</span><div class="sig-badges">${badges}</div></div>
-        <div class="sig-sum">${esc(s.summary)}</div>
-      </a>
-      <div class="sig-loc" ${flyAttr(s.location.lat,s.location.lng,s.location.name+', '+s.location.country)}>${esc(s.location.name)}, ${esc(s.location.country)}</div>
-      <div class="sig-meta"><span>🕐 ${esc(s.published||'unknown')}</span><span>· 🎯 ${(s.confidence*100).toFixed(0)}%</span><span>· ${esc(s.type.replace(/_/g,' '))}</span>${s.case_count?`<span>· 🩺 ${s.case_count.toLocaleString()} cases</span>`:''}${s.death_count?`<span>· 💀 ${s.death_count.toLocaleString()} deaths</span>`:''}</div>
-    </div>`;
-  }).join('');
-}
-
-function renderStats(){
-  const el=document.getElementById('panel');if(!D){el.innerHTML=panelMsg('No data yet — waiting for the first scan…');return}
-  const st=D.stats,maxC=Math.max(...Object.values(st.by_category||{}),1),maxS=Math.max(...Object.values(st.by_source||{}),1);
-  let catH='';
-  Object.entries(st.by_category||{}).sort((a,b)=>b[1]-a[1]).forEach(([c,n])=>{
-    const col=CAT_C[c]||'#90a4ae';
-    catH+=`<div class="cat-row"><div class="cat-dot" style="background:${col}"></div><span class="cat-name">${esc(c)}</span><span class="cat-ct">${n}</span></div><div class="sbar"><div class="sbar-fill" style="width:${n/maxC*100}%;background:${col}"></div></div>`;
-  });
-  let srcH='';
-  Object.entries(st.by_source||{}).sort((a,b)=>b[1]-a[1]).forEach(([s,n])=>{
-    srcH+=`<div class="cat-row"><span style="font-size:.65rem">${SRC_I[s]||'📡'}</span><span class="cat-name">${esc(s.toUpperCase())}</span><span class="cat-ct">${n}</span></div><div class="sbar"><div class="sbar-fill" style="width:${n/maxS*100}%;background:var(--un-blue)"></div></div>`;
-  });
-  el.innerHTML=`<div class="stats">
-    <div class="stat-sec"><h4>Threat Distribution</h4>
-      <div class="stat-row"><span class="k">🔴 Critical (8-10)</span><span class="v" style="color:var(--critical)">${st.by_severity.critical}</span></div>
-      <div class="sbar"><div class="sbar-fill" style="width:${st.by_severity.critical/Math.max(st.total_signals,1)*100}%;background:var(--critical)"></div></div>
-      <div class="stat-row"><span class="k">🟠 High (6-7)</span><span class="v" style="color:var(--high)">${st.by_severity.high}</span></div>
-      <div class="sbar"><div class="sbar-fill" style="width:${st.by_severity.high/Math.max(st.total_signals,1)*100}%;background:var(--high)"></div></div>
-      <div class="stat-row"><span class="k">🟡 Moderate (4-5)</span><span class="v" style="color:#e65100">${st.by_severity.moderate}</span></div>
-      <div class="sbar"><div class="sbar-fill" style="width:${st.by_severity.moderate/Math.max(st.total_signals,1)*100}%;background:var(--moderate)"></div></div>
-      <div class="stat-row"><span class="k">🟢 Low (1-3)</span><span class="v" style="color:var(--low)">${st.by_severity.low}</span></div>
-      <div class="sbar"><div class="sbar-fill" style="width:${st.by_severity.low/Math.max(st.total_signals,1)*100}%;background:var(--low)"></div></div>
-    </div>
-    <div class="stat-sec"><h4>Disease Categories</h4>${catH}</div>
-    <div class="stat-sec"><h4>Signal Sources</h4>${srcH}</div>
-    <div class="stat-sec"><h4>Coverage</h4>
-      <div class="stat-row"><span class="k">Total Signals</span><span class="v" style="color:var(--un-blue)">${st.total_signals}</span></div>
-      <div class="stat-row"><span class="k">Countries Affected</span><span class="v">${st.countries_affected}</span></div>
-      <div class="stat-row"><span class="k">Traveler Signals</span><span class="v" style="color:#d81b60">${st.traveler_signals||0}</span></div>
-      <div class="stat-row"><span class="k">Surge Anomalies</span><span class="v" style="color:var(--critical)">${st.anomalies_detected||0}</span></div>
-      <div class="stat-row"><span class="k">New (country, disease) Pairs</span><span class="v" style="color:#00695c">${st.new_signals||0}</span></div>
-      <div class="stat-row"><span class="k">Scan Duration</span><span class="v">${st.scan_duration_sec||'—'}s</span></div>
-    </div>
-  </div>`;
-}
-
-function renderRegions(){
-  const el=document.getElementById('panel');if(!D){el.innerHTML=panelMsg('No data yet — waiting for the first scan…');return}
-  const regions={};
-  D.hotspots.forEach(h=>{
-    const r=h.region||'Other';
-    if(!regions[r])regions[r]={name:r,hotspots:[],maxSev:0,totalSig:0,diseases:new Set()};
-    regions[r].hotspots.push(h);
-    regions[r].maxSev=Math.max(regions[r].maxSev,h.max_severity);
-    regions[r].totalSig+=h.signals;
-    h.diseases.forEach(d=>regions[r].diseases.add(d));
-  });
-  if(!Object.keys(regions).length){el.innerHTML=panelMsg('No active regions in the current scan.');return}
-  el.innerHTML='<div class="stats">'+Object.values(regions).sort((a,b)=>b.maxSev-a.maxSev).map(r=>{
-    const tc={c:'cr',h:'hi',m:'mo',lo:'lo'}[sc(r.maxSev)];
-    return `<div class="region-card">
-      <h5>${esc(r.name)}<span class="rthreat ${tc}">${sl(r.maxSev).toUpperCase()}</span></h5>
-      <div class="region-stats"><span>Hotspots: <b>${r.hotspots.length}</b></span><span>Signals: <b>${r.totalSig}</b></span></div>
-      <div class="region-diseases">${[...r.diseases].map(esc).join(' · ')}</div>
-      <div class="region-countries">${r.hotspots.map(h=>`<span ${flyAttr(h.lat,h.lng,h.name)}>${esc(h.name)} (${h.signals})</span>`).join(' · ')}</div>
-    </div>`;
-  }).join('')+'</div>';
-}
-
-function renderHotspots(){
-  const el=document.getElementById('hotList');if(!D)return;
-  el.innerHTML=D.hotspots.slice(0,15).map(h=>{
-    const c=sc(h.max_severity);
-    return `<div class="hot" ${flyAttr(h.lat,h.lng,h.name)}>
-      <div class="hdot s${c}"></div>
-      <span class="hname">${esc(h.name)}</span>
-      <span class="htags">${h.diseases.slice(0,2).map(esc).join(', ')}</span>
-      <span class="hct">${h.signals}</span>
-    </div>`;
-  }).join('');
-}
-
-function updateHeader(){
-  if(!D)return;const s=D.stats;
-  document.getElementById('hC').textContent=s.by_severity.critical;
-  document.getElementById('hH').textContent=s.by_severity.high;
-  document.getElementById('hM').textContent=s.by_severity.moderate;
-  document.getElementById('hL').textContent=s.by_severity.low;
-  document.getElementById('fSig').textContent=s.total_signals+' signals';
-  document.getElementById('fCo').textContent=s.countries_affected+' countries';
-  document.getElementById('fTrav').textContent='🧳 '+(s.traveler_signals||0)+' traveler signals';
-  const fv=document.getElementById('fVer');if(fv&&D.version)fv.textContent=D.version;
-  const age=Date.parse(D.lastScan),dot=document.getElementById('scanDot');
-  document.getElementById('scanT').textContent='Last scan: '+(isFinite(age)?relTime(age):'—');
-  // Amber dot after ~3 missed cycles (90 min) so a stalled scanner is visible.
-  if(dot){dot.classList.remove('dead');dot.classList.toggle('stale',isFinite(age)&&(Date.now()-age)>90*60000)}
-  const ls=document.getElementById('liveStatus');
-  if(ls)ls.textContent=`${s.total_signals} signals across ${s.countries_affected} countries; updated ${isFinite(age)?relTime(age):'unknown'}`;
-}
-
-function refresh(){addMarkers();drawFlights();renderHotspots();renderPanel();updateHeader()}
-
-async function loadData(){
-  if(!D)document.getElementById('panel').innerHTML=panelMsg('Loading signals…');
-  try{
-    const r=await fetch('signals.json?t='+Date.now());
-    if(!r.ok)throw new Error('HTTP '+r.status);
-    D=await r.json();refresh();
-  }catch(e){
-    const dot=document.getElementById('scanDot');
-    if(!D){if(dot)dot.classList.add('dead');document.getElementById('panel').innerHTML=panelMsg('⚠️ Scan data unavailable — retrying automatically…',true);}
-    else if(dot){dot.classList.add('stale')}  // keep showing the last good data, just flag it
-  }
-}
-loadData();setInterval(loadData,120000);
-</script>
+<footer class="footer"><p>GeoSentinel is an independent open-source project. Not affiliated with WHO, PAHO, ISTM, CDC or the GeoSentinel clinical surveillance network. Absence of a signal does not mean absence of an outbreak.</p><div class="footer-links"><a href="https://github.com/acuestamd/project-geosentinel/blob/main/docs/METHODOLOGY.md" target="_blank" rel="noopener noreferrer">Methodology</a><a href="https://github.com/acuestamd/project-geosentinel/issues" target="_blank" rel="noopener noreferrer">Report an issue</a></div></footer>
+</main>
+<dialog class="drawer" id="detailDialog" aria-labelledby="detailTitle"><div class="drawer-header"><span>Evidence review</span><button class="drawer-close" id="closeDetail" aria-label="Close report details">×</button></div><div class="drawer-content" id="detailContent"></div></dialog>
+<div class="sr-only" role="status" aria-live="polite" id="liveStatus"></div><div class="toast" role="status" id="toast" hidden></div>
+<noscript><p style="padding:30px">Enable JavaScript to explore this dashboard. You can also <a href="signals.json">download the collected signals</a> or read the <a href="https://github.com/acuestamd/project-geosentinel">project documentation</a>.</p></noscript>
 </body>
 </html>
