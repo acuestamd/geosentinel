@@ -1,0 +1,3708 @@
+{
+  "schema_version": 1,
+  "issued_at": "2026-09-06T01:44:49.561359+00:00",
+  "code_revision": "c9d554f5e2958b0c18d95ad69ac8505e84a3eb75",
+  "model_version": "rio-reported-v1",
+  "location": {
+    "name": "Rio de Janeiro",
+    "country": "Brazil",
+    "geocode": "3304557"
+  },
+  "source": {
+    "name": "InfoDengue",
+    "url": "https://info.dengue.mat.br/api/alertcity?geocode=3304557&disease=dengue&format=json&ew_start=1&ew_end=53&ey_start=2015&ey_end=2026",
+    "retrieved_at": "2026-09-06T01:44:49.561359+00:00",
+    "raw_sha256": "cf994a130e6cc950567a2d4ab9596937fc5e6675e49b8b481cd5074ad974e5bc"
+  },
+  "forecasts": [
+    {
+      "week": "2026-09-13",
+      "horizon_weeks": 1,
+      "data_horizon_weeks": 3,
+      "point": 84.9,
+      "lower": 53.8,
+      "upper": 133.7,
+      "model": "ridge_cases"
+    },
+    {
+      "week": "2026-09-20",
+      "horizon_weeks": 2,
+      "data_horizon_weeks": 4,
+      "point": 81.6,
+      "lower": 47.0,
+      "upper": 141.2,
+      "model": "ridge_cases"
+    },
+    {
+      "week": "2026-09-27",
+      "horizon_weeks": 3,
+      "data_horizon_weeks": 5,
+      "point": 78.9,
+      "lower": 40.3,
+      "upper": 153.7,
+      "model": "ridge_cases"
+    },
+    {
+      "week": "2026-10-04",
+      "horizon_weeks": 4,
+      "data_horizon_weeks": 6,
+      "point": 76.1,
+      "lower": 36.6,
+      "upper": 156.9,
+      "model": "ridge_cases"
+    }
+  ],
+  "input_history": [
+    {
+      "week": "2015-01-04",
+      "cases": 53,
+      "temperature_min": 23.8571428571429,
+      "humidity_max": 80.5714285714286
+    },
+    {
+      "week": "2015-01-11",
+      "cases": 44,
+      "temperature_min": 25.8571428571429,
+      "humidity_max": 76.4285714285714
+    },
+    {
+      "week": "2015-01-18",
+      "cases": 47,
+      "temperature_min": 24.8571428571429,
+      "humidity_max": 81.0
+    },
+    {
+      "week": "2015-01-25",
+      "cases": 43,
+      "temperature_min": 24.2857142857143,
+      "humidity_max": 82.7142857142857
+    },
+    {
+      "week": "2015-02-01",
+      "cases": 63,
+      "temperature_min": 20.7142857142857,
+      "humidity_max": 96.7142857142857
+    },
+    {
+      "week": "2015-02-08",
+      "cases": 48,
+      "temperature_min": 25.2857142857143,
+      "humidity_max": 91.1428571428571
+    },
+    {
+      "week": "2015-02-15",
+      "cases": 74,
+      "temperature_min": 22.4285714285714,
+      "humidity_max": 87.2857142857143
+    },
+    {
+      "week": "2015-02-22",
+      "cases": 101,
+      "temperature_min": 24.7142857142857,
+      "humidity_max": 85.7142857142857
+    },
+    {
+      "week": "2015-03-01",
+      "cases": 130,
+      "temperature_min": 22.7142857142857,
+      "humidity_max": 89.2857142857143
+    },
+    {
+      "week": "2015-03-08",
+      "cases": 200,
+      "temperature_min": 24.0,
+      "humidity_max": 91.8571428571429
+    },
+    {
+      "week": "2015-03-15",
+      "cases": 277,
+      "temperature_min": 22.8571428571429,
+      "humidity_max": 93.2857142857143
+    },
+    {
+      "week": "2015-03-22",
+      "cases": 306,
+      "temperature_min": 21.7142857142857,
+      "humidity_max": 94.1428571428571
+    },
+    {
+      "week": "2015-03-29",
+      "cases": 399,
+      "temperature_min": 22.4285714285714,
+      "humidity_max": 92.4285714285714
+    },
+    {
+      "week": "2015-04-05",
+      "cases": 691,
+      "temperature_min": 20.7142857142857,
+      "humidity_max": 91.5714285714286
+    },
+    {
+      "week": "2015-04-12",
+      "cases": 864,
+      "temperature_min": 22.0,
+      "humidity_max": 91.5714285714286
+    },
+    {
+      "week": "2015-04-19",
+      "cases": 1000,
+      "temperature_min": 22.8571428571429,
+      "humidity_max": 91.0
+    },
+    {
+      "week": "2015-04-26",
+      "cases": 1211,
+      "temperature_min": 19.7142857142857,
+      "humidity_max": 93.1428571428571
+    },
+    {
+      "week": "2015-05-03",
+      "cases": 1359,
+      "temperature_min": 19.8571428571429,
+      "humidity_max": 92.2857142857143
+    },
+    {
+      "week": "2015-05-10",
+      "cases": 1598,
+      "temperature_min": 18.8571428571429,
+      "humidity_max": 94.0
+    },
+    {
+      "week": "2015-05-17",
+      "cases": 1591,
+      "temperature_min": 19.2857142857143,
+      "humidity_max": 91.4285714285714
+    },
+    {
+      "week": "2015-05-24",
+      "cases": 1180,
+      "temperature_min": 19.5714285714286,
+      "humidity_max": 93.1428571428571
+    },
+    {
+      "week": "2015-05-31",
+      "cases": 976,
+      "temperature_min": 18.8571428571429,
+      "humidity_max": 95.7142857142857
+    },
+    {
+      "week": "2015-06-07",
+      "cases": 891,
+      "temperature_min": 18.4285714285714,
+      "humidity_max": 92.2857142857143
+    },
+    {
+      "week": "2015-06-14",
+      "cases": 959,
+      "temperature_min": 18.2857142857143,
+      "humidity_max": 94.8571428571429
+    },
+    {
+      "week": "2015-06-21",
+      "cases": 870,
+      "temperature_min": 17.0,
+      "humidity_max": 94.8571428571429
+    },
+    {
+      "week": "2015-06-28",
+      "cases": 436,
+      "temperature_min": 17.4285714285714,
+      "humidity_max": 91.4285714285714
+    },
+    {
+      "week": "2015-07-05",
+      "cases": 438,
+      "temperature_min": 18.0,
+      "humidity_max": 90.5714285714286
+    },
+    {
+      "week": "2015-07-12",
+      "cases": 331,
+      "temperature_min": 18.5714285714286,
+      "humidity_max": 93.1428571428571
+    },
+    {
+      "week": "2015-07-19",
+      "cases": 327,
+      "temperature_min": 18.7142857142857,
+      "humidity_max": 91.4285714285714
+    },
+    {
+      "week": "2015-07-26",
+      "cases": 260,
+      "temperature_min": 20.0,
+      "humidity_max": 91.4285714285714
+    },
+    {
+      "week": "2015-08-02",
+      "cases": 255,
+      "temperature_min": 18.2857142857143,
+      "humidity_max": 91.4285714285714
+    },
+    {
+      "week": "2015-08-09",
+      "cases": 475,
+      "temperature_min": 16.8571428571429,
+      "humidity_max": 88.1428571428571
+    },
+    {
+      "week": "2015-08-16",
+      "cases": 184,
+      "temperature_min": 18.5714285714286,
+      "humidity_max": 87.0
+    },
+    {
+      "week": "2015-08-23",
+      "cases": 178,
+      "temperature_min": 18.5714285714286,
+      "humidity_max": 90.8571428571429
+    },
+    {
+      "week": "2015-08-30",
+      "cases": 186,
+      "temperature_min": 18.1428571428571,
+      "humidity_max": 89.8571428571429
+    },
+    {
+      "week": "2015-09-06",
+      "cases": 135,
+      "temperature_min": 19.0,
+      "humidity_max": 93.1428571428571
+    },
+    {
+      "week": "2015-09-13",
+      "cases": 107,
+      "temperature_min": 19.8571428571429,
+      "humidity_max": 91.5714285714286
+    },
+    {
+      "week": "2015-09-20",
+      "cases": 117,
+      "temperature_min": 21.8571428571429,
+      "humidity_max": 87.5714285714286
+    },
+    {
+      "week": "2015-09-27",
+      "cases": 121,
+      "temperature_min": 22.4285714285714,
+      "humidity_max": 90.8571428571429
+    },
+    {
+      "week": "2015-10-04",
+      "cases": 132,
+      "temperature_min": 19.2857142857143,
+      "humidity_max": 87.7142857142857
+    },
+    {
+      "week": "2015-10-11",
+      "cases": 109,
+      "temperature_min": 22.7142857142857,
+      "humidity_max": 87.5714285714286
+    },
+    {
+      "week": "2015-10-18",
+      "cases": 110,
+      "temperature_min": 21.1428571428571,
+      "humidity_max": 87.5714285714286
+    },
+    {
+      "week": "2015-10-25",
+      "cases": 116,
+      "temperature_min": 21.2857142857143,
+      "humidity_max": 89.0
+    },
+    {
+      "week": "2015-11-01",
+      "cases": 155,
+      "temperature_min": 23.0,
+      "humidity_max": 92.0
+    },
+    {
+      "week": "2015-11-08",
+      "cases": 174,
+      "temperature_min": 23.4285714285714,
+      "humidity_max": 90.2857142857143
+    },
+    {
+      "week": "2015-11-15",
+      "cases": 200,
+      "temperature_min": 23.4285714285714,
+      "humidity_max": 87.5714285714286
+    },
+    {
+      "week": "2015-11-22",
+      "cases": 211,
+      "temperature_min": 21.7142857142857,
+      "humidity_max": 88.4285714285714
+    },
+    {
+      "week": "2015-11-29",
+      "cases": 316,
+      "temperature_min": 21.8571428571429,
+      "humidity_max": 94.0
+    },
+    {
+      "week": "2015-12-06",
+      "cases": 413,
+      "temperature_min": 23.4285714285714,
+      "humidity_max": 89.2857142857143
+    },
+    {
+      "week": "2015-12-13",
+      "cases": 446,
+      "temperature_min": 24.4285714285714,
+      "humidity_max": 88.1428571428571
+    },
+    {
+      "week": "2015-12-20",
+      "cases": 312,
+      "temperature_min": 24.8571428571429,
+      "humidity_max": 83.4285714285714
+    },
+    {
+      "week": "2015-12-27",
+      "cases": 218,
+      "temperature_min": 25.4285714285714,
+      "humidity_max": 84.8571428571429
+    },
+    {
+      "week": "2016-01-03",
+      "cases": 550,
+      "temperature_min": 23.1428571428571,
+      "humidity_max": 86.1428571428571
+    },
+    {
+      "week": "2016-01-10",
+      "cases": 476,
+      "temperature_min": 24.4285714285714,
+      "humidity_max": 89.4285714285714
+    },
+    {
+      "week": "2016-01-17",
+      "cases": 470,
+      "temperature_min": 21.8571428571429,
+      "humidity_max": 90.4285714285714
+    },
+    {
+      "week": "2016-01-24",
+      "cases": 476,
+      "temperature_min": 24.1428571428571,
+      "humidity_max": 91.8571428571429
+    },
+    {
+      "week": "2016-01-31",
+      "cases": 473,
+      "temperature_min": 24.7142857142857,
+      "humidity_max": 86.7142857142857
+    },
+    {
+      "week": "2016-02-07",
+      "cases": 646,
+      "temperature_min": 24.0,
+      "humidity_max": 91.1428571428571
+    },
+    {
+      "week": "2016-02-14",
+      "cases": 889,
+      "temperature_min": 24.4285714285714,
+      "humidity_max": 91.1428571428571
+    },
+    {
+      "week": "2016-02-21",
+      "cases": 875,
+      "temperature_min": 24.7142857142857,
+      "humidity_max": 89.5714285714286
+    },
+    {
+      "week": "2016-02-28",
+      "cases": 1064,
+      "temperature_min": 24.0,
+      "humidity_max": 88.0
+    },
+    {
+      "week": "2016-03-06",
+      "cases": 1328,
+      "temperature_min": 25.2857142857143,
+      "humidity_max": 89.0
+    },
+    {
+      "week": "2016-03-13",
+      "cases": 1462,
+      "temperature_min": 23.2857142857143,
+      "humidity_max": 93.2857142857143
+    },
+    {
+      "week": "2016-03-20",
+      "cases": 1877,
+      "temperature_min": 23.7142857142857,
+      "humidity_max": 91.7142857142857
+    },
+    {
+      "week": "2016-03-27",
+      "cases": 3127,
+      "temperature_min": 24.2857142857143,
+      "humidity_max": 93.2857142857143
+    },
+    {
+      "week": "2016-04-03",
+      "cases": 2968,
+      "temperature_min": 23.1428571428571,
+      "humidity_max": 92.0
+    },
+    {
+      "week": "2016-04-10",
+      "cases": 2863,
+      "temperature_min": 24.1428571428571,
+      "humidity_max": 91.1428571428571
+    },
+    {
+      "week": "2016-04-17",
+      "cases": 2312,
+      "temperature_min": 23.2857142857143,
+      "humidity_max": 88.4285714285714
+    },
+    {
+      "week": "2016-04-24",
+      "cases": 2254,
+      "temperature_min": 21.5714285714286,
+      "humidity_max": 86.4285714285714
+    },
+    {
+      "week": "2016-05-01",
+      "cases": 1339,
+      "temperature_min": 18.4285714285714,
+      "humidity_max": 90.5714285714286
+    },
+    {
+      "week": "2016-05-08",
+      "cases": 1232,
+      "temperature_min": 20.8571428571429,
+      "humidity_max": 91.0
+    },
+    {
+      "week": "2016-05-15",
+      "cases": 976,
+      "temperature_min": 20.0,
+      "humidity_max": 93.2857142857143
+    },
+    {
+      "week": "2016-05-22",
+      "cases": 503,
+      "temperature_min": 18.2857142857143,
+      "humidity_max": 93.1428571428571
+    },
+    {
+      "week": "2016-05-29",
+      "cases": 540,
+      "temperature_min": 20.0,
+      "humidity_max": 93.1428571428571
+    },
+    {
+      "week": "2016-06-05",
+      "cases": 508,
+      "temperature_min": 18.4285714285714,
+      "humidity_max": 91.5714285714286
+    },
+    {
+      "week": "2016-06-12",
+      "cases": 314,
+      "temperature_min": 14.1428571428571,
+      "humidity_max": 90.5714285714286
+    },
+    {
+      "week": "2016-06-19",
+      "cases": 262,
+      "temperature_min": 17.7142857142857,
+      "humidity_max": 89.7142857142857
+    },
+    {
+      "week": "2016-06-26",
+      "cases": 234,
+      "temperature_min": 17.4285714285714,
+      "humidity_max": 95.2857142857143
+    },
+    {
+      "week": "2016-07-03",
+      "cases": 228,
+      "temperature_min": 17.1428571428571,
+      "humidity_max": 89.2857142857143
+    },
+    {
+      "week": "2016-07-10",
+      "cases": 187,
+      "temperature_min": 17.5714285714286,
+      "humidity_max": 94.0
+    },
+    {
+      "week": "2016-07-17",
+      "cases": 143,
+      "temperature_min": 16.2857142857143,
+      "humidity_max": 84.5714285714286
+    },
+    {
+      "week": "2016-07-24",
+      "cases": 133,
+      "temperature_min": 16.8571428571429,
+      "humidity_max": 91.7142857142857
+    },
+    {
+      "week": "2016-07-31",
+      "cases": 95,
+      "temperature_min": 17.7142857142857,
+      "humidity_max": 89.1428571428571
+    },
+    {
+      "week": "2016-08-07",
+      "cases": 95,
+      "temperature_min": 17.8571428571429,
+      "humidity_max": 85.7142857142857
+    },
+    {
+      "week": "2016-08-14",
+      "cases": 74,
+      "temperature_min": 18.5714285714286,
+      "humidity_max": 89.8571428571429
+    },
+    {
+      "week": "2016-08-21",
+      "cases": 63,
+      "temperature_min": 15.7142857142857,
+      "humidity_max": 90.5714285714286
+    },
+    {
+      "week": "2016-08-28",
+      "cases": 64,
+      "temperature_min": 19.4285714285714,
+      "humidity_max": 89.7142857142857
+    },
+    {
+      "week": "2016-09-04",
+      "cases": 48,
+      "temperature_min": 20.5714285714286,
+      "humidity_max": 88.2857142857143
+    },
+    {
+      "week": "2016-09-11",
+      "cases": 50,
+      "temperature_min": 21.1428571428571,
+      "humidity_max": 82.0
+    },
+    {
+      "week": "2016-09-18",
+      "cases": 47,
+      "temperature_min": 19.0,
+      "humidity_max": 90.5714285714286
+    },
+    {
+      "week": "2016-09-25",
+      "cases": 32,
+      "temperature_min": 17.8571428571429,
+      "humidity_max": 91.4285714285714
+    },
+    {
+      "week": "2016-10-02",
+      "cases": 34,
+      "temperature_min": 18.1428571428571,
+      "humidity_max": 90.5714285714286
+    },
+    {
+      "week": "2016-10-09",
+      "cases": 39,
+      "temperature_min": 20.8571428571429,
+      "humidity_max": 85.1428571428571
+    },
+    {
+      "week": "2016-10-16",
+      "cases": 63,
+      "temperature_min": 23.4285714285714,
+      "humidity_max": 86.4285714285714
+    },
+    {
+      "week": "2016-10-23",
+      "cases": 54,
+      "temperature_min": 21.2857142857143,
+      "humidity_max": 83.7142857142857
+    },
+    {
+      "week": "2016-10-30",
+      "cases": 37,
+      "temperature_min": 20.5714285714286,
+      "humidity_max": 85.0
+    },
+    {
+      "week": "2016-11-06",
+      "cases": 65,
+      "temperature_min": 21.7142857142857,
+      "humidity_max": 88.1428571428571
+    },
+    {
+      "week": "2016-11-13",
+      "cases": 72,
+      "temperature_min": 20.8571428571429,
+      "humidity_max": 93.2857142857143
+    },
+    {
+      "week": "2016-11-20",
+      "cases": 107,
+      "temperature_min": 20.4285714285714,
+      "humidity_max": 85.8571428571429
+    },
+    {
+      "week": "2016-11-27",
+      "cases": 133,
+      "temperature_min": 22.1428571428571,
+      "humidity_max": 83.2857142857143
+    },
+    {
+      "week": "2016-12-04",
+      "cases": 127,
+      "temperature_min": 22.2857142857143,
+      "humidity_max": 90.7142857142857
+    },
+    {
+      "week": "2016-12-11",
+      "cases": 102,
+      "temperature_min": 23.0,
+      "humidity_max": 92.4285714285714
+    },
+    {
+      "week": "2016-12-18",
+      "cases": 135,
+      "temperature_min": 23.1428571428571,
+      "humidity_max": 87.0
+    },
+    {
+      "week": "2016-12-25",
+      "cases": 252,
+      "temperature_min": 25.5714285714286,
+      "humidity_max": 85.1428571428571
+    },
+    {
+      "week": "2017-01-01",
+      "cases": 196,
+      "temperature_min": 25.7142857142857,
+      "humidity_max": 87.4285714285714
+    },
+    {
+      "week": "2017-01-08",
+      "cases": 213,
+      "temperature_min": 25.0,
+      "humidity_max": 87.4285714285714
+    },
+    {
+      "week": "2017-01-15",
+      "cases": 219,
+      "temperature_min": 24.0,
+      "humidity_max": 88.7142857142857
+    },
+    {
+      "week": "2017-01-22",
+      "cases": 282,
+      "temperature_min": 24.7142857142857,
+      "humidity_max": 91.1428571428571
+    },
+    {
+      "week": "2017-01-29",
+      "cases": 237,
+      "temperature_min": 24.2857142857143,
+      "humidity_max": 86.5714285714286
+    },
+    {
+      "week": "2017-02-05",
+      "cases": 236,
+      "temperature_min": 24.2857142857143,
+      "humidity_max": 86.8571428571429
+    },
+    {
+      "week": "2017-02-12",
+      "cases": 223,
+      "temperature_min": 24.0,
+      "humidity_max": 83.4285714285714
+    },
+    {
+      "week": "2017-02-19",
+      "cases": 115,
+      "temperature_min": 23.8571428571429,
+      "humidity_max": 83.0
+    },
+    {
+      "week": "2017-02-26",
+      "cases": 131,
+      "temperature_min": 24.1428571428571,
+      "humidity_max": 88.5714285714286
+    },
+    {
+      "week": "2017-03-05",
+      "cases": 135,
+      "temperature_min": 24.7142857142857,
+      "humidity_max": 87.1428571428571
+    },
+    {
+      "week": "2017-03-12",
+      "cases": 159,
+      "temperature_min": 23.5714285714286,
+      "humidity_max": 89.4285714285714
+    },
+    {
+      "week": "2017-03-19",
+      "cases": 134,
+      "temperature_min": 20.7142857142857,
+      "humidity_max": 89.8571428571429
+    },
+    {
+      "week": "2017-03-26",
+      "cases": 123,
+      "temperature_min": 21.0,
+      "humidity_max": 91.4285714285714
+    },
+    {
+      "week": "2017-04-02",
+      "cases": 129,
+      "temperature_min": 21.8571428571429,
+      "humidity_max": 90.8571428571429
+    },
+    {
+      "week": "2017-04-09",
+      "cases": 95,
+      "temperature_min": 22.2857142857143,
+      "humidity_max": 91.5714285714286
+    },
+    {
+      "week": "2017-04-16",
+      "cases": 86,
+      "temperature_min": 21.1428571428571,
+      "humidity_max": 86.7142857142857
+    },
+    {
+      "week": "2017-04-23",
+      "cases": 87,
+      "temperature_min": 19.8571428571429,
+      "humidity_max": 93.1428571428571
+    },
+    {
+      "week": "2017-04-30",
+      "cases": 95,
+      "temperature_min": 18.8571428571429,
+      "humidity_max": 94.0
+    },
+    {
+      "week": "2017-05-07",
+      "cases": 86,
+      "temperature_min": 19.2857142857143,
+      "humidity_max": 90.7142857142857
+    },
+    {
+      "week": "2017-05-14",
+      "cases": 52,
+      "temperature_min": 19.0,
+      "humidity_max": 90.0
+    },
+    {
+      "week": "2017-05-21",
+      "cases": 34,
+      "temperature_min": 19.1428571428571,
+      "humidity_max": 91.4285714285714
+    },
+    {
+      "week": "2017-05-28",
+      "cases": 58,
+      "temperature_min": 19.1428571428571,
+      "humidity_max": 92.7142857142857
+    },
+    {
+      "week": "2017-06-04",
+      "cases": 74,
+      "temperature_min": 19.5714285714286,
+      "humidity_max": 90.8571428571429
+    },
+    {
+      "week": "2017-06-11",
+      "cases": 34,
+      "temperature_min": 17.5714285714286,
+      "humidity_max": 94.0
+    },
+    {
+      "week": "2017-06-18",
+      "cases": 38,
+      "temperature_min": 18.5714285714286,
+      "humidity_max": 93.1428571428571
+    },
+    {
+      "week": "2017-06-25",
+      "cases": 29,
+      "temperature_min": 16.7142857142857,
+      "humidity_max": 92.5714285714286
+    },
+    {
+      "week": "2017-07-02",
+      "cases": 31,
+      "temperature_min": 16.0,
+      "humidity_max": 90.7142857142857
+    },
+    {
+      "week": "2017-07-09",
+      "cases": 30,
+      "temperature_min": 17.1428571428571,
+      "humidity_max": 90.7142857142857
+    },
+    {
+      "week": "2017-07-16",
+      "cases": 40,
+      "temperature_min": 17.8571428571429,
+      "humidity_max": 88.8571428571429
+    },
+    {
+      "week": "2017-07-23",
+      "cases": 33,
+      "temperature_min": 17.4285714285714,
+      "humidity_max": 89.0
+    },
+    {
+      "week": "2017-07-30",
+      "cases": 39,
+      "temperature_min": 16.8571428571429,
+      "humidity_max": 89.0
+    },
+    {
+      "week": "2017-08-06",
+      "cases": 24,
+      "temperature_min": 17.2857142857143,
+      "humidity_max": 84.4285714285714
+    },
+    {
+      "week": "2017-08-13",
+      "cases": 27,
+      "temperature_min": 19.0,
+      "humidity_max": 87.5714285714286
+    },
+    {
+      "week": "2017-08-20",
+      "cases": 35,
+      "temperature_min": 17.5714285714286,
+      "humidity_max": 89.1428571428571
+    },
+    {
+      "week": "2017-08-27",
+      "cases": 31,
+      "temperature_min": 17.7142857142857,
+      "humidity_max": 85.2857142857143
+    },
+    {
+      "week": "2017-09-03",
+      "cases": 32,
+      "temperature_min": 16.4,
+      "humidity_max": 86.8
+    },
+    {
+      "week": "2017-09-10",
+      "cases": 36,
+      "temperature_min": 17.16,
+      "humidity_max": null
+    },
+    {
+      "week": "2017-09-17",
+      "cases": 54,
+      "temperature_min": 17.92,
+      "humidity_max": null
+    },
+    {
+      "week": "2017-09-24",
+      "cases": 37,
+      "temperature_min": 18.68,
+      "humidity_max": null
+    },
+    {
+      "week": "2017-10-01",
+      "cases": 59,
+      "temperature_min": 19.44,
+      "humidity_max": null
+    },
+    {
+      "week": "2017-10-08",
+      "cases": 56,
+      "temperature_min": 20.2,
+      "humidity_max": null
+    },
+    {
+      "week": "2017-10-15",
+      "cases": 61,
+      "temperature_min": 20.96,
+      "humidity_max": null
+    },
+    {
+      "week": "2017-10-22",
+      "cases": 53,
+      "temperature_min": 21.72,
+      "humidity_max": null
+    },
+    {
+      "week": "2017-10-29",
+      "cases": 38,
+      "temperature_min": 22.48,
+      "humidity_max": null
+    },
+    {
+      "week": "2017-11-05",
+      "cases": 59,
+      "temperature_min": 23.24,
+      "humidity_max": null
+    },
+    {
+      "week": "2017-11-12",
+      "cases": 56,
+      "temperature_min": 24.0,
+      "humidity_max": 80.860733
+    },
+    {
+      "week": "2017-11-19",
+      "cases": 49,
+      "temperature_min": 22.1428571428571,
+      "humidity_max": 90.0793157142857
+    },
+    {
+      "week": "2017-11-26",
+      "cases": 61,
+      "temperature_min": 22.7142857142857,
+      "humidity_max": 86.3053362857143
+    },
+    {
+      "week": "2017-12-03",
+      "cases": 84,
+      "temperature_min": 23.2857142857143,
+      "humidity_max": 82.1045428571429
+    },
+    {
+      "week": "2017-12-10",
+      "cases": 67,
+      "temperature_min": 22.7142857142857,
+      "humidity_max": 84.1175907142857
+    },
+    {
+      "week": "2017-12-17",
+      "cases": 56,
+      "temperature_min": 24.5714285714286,
+      "humidity_max": 84.2674985714286
+    },
+    {
+      "week": "2017-12-24",
+      "cases": 58,
+      "temperature_min": 24.5714285714286,
+      "humidity_max": 88.764086
+    },
+    {
+      "week": "2017-12-31",
+      "cases": 133,
+      "temperature_min": 24.4285714285714,
+      "humidity_max": 90.2916894285714
+    },
+    {
+      "week": "2018-01-07",
+      "cases": 105,
+      "temperature_min": 24.0,
+      "humidity_max": 88.7877574285714
+    },
+    {
+      "week": "2018-01-14",
+      "cases": 126,
+      "temperature_min": 25.1428571428571,
+      "humidity_max": 85.1093485714286
+    },
+    {
+      "week": "2018-01-21",
+      "cases": 97,
+      "temperature_min": 25.5714285714286,
+      "humidity_max": 84.4616531428571
+    },
+    {
+      "week": "2018-01-28",
+      "cases": 107,
+      "temperature_min": 23.2857142857143,
+      "humidity_max": 87.9056285714286
+    },
+    {
+      "week": "2018-02-04",
+      "cases": 74,
+      "temperature_min": 23.4285714285714,
+      "humidity_max": 87.2241685714286
+    },
+    {
+      "week": "2018-02-11",
+      "cases": 78,
+      "temperature_min": 24.7142857142857,
+      "humidity_max": 86.5568051428571
+    },
+    {
+      "week": "2018-02-18",
+      "cases": 129,
+      "temperature_min": 24.2857142857143,
+      "humidity_max": 89.5211451428571
+    },
+    {
+      "week": "2018-02-25",
+      "cases": 144,
+      "temperature_min": 24.5714285714286,
+      "humidity_max": 89.4947642857143
+    },
+    {
+      "week": "2018-03-04",
+      "cases": 197,
+      "temperature_min": 24.8571428571429,
+      "humidity_max": 90.3268094285714
+    },
+    {
+      "week": "2018-03-11",
+      "cases": 179,
+      "temperature_min": 25.1428571428571,
+      "humidity_max": 87.3164174285714
+    },
+    {
+      "week": "2018-03-18",
+      "cases": 200,
+      "temperature_min": 24.5714285714286,
+      "humidity_max": 88.1333115714286
+    },
+    {
+      "week": "2018-03-25",
+      "cases": 237,
+      "temperature_min": 23.7142857142857,
+      "humidity_max": 85.5978394285714
+    },
+    {
+      "week": "2018-04-01",
+      "cases": 289,
+      "temperature_min": 23.8571428571429,
+      "humidity_max": 88.6797771428571
+    },
+    {
+      "week": "2018-04-08",
+      "cases": 279,
+      "temperature_min": 22.7142857142857,
+      "humidity_max": 88.56946
+    },
+    {
+      "week": "2018-04-15",
+      "cases": 251,
+      "temperature_min": 21.0,
+      "humidity_max": 90.042898
+    },
+    {
+      "week": "2018-04-22",
+      "cases": 264,
+      "temperature_min": 22.1428571428571,
+      "humidity_max": 89.29101
+    },
+    {
+      "week": "2018-04-29",
+      "cases": 313,
+      "temperature_min": 21.1428571428571,
+      "humidity_max": 89.2855014285714
+    },
+    {
+      "week": "2018-05-06",
+      "cases": 331,
+      "temperature_min": 20.5714285714286,
+      "humidity_max": 88.44851
+    },
+    {
+      "week": "2018-05-13",
+      "cases": 328,
+      "temperature_min": 21.2857142857143,
+      "humidity_max": 90.9566065714286
+    },
+    {
+      "week": "2018-05-20",
+      "cases": 211,
+      "temperature_min": 18.1428571428571,
+      "humidity_max": 90.5734928571429
+    },
+    {
+      "week": "2018-05-27",
+      "cases": 197,
+      "temperature_min": 18.2857142857143,
+      "humidity_max": 90.6529634285714
+    },
+    {
+      "week": "2018-06-03",
+      "cases": 194,
+      "temperature_min": 20.0,
+      "humidity_max": 88.3789857142857
+    },
+    {
+      "week": "2018-06-10",
+      "cases": 196,
+      "temperature_min": 19.7142857142857,
+      "humidity_max": 91.690582
+    },
+    {
+      "week": "2018-06-17",
+      "cases": 160,
+      "temperature_min": 18.5714285714286,
+      "humidity_max": 91.4854971428571
+    },
+    {
+      "week": "2018-06-24",
+      "cases": 193,
+      "temperature_min": 19.1428571428571,
+      "humidity_max": 92.3444671428571
+    },
+    {
+      "week": "2018-07-01",
+      "cases": 218,
+      "temperature_min": 19.4285714285714,
+      "humidity_max": 90.78037
+    },
+    {
+      "week": "2018-07-08",
+      "cases": 153,
+      "temperature_min": 17.1428571428571,
+      "humidity_max": 91.4282525714286
+    },
+    {
+      "week": "2018-07-15",
+      "cases": 152,
+      "temperature_min": 17.5714285714286,
+      "humidity_max": 95.6510577142857
+    },
+    {
+      "week": "2018-07-22",
+      "cases": 119,
+      "temperature_min": 19.2857142857143,
+      "humidity_max": 94.8414057142857
+    },
+    {
+      "week": "2018-07-29",
+      "cases": 92,
+      "temperature_min": 18.7142857142857,
+      "humidity_max": 96.54401
+    },
+    {
+      "week": "2018-08-05",
+      "cases": 120,
+      "temperature_min": 17.8571428571429,
+      "humidity_max": 95.70409
+    },
+    {
+      "week": "2018-08-12",
+      "cases": 75,
+      "temperature_min": 17.8571428571429,
+      "humidity_max": 90.6374805714286
+    },
+    {
+      "week": "2018-08-19",
+      "cases": 67,
+      "temperature_min": 19.0,
+      "humidity_max": 92.3665077142857
+    },
+    {
+      "week": "2018-08-26",
+      "cases": 68,
+      "temperature_min": 18.2857142857143,
+      "humidity_max": 92.3885305714286
+    },
+    {
+      "week": "2018-09-02",
+      "cases": 51,
+      "temperature_min": 18.7142857142857,
+      "humidity_max": 90.6804477142857
+    },
+    {
+      "week": "2018-09-09",
+      "cases": 54,
+      "temperature_min": 19.1428571428571,
+      "humidity_max": 86.9198928571429
+    },
+    {
+      "week": "2018-09-16",
+      "cases": 63,
+      "temperature_min": 21.2857142857143,
+      "humidity_max": 94.1055185714286
+    },
+    {
+      "week": "2018-09-23",
+      "cases": 41,
+      "temperature_min": 22.7142857142857,
+      "humidity_max": 91.8323514285714
+    },
+    {
+      "week": "2018-09-30",
+      "cases": 59,
+      "temperature_min": 22.5714285714286,
+      "humidity_max": 92.5133914285714
+    },
+    {
+      "week": "2018-10-07",
+      "cases": 43,
+      "temperature_min": 22.0,
+      "humidity_max": 96.6682514285714
+    },
+    {
+      "week": "2018-10-14",
+      "cases": 72,
+      "temperature_min": 21.4285714285714,
+      "humidity_max": 94.9041442857143
+    },
+    {
+      "week": "2018-10-21",
+      "cases": 70,
+      "temperature_min": 20.7142857142857,
+      "humidity_max": 88.5950637142857
+    },
+    {
+      "week": "2018-10-28",
+      "cases": 66,
+      "temperature_min": 21.5714285714286,
+      "humidity_max": 91.66613
+    },
+    {
+      "week": "2018-11-04",
+      "cases": 71,
+      "temperature_min": 20.8571428571429,
+      "humidity_max": 94.1394642857143
+    },
+    {
+      "week": "2018-11-11",
+      "cases": 69,
+      "temperature_min": 23.4285714285714,
+      "humidity_max": 90.2498122857143
+    },
+    {
+      "week": "2018-11-18",
+      "cases": 65,
+      "temperature_min": 21.5714285714286,
+      "humidity_max": 90.3683271428571
+    },
+    {
+      "week": "2018-11-25",
+      "cases": 106,
+      "temperature_min": 23.2857142857143,
+      "humidity_max": 86.7003864285714
+    },
+    {
+      "week": "2018-12-02",
+      "cases": 150,
+      "temperature_min": 22.1428571428571,
+      "humidity_max": 91.0038965714286
+    },
+    {
+      "week": "2018-12-09",
+      "cases": 138,
+      "temperature_min": 21.8571428571429,
+      "humidity_max": 91.7428328571429
+    },
+    {
+      "week": "2018-12-16",
+      "cases": 124,
+      "temperature_min": 25.8571428571429,
+      "humidity_max": 87.3568054285714
+    },
+    {
+      "week": "2018-12-23",
+      "cases": 147,
+      "temperature_min": 23.7142857142857,
+      "humidity_max": 91.0760008571429
+    },
+    {
+      "week": "2018-12-30",
+      "cases": 179,
+      "temperature_min": 25.1428571428571,
+      "humidity_max": 89.6466607142857
+    },
+    {
+      "week": "2019-01-06",
+      "cases": 186,
+      "temperature_min": 25.0,
+      "humidity_max": 88.059053
+    },
+    {
+      "week": "2019-01-13",
+      "cases": 201,
+      "temperature_min": 25.4285714285714,
+      "humidity_max": 87.224468
+    },
+    {
+      "week": "2019-01-20",
+      "cases": 205,
+      "temperature_min": 24.8571428571429,
+      "humidity_max": 92.637655
+    },
+    {
+      "week": "2019-01-27",
+      "cases": 159,
+      "temperature_min": 25.8571428571429,
+      "humidity_max": 87.4547102857143
+    },
+    {
+      "week": "2019-02-03",
+      "cases": 167,
+      "temperature_min": 23.4285714285714,
+      "humidity_max": 91.355055
+    },
+    {
+      "week": "2019-02-10",
+      "cases": 182,
+      "temperature_min": 24.1428571428571,
+      "humidity_max": 90.3348188571429
+    },
+    {
+      "week": "2019-02-17",
+      "cases": 195,
+      "temperature_min": 24.4285714285714,
+      "humidity_max": 95.9045035714286
+    },
+    {
+      "week": "2019-02-24",
+      "cases": 157,
+      "temperature_min": 25.0,
+      "humidity_max": 94.4989771428571
+    },
+    {
+      "week": "2019-03-03",
+      "cases": 274,
+      "temperature_min": 24.7142857142857,
+      "humidity_max": 94.2386742857143
+    },
+    {
+      "week": "2019-03-10",
+      "cases": 414,
+      "temperature_min": 25.4285714285714,
+      "humidity_max": 92.73232
+    },
+    {
+      "week": "2019-03-17",
+      "cases": 643,
+      "temperature_min": 23.5714285714286,
+      "humidity_max": 96.6861085714286
+    },
+    {
+      "week": "2019-03-24",
+      "cases": 801,
+      "temperature_min": 22.5714285714286,
+      "humidity_max": 94.1556785714286
+    },
+    {
+      "week": "2019-03-31",
+      "cases": 1112,
+      "temperature_min": 22.7142857142857,
+      "humidity_max": 93.3502457142857
+    },
+    {
+      "week": "2019-04-07",
+      "cases": 1207,
+      "temperature_min": 23.5714285714286,
+      "humidity_max": 97.49221
+    },
+    {
+      "week": "2019-04-14",
+      "cases": 1280,
+      "temperature_min": 23.0,
+      "humidity_max": 94.9599471428571
+    },
+    {
+      "week": "2019-04-21",
+      "cases": 1432,
+      "temperature_min": 23.4285714285714,
+      "humidity_max": 92.6235571428571
+    },
+    {
+      "week": "2019-04-28",
+      "cases": 1643,
+      "temperature_min": 23.0,
+      "humidity_max": 94.9720485714286
+    },
+    {
+      "week": "2019-05-05",
+      "cases": 1864,
+      "temperature_min": 22.5714285714286,
+      "humidity_max": 93.30774
+    },
+    {
+      "week": "2019-05-12",
+      "cases": 1624,
+      "temperature_min": 22.4285714285714,
+      "humidity_max": 96.6499171428571
+    },
+    {
+      "week": "2019-05-19",
+      "cases": 1573,
+      "temperature_min": 21.0,
+      "humidity_max": 95.7836857142857
+    },
+    {
+      "week": "2019-05-26",
+      "cases": 1233,
+      "temperature_min": 21.0,
+      "humidity_max": 92.4953471428571
+    },
+    {
+      "week": "2019-06-02",
+      "cases": 980,
+      "temperature_min": 18.5714285714286,
+      "humidity_max": 96.5245548571429
+    },
+    {
+      "week": "2019-06-09",
+      "cases": 769,
+      "temperature_min": 19.1428571428571,
+      "humidity_max": 96.5629048571429
+    },
+    {
+      "week": "2019-06-16",
+      "cases": 551,
+      "temperature_min": 19.1428571428571,
+      "humidity_max": 97.4238285714286
+    },
+    {
+      "week": "2019-06-23",
+      "cases": 497,
+      "temperature_min": 19.7142857142857,
+      "humidity_max": 96.5564471428571
+    },
+    {
+      "week": "2019-06-30",
+      "cases": 489,
+      "temperature_min": 19.7142857142857,
+      "humidity_max": 95.0357914285714
+    },
+    {
+      "week": "2019-07-07",
+      "cases": 285,
+      "temperature_min": 14.5714285714286,
+      "humidity_max": 91.4028657142857
+    },
+    {
+      "week": "2019-07-14",
+      "cases": 238,
+      "temperature_min": 16.1428571428571,
+      "humidity_max": 88.265895
+    },
+    {
+      "week": "2019-07-21",
+      "cases": 168,
+      "temperature_min": 16.7142857142857,
+      "humidity_max": 93.0486128571429
+    },
+    {
+      "week": "2019-07-28",
+      "cases": 169,
+      "temperature_min": 18.5714285714286,
+      "humidity_max": 92.2997825714286
+    },
+    {
+      "week": "2019-08-04",
+      "cases": 140,
+      "temperature_min": 17.2857142857143,
+      "humidity_max": 93.9060791428571
+    },
+    {
+      "week": "2019-08-11",
+      "cases": 140,
+      "temperature_min": 17.1428571428571,
+      "humidity_max": 92.2035885714286
+    },
+    {
+      "week": "2019-08-18",
+      "cases": 97,
+      "temperature_min": 17.7142857142857,
+      "humidity_max": 89.8655477142857
+    },
+    {
+      "week": "2019-08-25",
+      "cases": 71,
+      "temperature_min": 17.5714285714286,
+      "humidity_max": 88.1656697142857
+    },
+    {
+      "week": "2019-09-01",
+      "cases": 64,
+      "temperature_min": 19.4285714285714,
+      "humidity_max": 91.7670614285714
+    },
+    {
+      "week": "2019-09-08",
+      "cases": 66,
+      "temperature_min": 19.2857142857143,
+      "humidity_max": 90.8196942857143
+    },
+    {
+      "week": "2019-09-15",
+      "cases": 83,
+      "temperature_min": 21.4285714285714,
+      "humidity_max": 87.7878721428571
+    },
+    {
+      "week": "2019-09-22",
+      "cases": 99,
+      "temperature_min": 19.0,
+      "humidity_max": 90.88219
+    },
+    {
+      "week": "2019-09-29",
+      "cases": 73,
+      "temperature_min": 18.7142857142857,
+      "humidity_max": 88.2271242857143
+    },
+    {
+      "week": "2019-10-06",
+      "cases": 67,
+      "temperature_min": 21.1428571428571,
+      "humidity_max": 90.9058722857143
+    },
+    {
+      "week": "2019-10-13",
+      "cases": 65,
+      "temperature_min": 22.0,
+      "humidity_max": 89.4063464285714
+    },
+    {
+      "week": "2019-10-20",
+      "cases": 58,
+      "temperature_min": 20.5714285714286,
+      "humidity_max": 86.82243
+    },
+    {
+      "week": "2019-10-27",
+      "cases": 40,
+      "temperature_min": 23.2857142857143,
+      "humidity_max": 86.5343551428571
+    },
+    {
+      "week": "2019-11-03",
+      "cases": 65,
+      "temperature_min": 22.8571428571429,
+      "humidity_max": 87.4465471428571
+    },
+    {
+      "week": "2019-11-10",
+      "cases": 56,
+      "temperature_min": 21.8571428571429,
+      "humidity_max": 90.8533585714286
+    },
+    {
+      "week": "2019-11-17",
+      "cases": 50,
+      "temperature_min": 21.2857142857143,
+      "humidity_max": 90.1073414285714
+    },
+    {
+      "week": "2019-11-24",
+      "cases": 74,
+      "temperature_min": 20.4285714285714,
+      "humidity_max": 86.2026094285714
+    },
+    {
+      "week": "2019-12-01",
+      "cases": 49,
+      "temperature_min": 21.8571428571429,
+      "humidity_max": 89.2928094285714
+    },
+    {
+      "week": "2019-12-08",
+      "cases": 75,
+      "temperature_min": 21.8571428571429,
+      "humidity_max": 90.2217537142857
+    },
+    {
+      "week": "2019-12-15",
+      "cases": 58,
+      "temperature_min": 24.0,
+      "humidity_max": 87.31029
+    },
+    {
+      "week": "2019-12-22",
+      "cases": 43,
+      "temperature_min": 23.5714285714286,
+      "humidity_max": 89.5324708571429
+    },
+    {
+      "week": "2019-12-29",
+      "cases": 69,
+      "temperature_min": 23.5,
+      "humidity_max": 87.7690416666667
+    },
+    {
+      "week": "2020-01-05",
+      "cases": 100,
+      "temperature_min": 24.2857142857143,
+      "humidity_max": 90.2525342857143
+    },
+    {
+      "week": "2020-01-12",
+      "cases": 109,
+      "temperature_min": 23.5714285714286,
+      "humidity_max": 89.5817535714286
+    },
+    {
+      "week": "2020-01-19",
+      "cases": 85,
+      "temperature_min": 22.0,
+      "humidity_max": 90.8599771428571
+    },
+    {
+      "week": "2020-01-26",
+      "cases": 77,
+      "temperature_min": 24.1428571428571,
+      "humidity_max": 91.0065228571429
+    },
+    {
+      "week": "2020-02-02",
+      "cases": 57,
+      "temperature_min": 24.1428571428571,
+      "humidity_max": 93.37932
+    },
+    {
+      "week": "2020-02-09",
+      "cases": 77,
+      "temperature_min": 22.7142857142857,
+      "humidity_max": 91.0470251428572
+    },
+    {
+      "week": "2020-02-16",
+      "cases": 65,
+      "temperature_min": 24.7142857142857,
+      "humidity_max": 88.7761894285714
+    },
+    {
+      "week": "2020-02-23",
+      "cases": 49,
+      "temperature_min": 22.0,
+      "humidity_max": 93.3002914285714
+    },
+    {
+      "week": "2020-03-01",
+      "cases": 70,
+      "temperature_min": 21.1428571428571,
+      "humidity_max": 94.8919771428571
+    },
+    {
+      "week": "2020-03-08",
+      "cases": 53,
+      "temperature_min": 22.2857142857143,
+      "humidity_max": 89.3490528571429
+    },
+    {
+      "week": "2020-03-15",
+      "cases": 39,
+      "temperature_min": 23.1428571428571,
+      "humidity_max": 94.9661971428571
+    },
+    {
+      "week": "2020-03-22",
+      "cases": 32,
+      "temperature_min": 20.5714285714286,
+      "humidity_max": 91.6144371428571
+    },
+    {
+      "week": "2020-03-29",
+      "cases": 36,
+      "temperature_min": 22.7142857142857,
+      "humidity_max": 90.2368628571429
+    },
+    {
+      "week": "2020-04-05",
+      "cases": 21,
+      "temperature_min": 21.0,
+      "humidity_max": 90.1110085714286
+    },
+    {
+      "week": "2020-04-12",
+      "cases": 28,
+      "temperature_min": 20.5714285714286,
+      "humidity_max": 90.0459942857143
+    },
+    {
+      "week": "2020-04-19",
+      "cases": 29,
+      "temperature_min": 19.8571428571429,
+      "humidity_max": 92.3738462857143
+    },
+    {
+      "week": "2020-04-26",
+      "cases": 29,
+      "temperature_min": 20.1428571428571,
+      "humidity_max": 91.5725257142857
+    },
+    {
+      "week": "2020-05-03",
+      "cases": 29,
+      "temperature_min": 18.0,
+      "humidity_max": 93.9162854285714
+    },
+    {
+      "week": "2020-05-10",
+      "cases": 13,
+      "temperature_min": 17.2857142857143,
+      "humidity_max": 93.8902191428571
+    },
+    {
+      "week": "2020-05-17",
+      "cases": 12,
+      "temperature_min": 18.7142857142857,
+      "humidity_max": 94.0137691428571
+    },
+    {
+      "week": "2020-05-24",
+      "cases": 16,
+      "temperature_min": 16.1428571428571,
+      "humidity_max": 91.3731777142857
+    },
+    {
+      "week": "2020-05-31",
+      "cases": 11,
+      "temperature_min": 18.0,
+      "humidity_max": 92.2865248571429
+    },
+    {
+      "week": "2020-06-07",
+      "cases": 16,
+      "temperature_min": 20.4285714285714,
+      "humidity_max": 93.2524085714286
+    },
+    {
+      "week": "2020-06-14",
+      "cases": 22,
+      "temperature_min": 18.1428571428571,
+      "humidity_max": 91.4716405714286
+    },
+    {
+      "week": "2020-06-21",
+      "cases": 14,
+      "temperature_min": 17.5714285714286,
+      "humidity_max": 90.5923485714286
+    },
+    {
+      "week": "2020-06-28",
+      "cases": 13,
+      "temperature_min": 18.5714285714286,
+      "humidity_max": 84.6377294285714
+    },
+    {
+      "week": "2020-07-05",
+      "cases": 18,
+      "temperature_min": 17.0,
+      "humidity_max": 91.4780771428571
+    },
+    {
+      "week": "2020-07-12",
+      "cases": 22,
+      "temperature_min": 17.2857142857143,
+      "humidity_max": 93.0946771428571
+    },
+    {
+      "week": "2020-07-19",
+      "cases": 17,
+      "temperature_min": 16.4285714285714,
+      "humidity_max": 90.59724
+    },
+    {
+      "week": "2020-07-26",
+      "cases": 11,
+      "temperature_min": 18.2857142857143,
+      "humidity_max": 90.7220271428571
+    },
+    {
+      "week": "2020-08-02",
+      "cases": 11,
+      "temperature_min": 15.2857142857143,
+      "humidity_max": 93.7858914285714
+    },
+    {
+      "week": "2020-08-09",
+      "cases": 12,
+      "temperature_min": 18.0,
+      "humidity_max": 89.8769291428571
+    },
+    {
+      "week": "2020-08-16",
+      "cases": 10,
+      "temperature_min": 19.2857142857143,
+      "humidity_max": 92.4292048571428
+    },
+    {
+      "week": "2020-08-23",
+      "cases": 9,
+      "temperature_min": 16.1428571428571,
+      "humidity_max": 90.59234
+    },
+    {
+      "week": "2020-08-30",
+      "cases": 10,
+      "temperature_min": 20.7142857142857,
+      "humidity_max": 87.7596335714286
+    },
+    {
+      "week": "2020-09-06",
+      "cases": 10,
+      "temperature_min": 21.7142857142857,
+      "humidity_max": 87.767258
+    },
+    {
+      "week": "2020-09-13",
+      "cases": 12,
+      "temperature_min": 21.2857142857143,
+      "humidity_max": 86.9563408571429
+    },
+    {
+      "week": "2020-09-20",
+      "cases": 14,
+      "temperature_min": 20.0,
+      "humidity_max": 92.3807928571429
+    },
+    {
+      "week": "2020-09-27",
+      "cases": 11,
+      "temperature_min": 23.0,
+      "humidity_max": 89.4139542857143
+    },
+    {
+      "week": "2020-10-04",
+      "cases": 12,
+      "temperature_min": 22.1666666666667,
+      "humidity_max": 88.5883116666667
+    },
+    {
+      "week": "2020-10-11",
+      "cases": 10,
+      "temperature_min": 19.5,
+      "humidity_max": 87.6513883333333
+    },
+    {
+      "week": "2020-10-18",
+      "cases": 19,
+      "temperature_min": 20.7142857142857,
+      "humidity_max": 84.5504514285714
+    },
+    {
+      "week": "2020-10-25",
+      "cases": 9,
+      "temperature_min": 20.8571428571429,
+      "humidity_max": 90.1865421428571
+    },
+    {
+      "week": "2020-11-01",
+      "cases": 12,
+      "temperature_min": 18.4285714285714,
+      "humidity_max": 92.2753691428571
+    },
+    {
+      "week": "2020-11-08",
+      "cases": 25,
+      "temperature_min": 22.5,
+      "humidity_max": 93.1470483333333
+    },
+    {
+      "week": "2020-11-15",
+      "cases": 20,
+      "temperature_min": 21.5714285714286,
+      "humidity_max": 93.2806814285714
+    },
+    {
+      "week": "2020-11-22",
+      "cases": 10,
+      "temperature_min": 20.8,
+      "humidity_max": 89.552716
+    },
+    {
+      "week": "2020-11-29",
+      "cases": 17,
+      "temperature_min": 21.34,
+      "humidity_max": null
+    },
+    {
+      "week": "2020-12-06",
+      "cases": 10,
+      "temperature_min": 21.88,
+      "humidity_max": null
+    },
+    {
+      "week": "2020-12-13",
+      "cases": 8,
+      "temperature_min": 22.42,
+      "humidity_max": null
+    },
+    {
+      "week": "2020-12-20",
+      "cases": 6,
+      "temperature_min": 22.96,
+      "humidity_max": null
+    },
+    {
+      "week": "2020-12-27",
+      "cases": 8,
+      "temperature_min": 23.5,
+      "humidity_max": 91.4141
+    },
+    {
+      "week": "2021-01-03",
+      "cases": 6,
+      "temperature_min": 24.0,
+      "humidity_max": 90.2012928571429
+    },
+    {
+      "week": "2021-01-10",
+      "cases": 9,
+      "temperature_min": 24.4285714285714,
+      "humidity_max": 88.7955472857143
+    },
+    {
+      "week": "2021-01-17",
+      "cases": 12,
+      "temperature_min": 24.2857142857143,
+      "humidity_max": 83.6371885714286
+    },
+    {
+      "week": "2021-01-24",
+      "cases": 28,
+      "temperature_min": 24.7142857142857,
+      "humidity_max": 79.5029358571429
+    },
+    {
+      "week": "2021-01-31",
+      "cases": 18,
+      "temperature_min": 24.2857142857143,
+      "humidity_max": 84.5783134285714
+    },
+    {
+      "week": "2021-02-07",
+      "cases": 15,
+      "temperature_min": 22.4285714285714,
+      "humidity_max": 90.34641
+    },
+    {
+      "week": "2021-02-14",
+      "cases": 15,
+      "temperature_min": 23.7142857142857,
+      "humidity_max": 95.0512657142857
+    },
+    {
+      "week": "2021-02-21",
+      "cases": 24,
+      "temperature_min": 23.4285714285714,
+      "humidity_max": 95.0626071428571
+    },
+    {
+      "week": "2021-02-28",
+      "cases": 19,
+      "temperature_min": 24.0,
+      "humidity_max": 90.2610142857143
+    },
+    {
+      "week": "2021-03-07",
+      "cases": 27,
+      "temperature_min": 23.1428571428571,
+      "humidity_max": 95.8680585714286
+    },
+    {
+      "week": "2021-03-14",
+      "cases": 36,
+      "temperature_min": 23.8571428571429,
+      "humidity_max": 92.6859465714286
+    },
+    {
+      "week": "2021-03-21",
+      "cases": 39,
+      "temperature_min": 23.8571428571429,
+      "humidity_max": 91.0058757142857
+    },
+    {
+      "week": "2021-03-28",
+      "cases": 45,
+      "temperature_min": 23.0,
+      "humidity_max": 92.5519014285714
+    },
+    {
+      "week": "2021-04-04",
+      "cases": 52,
+      "temperature_min": 21.1428571428571,
+      "humidity_max": 94.0881785714286
+    },
+    {
+      "week": "2021-04-11",
+      "cases": 48,
+      "temperature_min": 19.8571428571429,
+      "humidity_max": 91.6495785714286
+    },
+    {
+      "week": "2021-04-18",
+      "cases": 36,
+      "temperature_min": 20.1428571428571,
+      "humidity_max": 91.7722237142857
+    },
+    {
+      "week": "2021-04-25",
+      "cases": 38,
+      "temperature_min": 20.0,
+      "humidity_max": 94.01848
+    },
+    {
+      "week": "2021-05-02",
+      "cases": 30,
+      "temperature_min": 20.0,
+      "humidity_max": 94.0183442857143
+    },
+    {
+      "week": "2021-05-09",
+      "cases": 39,
+      "temperature_min": 17.7142857142857,
+      "humidity_max": 94.790134
+    },
+    {
+      "week": "2021-05-16",
+      "cases": 50,
+      "temperature_min": 19.4285714285714,
+      "humidity_max": 94.8811542857143
+    },
+    {
+      "week": "2021-05-23",
+      "cases": 49,
+      "temperature_min": 19.4285714285714,
+      "humidity_max": 90.7708542857143
+    },
+    {
+      "week": "2021-05-30",
+      "cases": 40,
+      "temperature_min": 19.4285714285714,
+      "humidity_max": 97.4364057142857
+    },
+    {
+      "week": "2021-06-06",
+      "cases": 34,
+      "temperature_min": 20.1428571428571,
+      "humidity_max": 94.8793342857143
+    },
+    {
+      "week": "2021-06-13",
+      "cases": 33,
+      "temperature_min": 17.1428571428571,
+      "humidity_max": 92.34837
+    },
+    {
+      "week": "2021-06-20",
+      "cases": 21,
+      "temperature_min": 17.1428571428571,
+      "humidity_max": 95.638136
+    },
+    {
+      "week": "2021-06-27",
+      "cases": 28,
+      "temperature_min": 14.5714285714286,
+      "humidity_max": 94.6721491428571
+    },
+    {
+      "week": "2021-07-04",
+      "cases": 22,
+      "temperature_min": 15.4285714285714,
+      "humidity_max": 94.7189077142857
+    },
+    {
+      "week": "2021-07-11",
+      "cases": 19,
+      "temperature_min": 16.7142857142857,
+      "humidity_max": 97.392012
+    },
+    {
+      "week": "2021-07-18",
+      "cases": 19,
+      "temperature_min": 14.2857142857143,
+      "humidity_max": 92.1344771428571
+    },
+    {
+      "week": "2021-07-25",
+      "cases": 7,
+      "temperature_min": 15.1428571428571,
+      "humidity_max": 87.4890955714286
+    },
+    {
+      "week": "2021-08-01",
+      "cases": 12,
+      "temperature_min": 14.7142857142857,
+      "humidity_max": 92.9893248571429
+    },
+    {
+      "week": "2021-08-08",
+      "cases": 9,
+      "temperature_min": 16.7142857142857,
+      "humidity_max": 94.7316148571429
+    },
+    {
+      "week": "2021-08-15",
+      "cases": 9,
+      "temperature_min": 17.2857142857143,
+      "humidity_max": 94.7837425714286
+    },
+    {
+      "week": "2021-08-22",
+      "cases": 16,
+      "temperature_min": 18.8571428571429,
+      "humidity_max": 91.5343877142857
+    },
+    {
+      "week": "2021-08-29",
+      "cases": 17,
+      "temperature_min": 19.0,
+      "humidity_max": 93.2219177142857
+    },
+    {
+      "week": "2021-09-05",
+      "cases": 12,
+      "temperature_min": 20.7142857142857,
+      "humidity_max": 91.6350814285714
+    },
+    {
+      "week": "2021-09-12",
+      "cases": 9,
+      "temperature_min": 20.7142857142857,
+      "humidity_max": 93.2390928571429
+    },
+    {
+      "week": "2021-09-19",
+      "cases": 6,
+      "temperature_min": 18.8571428571429,
+      "humidity_max": 90.6237542857143
+    },
+    {
+      "week": "2021-09-26",
+      "cases": 14,
+      "temperature_min": 20.8571428571429,
+      "humidity_max": 90.0618985714286
+    },
+    {
+      "week": "2021-10-03",
+      "cases": 4,
+      "temperature_min": 20.0,
+      "humidity_max": 94.8538391428571
+    },
+    {
+      "week": "2021-10-10",
+      "cases": 9,
+      "temperature_min": 20.1428571428571,
+      "humidity_max": 92.5515057142857
+    },
+    {
+      "week": "2021-10-17",
+      "cases": 3,
+      "temperature_min": 18.5714285714286,
+      "humidity_max": 94.0046228571428
+    },
+    {
+      "week": "2021-10-24",
+      "cases": 6,
+      "temperature_min": 21.1428571428571,
+      "humidity_max": 92.5045
+    },
+    {
+      "week": "2021-10-31",
+      "cases": 6,
+      "temperature_min": 20.2857142857143,
+      "humidity_max": 95.7338671428572
+    },
+    {
+      "week": "2021-11-07",
+      "cases": 5,
+      "temperature_min": 18.7142857142857,
+      "humidity_max": 94.06623
+    },
+    {
+      "week": "2021-11-14",
+      "cases": 20,
+      "temperature_min": 19.7142857142857,
+      "humidity_max": 90.714262
+    },
+    {
+      "week": "2021-11-21",
+      "cases": 24,
+      "temperature_min": 20.1428571428571,
+      "humidity_max": 89.9903385714286
+    },
+    {
+      "week": "2021-11-28",
+      "cases": 23,
+      "temperature_min": 22.7142857142857,
+      "humidity_max": 91.7849422857143
+    },
+    {
+      "week": "2021-12-05",
+      "cases": 16,
+      "temperature_min": 21.0,
+      "humidity_max": 90.970498
+    },
+    {
+      "week": "2021-12-12",
+      "cases": 6,
+      "temperature_min": 23.5714285714286,
+      "humidity_max": 95.9036871428571
+    },
+    {
+      "week": "2021-12-19",
+      "cases": 4,
+      "temperature_min": 21.1428571428571,
+      "humidity_max": 91.6203042857143
+    },
+    {
+      "week": "2021-12-26",
+      "cases": 4,
+      "temperature_min": 21.8571428571429,
+      "humidity_max": 92.6196437142857
+    },
+    {
+      "week": "2022-01-02",
+      "cases": 21,
+      "temperature_min": 24.1428571428571,
+      "humidity_max": 92.0493744285714
+    },
+    {
+      "week": "2022-01-09",
+      "cases": 14,
+      "temperature_min": 22.8571428571429,
+      "humidity_max": 95.0442514285714
+    },
+    {
+      "week": "2022-01-16",
+      "cases": 22,
+      "temperature_min": 24.7142857142857,
+      "humidity_max": 88.9920142857143
+    },
+    {
+      "week": "2022-01-23",
+      "cases": 19,
+      "temperature_min": 24.7142857142857,
+      "humidity_max": 84.0763728571429
+    },
+    {
+      "week": "2022-01-30",
+      "cases": 31,
+      "temperature_min": 23.7142857142857,
+      "humidity_max": 95.8386157142857
+    },
+    {
+      "week": "2022-02-06",
+      "cases": 35,
+      "temperature_min": 22.4285714285714,
+      "humidity_max": 93.3907614285714
+    },
+    {
+      "week": "2022-02-13",
+      "cases": 47,
+      "temperature_min": 23.2857142857143,
+      "humidity_max": 94.9782342857143
+    },
+    {
+      "week": "2022-02-20",
+      "cases": 62,
+      "temperature_min": 23.7142857142857,
+      "humidity_max": 95.0573185714286
+    },
+    {
+      "week": "2022-02-27",
+      "cases": 66,
+      "temperature_min": 24.0,
+      "humidity_max": 91.8047485714286
+    },
+    {
+      "week": "2022-03-06",
+      "cases": 116,
+      "temperature_min": 23.8571428571429,
+      "humidity_max": 88.6337057142857
+    },
+    {
+      "week": "2022-03-13",
+      "cases": 126,
+      "temperature_min": 24.2857142857143,
+      "humidity_max": 88.0031728571429
+    },
+    {
+      "week": "2022-03-20",
+      "cases": 177,
+      "temperature_min": 22.0,
+      "humidity_max": 88.5834842857143
+    },
+    {
+      "week": "2022-03-27",
+      "cases": 153,
+      "temperature_min": 23.8571428571429,
+      "humidity_max": 91.0224414285714
+    },
+    {
+      "week": "2022-04-03",
+      "cases": 222,
+      "temperature_min": 22.7142857142857,
+      "humidity_max": 93.3633942857143
+    },
+    {
+      "week": "2022-04-10",
+      "cases": 201,
+      "temperature_min": 22.0,
+      "humidity_max": 92.4946777142857
+    },
+    {
+      "week": "2022-04-17",
+      "cases": 234,
+      "temperature_min": 19.4285714285714,
+      "humidity_max": 89.9170171428571
+    },
+    {
+      "week": "2022-04-24",
+      "cases": 342,
+      "temperature_min": 21.5714285714286,
+      "humidity_max": 91.7367494285714
+    },
+    {
+      "week": "2022-05-01",
+      "cases": 461,
+      "temperature_min": 21.4285714285714,
+      "humidity_max": 90.1201028571429
+    },
+    {
+      "week": "2022-05-08",
+      "cases": 505,
+      "temperature_min": 19.5714285714286,
+      "humidity_max": 91.54142
+    },
+    {
+      "week": "2022-05-15",
+      "cases": 406,
+      "temperature_min": 17.5714285714286,
+      "humidity_max": 87.4036151428571
+    },
+    {
+      "week": "2022-05-22",
+      "cases": 400,
+      "temperature_min": 15.7142857142857,
+      "humidity_max": 93.8515145714286
+    },
+    {
+      "week": "2022-05-29",
+      "cases": 338,
+      "temperature_min": 19.0,
+      "humidity_max": 93.168712
+    },
+    {
+      "week": "2022-06-05",
+      "cases": 255,
+      "temperature_min": 17.4285714285714,
+      "humidity_max": 93.07622
+    },
+    {
+      "week": "2022-06-12",
+      "cases": 153,
+      "temperature_min": 15.5714285714286,
+      "humidity_max": 89.8782454285714
+    },
+    {
+      "week": "2022-06-19",
+      "cases": 209,
+      "temperature_min": 17.2857142857143,
+      "humidity_max": 94.8229942857143
+    },
+    {
+      "week": "2022-06-26",
+      "cases": 189,
+      "temperature_min": 16.5714285714286,
+      "humidity_max": 92.2948454285714
+    },
+    {
+      "week": "2022-07-03",
+      "cases": 155,
+      "temperature_min": 15.2857142857143,
+      "humidity_max": 93.8056362857143
+    },
+    {
+      "week": "2022-07-10",
+      "cases": 144,
+      "temperature_min": 17.7142857142857,
+      "humidity_max": 92.364022
+    },
+    {
+      "week": "2022-07-17",
+      "cases": 194,
+      "temperature_min": 19.5714285714286,
+      "humidity_max": 91.61899
+    },
+    {
+      "week": "2022-07-24",
+      "cases": 148,
+      "temperature_min": 18.0,
+      "humidity_max": 89.3700925714286
+    },
+    {
+      "week": "2022-07-31",
+      "cases": 145,
+      "temperature_min": 18.0,
+      "humidity_max": 89.8375477142857
+    },
+    {
+      "week": "2022-08-07",
+      "cases": 106,
+      "temperature_min": 18.1428571428571,
+      "humidity_max": 92.2922505714286
+    },
+    {
+      "week": "2022-08-14",
+      "cases": 110,
+      "temperature_min": 16.4285714285714,
+      "humidity_max": 90.63613
+    },
+    {
+      "week": "2022-08-21",
+      "cases": 99,
+      "temperature_min": 17.0,
+      "humidity_max": 91.3912568571429
+    },
+    {
+      "week": "2022-08-28",
+      "cases": 94,
+      "temperature_min": 15.1428571428571,
+      "humidity_max": 90.4563228571429
+    },
+    {
+      "week": "2022-09-04",
+      "cases": 101,
+      "temperature_min": 17.4285714285714,
+      "humidity_max": 87.6832722857143
+    },
+    {
+      "week": "2022-09-11",
+      "cases": 120,
+      "temperature_min": 18.1428571428571,
+      "humidity_max": 90.7172862857143
+    },
+    {
+      "week": "2022-09-18",
+      "cases": 102,
+      "temperature_min": 17.4285714285714,
+      "humidity_max": 88.99469
+    },
+    {
+      "week": "2022-09-25",
+      "cases": 95,
+      "temperature_min": 18.7142857142857,
+      "humidity_max": 90.0105634285714
+    },
+    {
+      "week": "2022-10-02",
+      "cases": 102,
+      "temperature_min": 20.5714285714286,
+      "humidity_max": 91.60248
+    },
+    {
+      "week": "2022-10-09",
+      "cases": 123,
+      "temperature_min": 21.4285714285714,
+      "humidity_max": 90.8782
+    },
+    {
+      "week": "2022-10-16",
+      "cases": 160,
+      "temperature_min": 21.2857142857143,
+      "humidity_max": 88.5413314285714
+    },
+    {
+      "week": "2022-10-23",
+      "cases": 139,
+      "temperature_min": 20.8571428571429,
+      "humidity_max": 92.4297985714286
+    },
+    {
+      "week": "2022-10-30",
+      "cases": 131,
+      "temperature_min": 19.4285714285714,
+      "humidity_max": 90.9432542857143
+    },
+    {
+      "week": "2022-11-06",
+      "cases": 171,
+      "temperature_min": 19.5714285714286,
+      "humidity_max": 92.3709128571429
+    },
+    {
+      "week": "2022-11-13",
+      "cases": 129,
+      "temperature_min": 21.4285714285714,
+      "humidity_max": 87.8801685714286
+    },
+    {
+      "week": "2022-11-20",
+      "cases": 94,
+      "temperature_min": 20.8571428571429,
+      "humidity_max": 89.2448051428571
+    },
+    {
+      "week": "2022-11-27",
+      "cases": 86,
+      "temperature_min": 22.8571428571429,
+      "humidity_max": 88.6335014285714
+    },
+    {
+      "week": "2022-12-04",
+      "cases": 98,
+      "temperature_min": 22.0,
+      "humidity_max": 89.375718
+    },
+    {
+      "week": "2022-12-11",
+      "cases": 123,
+      "temperature_min": 21.0,
+      "humidity_max": 90.3509966666667
+    },
+    {
+      "week": "2022-12-18",
+      "cases": 117,
+      "temperature_min": 22.0,
+      "humidity_max": 91.24947
+    },
+    {
+      "week": "2022-12-25",
+      "cases": 163,
+      "temperature_min": 22.3333333333333,
+      "humidity_max": 92.22857
+    },
+    {
+      "week": "2023-01-01",
+      "cases": 230,
+      "temperature_min": 22.4285714285714,
+      "humidity_max": 92.5873994285714
+    },
+    {
+      "week": "2023-01-08",
+      "cases": 218,
+      "temperature_min": 23.4285714285714,
+      "humidity_max": 89.9808285714286
+    },
+    {
+      "week": "2023-01-15",
+      "cases": 246,
+      "temperature_min": 26.7142857142857,
+      "humidity_max": 77.1570837142857
+    },
+    {
+      "week": "2023-01-22",
+      "cases": 312,
+      "temperature_min": 25.1428571428571,
+      "humidity_max": 82.1437925714286
+    },
+    {
+      "week": "2023-01-29",
+      "cases": 383,
+      "temperature_min": 25.5714285714286,
+      "humidity_max": 83.8827211428571
+    },
+    {
+      "week": "2023-02-05",
+      "cases": 525,
+      "temperature_min": 25.2857142857143,
+      "humidity_max": 84.6093591428571
+    },
+    {
+      "week": "2023-02-12",
+      "cases": 372,
+      "temperature_min": 24.9333333333333,
+      "humidity_max": 86.4308133333333
+    },
+    {
+      "week": "2023-02-19",
+      "cases": 507,
+      "temperature_min": 23.76,
+      "humidity_max": 91.9395964
+    },
+    {
+      "week": "2023-02-26",
+      "cases": 870,
+      "temperature_min": 26.5652173913043,
+      "humidity_max": 79.2728502608696
+    },
+    {
+      "week": "2023-03-05",
+      "cases": 945,
+      "temperature_min": 25.8571428571429,
+      "humidity_max": 81.5570647142857
+    },
+    {
+      "week": "2023-03-12",
+      "cases": 1125,
+      "temperature_min": 24.8947368421053,
+      "humidity_max": 82.1735726315789
+    },
+    {
+      "week": "2023-03-19",
+      "cases": 1382,
+      "temperature_min": 24.0,
+      "humidity_max": 88.5891446153846
+    },
+    {
+      "week": "2023-03-26",
+      "cases": 1580,
+      "temperature_min": 23.5769230769231,
+      "humidity_max": 89.6739012307692
+    },
+    {
+      "week": "2023-04-02",
+      "cases": 1420,
+      "temperature_min": 22.0,
+      "humidity_max": 94.08686
+    },
+    {
+      "week": "2023-04-09",
+      "cases": 1783,
+      "temperature_min": 20.7142857142857,
+      "humidity_max": 95.7458942857143
+    },
+    {
+      "week": "2023-04-16",
+      "cases": 1502,
+      "temperature_min": 21.2857142857143,
+      "humidity_max": 93.2862714285714
+    },
+    {
+      "week": "2023-04-23",
+      "cases": 1572,
+      "temperature_min": 20.4285714285714,
+      "humidity_max": 92.4114291428571
+    },
+    {
+      "week": "2023-04-30",
+      "cases": 1919,
+      "temperature_min": 22.7619047619048,
+      "humidity_max": 88.057656952381
+    },
+    {
+      "week": "2023-05-07",
+      "cases": 1807,
+      "temperature_min": 21.8636363636364,
+      "humidity_max": 88.8520834545455
+    },
+    {
+      "week": "2023-05-14",
+      "cases": 1731,
+      "temperature_min": 18.1304347826087,
+      "humidity_max": 87.2980060869565
+    },
+    {
+      "week": "2023-05-21",
+      "cases": 1479,
+      "temperature_min": 18.72,
+      "humidity_max": 89.666396
+    },
+    {
+      "week": "2023-05-28",
+      "cases": 1328,
+      "temperature_min": 20.2,
+      "humidity_max": 88.834726
+    },
+    {
+      "week": "2023-06-04",
+      "cases": 1238,
+      "temperature_min": 16.4635857142857,
+      "humidity_max": 92.7973714285714
+    },
+    {
+      "week": "2023-06-11",
+      "cases": 1348,
+      "temperature_min": 19.9046,
+      "humidity_max": 91.9111285714286
+    },
+    {
+      "week": "2023-06-18",
+      "cases": 1236,
+      "temperature_min": 18.7,
+      "humidity_max": 78.0046084
+    },
+    {
+      "week": "2023-06-25",
+      "cases": 996,
+      "temperature_min": 19.7142857142857,
+      "humidity_max": 84.4387274285714
+    },
+    {
+      "week": "2023-07-02",
+      "cases": 835,
+      "temperature_min": 17.45,
+      "humidity_max": 82.800435
+    },
+    {
+      "week": "2023-07-09",
+      "cases": 770,
+      "temperature_min": 19.4214285714286,
+      "humidity_max": 89.1566142857143
+    },
+    {
+      "week": "2023-07-16",
+      "cases": 647,
+      "temperature_min": 17.9093285714286,
+      "humidity_max": 88.8996571428572
+    },
+    {
+      "week": "2023-07-23",
+      "cases": 557,
+      "temperature_min": 18.4884857142857,
+      "humidity_max": 92.4585285714286
+    },
+    {
+      "week": "2023-07-30",
+      "cases": 603,
+      "temperature_min": 17.1542714285714,
+      "humidity_max": 92.1810142857143
+    },
+    {
+      "week": "2023-08-06",
+      "cases": 536,
+      "temperature_min": 19.5280285714286,
+      "humidity_max": 90.5779571428571
+    },
+    {
+      "week": "2023-08-13",
+      "cases": 534,
+      "temperature_min": 19.9024,
+      "humidity_max": 89.5918428571429
+    },
+    {
+      "week": "2023-08-20",
+      "cases": 505,
+      "temperature_min": 19.9392142857143,
+      "humidity_max": 90.6021714285714
+    },
+    {
+      "week": "2023-08-27",
+      "cases": 459,
+      "temperature_min": 17.9162,
+      "humidity_max": 91.7952285714286
+    },
+    {
+      "week": "2023-09-03",
+      "cases": 446,
+      "temperature_min": 20.6991571428571,
+      "humidity_max": 87.9818714285714
+    },
+    {
+      "week": "2023-09-10",
+      "cases": 550,
+      "temperature_min": 19.7167285714286,
+      "humidity_max": 88.5132428571429
+    },
+    {
+      "week": "2023-09-17",
+      "cases": 519,
+      "temperature_min": 20.7192285714286,
+      "humidity_max": 90.7639714285714
+    },
+    {
+      "week": "2023-09-24",
+      "cases": 446,
+      "temperature_min": 21.7035142857143,
+      "humidity_max": 90.2691857142857
+    },
+    {
+      "week": "2023-10-01",
+      "cases": 472,
+      "temperature_min": 22.0612714285714,
+      "humidity_max": 92.8211285714286
+    },
+    {
+      "week": "2023-10-08",
+      "cases": 380,
+      "temperature_min": 22.3590857142857,
+      "humidity_max": 92.6474
+    },
+    {
+      "week": "2023-10-15",
+      "cases": 464,
+      "temperature_min": 21.2718571428571,
+      "humidity_max": 89.6377285714286
+    },
+    {
+      "week": "2023-10-22",
+      "cases": 450,
+      "temperature_min": 21.4660428571429,
+      "humidity_max": 90.9163714285714
+    },
+    {
+      "week": "2023-10-29",
+      "cases": 481,
+      "temperature_min": 23.3971714285714,
+      "humidity_max": 91.1584285714286
+    },
+    {
+      "week": "2023-11-05",
+      "cases": 704,
+      "temperature_min": 20.5856142857143,
+      "humidity_max": 84.6023428571429
+    },
+    {
+      "week": "2023-11-12",
+      "cases": 571,
+      "temperature_min": 25.3153285714286,
+      "humidity_max": 91.1391
+    },
+    {
+      "week": "2023-11-19",
+      "cases": 900,
+      "temperature_min": 23.4174285714286,
+      "humidity_max": 89.5124857142857
+    },
+    {
+      "week": "2023-11-26",
+      "cases": 983,
+      "temperature_min": 22.2267714285714,
+      "humidity_max": 91.1691142857143
+    },
+    {
+      "week": "2023-12-03",
+      "cases": 1149,
+      "temperature_min": 24.3112285714286,
+      "humidity_max": 93.2488285714286
+    },
+    {
+      "week": "2023-12-10",
+      "cases": 1411,
+      "temperature_min": 21.6109714285714,
+      "humidity_max": 90.9290428571429
+    },
+    {
+      "week": "2023-12-17",
+      "cases": 1098,
+      "temperature_min": 22.9563,
+      "humidity_max": 91.3377
+    },
+    {
+      "week": "2023-12-24",
+      "cases": 1198,
+      "temperature_min": 23.6519142857143,
+      "humidity_max": 86.8901857142857
+    },
+    {
+      "week": "2023-12-31",
+      "cases": 2421,
+      "temperature_min": 22.6193142857143,
+      "humidity_max": 89.3218857142857
+    },
+    {
+      "week": "2024-01-07",
+      "cases": 3010,
+      "temperature_min": 24.4706428571429,
+      "humidity_max": 90.7496
+    },
+    {
+      "week": "2024-01-14",
+      "cases": 3800,
+      "temperature_min": 25.7803571428571,
+      "humidity_max": 91.2030285714286
+    },
+    {
+      "week": "2024-01-21",
+      "cases": 4891,
+      "temperature_min": 21.8847285714286,
+      "humidity_max": 93.3217571428571
+    },
+    {
+      "week": "2024-01-28",
+      "cases": 7982,
+      "temperature_min": 22.7977571428571,
+      "humidity_max": 94.3458428571429
+    },
+    {
+      "week": "2024-02-04",
+      "cases": 10068,
+      "temperature_min": 23.4196285714286,
+      "humidity_max": 94.0718428571429
+    },
+    {
+      "week": "2024-02-11",
+      "cases": 13539,
+      "temperature_min": 24.0546142857143,
+      "humidity_max": 89.3992285714286
+    },
+    {
+      "week": "2024-02-18",
+      "cases": 16339,
+      "temperature_min": 23.9167571428571,
+      "humidity_max": 91.8427142857143
+    },
+    {
+      "week": "2024-02-25",
+      "cases": 14550,
+      "temperature_min": 24.4299142857143,
+      "humidity_max": 92.0358428571429
+    },
+    {
+      "week": "2024-03-03",
+      "cases": 11999,
+      "temperature_min": 22.7226285714286,
+      "humidity_max": 93.7982571428571
+    },
+    {
+      "week": "2024-03-10",
+      "cases": 10154,
+      "temperature_min": 23.1251857142857,
+      "humidity_max": 94.556
+    },
+    {
+      "week": "2024-03-17",
+      "cases": 7593,
+      "temperature_min": 24.7415857142857,
+      "humidity_max": 90.9787571428571
+    },
+    {
+      "week": "2024-03-24",
+      "cases": 4105,
+      "temperature_min": 22.2580285714286,
+      "humidity_max": 95.2120428571429
+    },
+    {
+      "week": "2024-03-31",
+      "cases": 4413,
+      "temperature_min": 21.0899,
+      "humidity_max": 97.4697428571429
+    },
+    {
+      "week": "2024-04-07",
+      "cases": 3433,
+      "temperature_min": 21.9763285714286,
+      "humidity_max": 95.6055857142857
+    },
+    {
+      "week": "2024-04-14",
+      "cases": 2579,
+      "temperature_min": 21.4813571428571,
+      "humidity_max": 89.5107428571429
+    },
+    {
+      "week": "2024-04-21",
+      "cases": 2040,
+      "temperature_min": 20.0138142857143,
+      "humidity_max": 90.1656
+    },
+    {
+      "week": "2024-04-28",
+      "cases": 1996,
+      "temperature_min": 21.8314571428571,
+      "humidity_max": 90.922
+    },
+    {
+      "week": "2024-05-05",
+      "cases": 1869,
+      "temperature_min": 20.6234714285714,
+      "humidity_max": 88.8572428571429
+    },
+    {
+      "week": "2024-05-12",
+      "cases": 1611,
+      "temperature_min": 21.3986142857143,
+      "humidity_max": 88.1564857142857
+    },
+    {
+      "week": "2024-05-19",
+      "cases": 1281,
+      "temperature_min": 20.5616857142857,
+      "humidity_max": 92.4196
+    },
+    {
+      "week": "2024-05-26",
+      "cases": 775,
+      "temperature_min": 18.1564285714286,
+      "humidity_max": 91.5817428571429
+    },
+    {
+      "week": "2024-06-02",
+      "cases": 885,
+      "temperature_min": 17.1701428571429,
+      "humidity_max": 94.1322571428571
+    },
+    {
+      "week": "2024-06-09",
+      "cases": 832,
+      "temperature_min": 16.1474285714286,
+      "humidity_max": 88.9999142857143
+    },
+    {
+      "week": "2024-06-16",
+      "cases": 727,
+      "temperature_min": 15.8707142857143,
+      "humidity_max": 85.4243428571429
+    },
+    {
+      "week": "2024-06-23",
+      "cases": 569,
+      "temperature_min": 19.4901142857143,
+      "humidity_max": 87.1860285714286
+    },
+    {
+      "week": "2024-06-30",
+      "cases": 508,
+      "temperature_min": 17.0553571428571,
+      "humidity_max": 91.2076857142857
+    },
+    {
+      "week": "2024-07-07",
+      "cases": 453,
+      "temperature_min": 18.9627714285714,
+      "humidity_max": 96.1099857142857
+    },
+    {
+      "week": "2024-07-14",
+      "cases": 433,
+      "temperature_min": 17.3365428571429,
+      "humidity_max": 96.9634428571429
+    },
+    {
+      "week": "2024-07-21",
+      "cases": 378,
+      "temperature_min": 14.8601,
+      "humidity_max": 93.9739714285714
+    },
+    {
+      "week": "2024-07-28",
+      "cases": 382,
+      "temperature_min": 16.8052714285714,
+      "humidity_max": 92.5954857142857
+    },
+    {
+      "week": "2024-08-04",
+      "cases": 319,
+      "temperature_min": 17.4687,
+      "humidity_max": 89.0138
+    },
+    {
+      "week": "2024-08-11",
+      "cases": 285,
+      "temperature_min": 13.7385714285714,
+      "humidity_max": 89.2387428571429
+    },
+    {
+      "week": "2024-08-18",
+      "cases": 295,
+      "temperature_min": 17.5144142857143,
+      "humidity_max": 89.1566142857143
+    },
+    {
+      "week": "2024-08-25",
+      "cases": 256,
+      "temperature_min": 14.9240142857143,
+      "humidity_max": 89.5492285714286
+    },
+    {
+      "week": "2024-09-01",
+      "cases": 254,
+      "temperature_min": 18.5249,
+      "humidity_max": 94.3440571428571
+    },
+    {
+      "week": "2024-09-08",
+      "cases": 281,
+      "temperature_min": 19.7286285714286,
+      "humidity_max": 81.4485857142857
+    },
+    {
+      "week": "2024-09-15",
+      "cases": 285,
+      "temperature_min": 19.4398857142857,
+      "humidity_max": 89.7475142857143
+    },
+    {
+      "week": "2024-09-22",
+      "cases": 317,
+      "temperature_min": 21.2191,
+      "humidity_max": 87.0729428571429
+    },
+    {
+      "week": "2024-09-29",
+      "cases": 263,
+      "temperature_min": 19.9713285714286,
+      "humidity_max": 87.0194
+    },
+    {
+      "week": "2024-10-06",
+      "cases": 281,
+      "temperature_min": 19.5270857142857,
+      "humidity_max": 88.0802285714286
+    },
+    {
+      "week": "2024-10-13",
+      "cases": 305,
+      "temperature_min": 19.8014,
+      "humidity_max": 90.2553714285714
+    },
+    {
+      "week": "2024-10-20",
+      "cases": 301,
+      "temperature_min": 22.1377714285714,
+      "humidity_max": 91.4065714285714
+    },
+    {
+      "week": "2024-10-27",
+      "cases": 327,
+      "temperature_min": 20.2597571428571,
+      "humidity_max": 91.5017571428571
+    },
+    {
+      "week": "2024-11-03",
+      "cases": 376,
+      "temperature_min": 22.238,
+      "humidity_max": 91.0784
+    },
+    {
+      "week": "2024-11-10",
+      "cases": 253,
+      "temperature_min": 20.0606571428571,
+      "humidity_max": 90.8999857142857
+    },
+    {
+      "week": "2024-11-17",
+      "cases": 303,
+      "temperature_min": 21.1277,
+      "humidity_max": 93.6325857142857
+    },
+    {
+      "week": "2024-11-24",
+      "cases": 354,
+      "temperature_min": 21.1036428571429,
+      "humidity_max": 90.0784857142857
+    },
+    {
+      "week": "2024-12-01",
+      "cases": 335,
+      "temperature_min": 22.5615,
+      "humidity_max": 92.0570571428571
+    },
+    {
+      "week": "2024-12-08",
+      "cases": 336,
+      "temperature_min": 22.2942142857143,
+      "humidity_max": 92.4930142857143
+    },
+    {
+      "week": "2024-12-15",
+      "cases": 270,
+      "temperature_min": 23.0114571428571,
+      "humidity_max": 91.3363714285714
+    },
+    {
+      "week": "2024-12-22",
+      "cases": 243,
+      "temperature_min": 23.2439285714286,
+      "humidity_max": 94.5550714285714
+    },
+    {
+      "week": "2024-12-29",
+      "cases": 398,
+      "temperature_min": 22.7949857142857,
+      "humidity_max": 93.7633142857143
+    },
+    {
+      "week": "2025-01-05",
+      "cases": 527,
+      "temperature_min": 22.3219,
+      "humidity_max": 91.5513714285714
+    },
+    {
+      "week": "2025-01-12",
+      "cases": 557,
+      "temperature_min": 22.2045285714286,
+      "humidity_max": 90.2165571428571
+    },
+    {
+      "week": "2025-01-19",
+      "cases": 686,
+      "temperature_min": 25.0885428571429,
+      "humidity_max": 90.5207571428571
+    },
+    {
+      "week": "2025-01-26",
+      "cases": 1056,
+      "temperature_min": 24.4659714285714,
+      "humidity_max": 93.1619
+    },
+    {
+      "week": "2025-02-02",
+      "cases": 1097,
+      "temperature_min": 24.0983428571429,
+      "humidity_max": 92.1974142857143
+    },
+    {
+      "week": "2025-02-09",
+      "cases": 1457,
+      "temperature_min": 24.0863142857143,
+      "humidity_max": 88.6152714285714
+    },
+    {
+      "week": "2025-02-16",
+      "cases": 1428,
+      "temperature_min": 24.2406571428571,
+      "humidity_max": 87.3689285714286
+    },
+    {
+      "week": "2025-02-23",
+      "cases": 956,
+      "temperature_min": 23.4926714285714,
+      "humidity_max": 89.2054571428571
+    },
+    {
+      "week": "2025-03-02",
+      "cases": 974,
+      "temperature_min": 23.1964857142857,
+      "humidity_max": 89.3327
+    },
+    {
+      "week": "2025-03-09",
+      "cases": 1315,
+      "temperature_min": 23.8001428571429,
+      "humidity_max": 92.1001428571429
+    },
+    {
+      "week": "2025-03-16",
+      "cases": 1254,
+      "temperature_min": 22.3865428571429,
+      "humidity_max": 91.9860714285714
+    },
+    {
+      "week": "2025-03-23",
+      "cases": 1105,
+      "temperature_min": 22.4457714285714,
+      "humidity_max": 92.9532857142857
+    },
+    {
+      "week": "2025-03-30",
+      "cases": 1047,
+      "temperature_min": 22.9229571428571,
+      "humidity_max": 93.1666857142857
+    },
+    {
+      "week": "2025-04-06",
+      "cases": 1018,
+      "temperature_min": 20.1451,
+      "humidity_max": 91.2884857142857
+    },
+    {
+      "week": "2025-04-13",
+      "cases": 701,
+      "temperature_min": 20.9410285714286,
+      "humidity_max": 95.0071571428571
+    },
+    {
+      "week": "2025-04-20",
+      "cases": 936,
+      "temperature_min": 20.5708714285714,
+      "humidity_max": 94.1942571428571
+    },
+    {
+      "week": "2025-04-27",
+      "cases": 967,
+      "temperature_min": 18.9843142857143,
+      "humidity_max": 93.3480714285714
+    },
+    {
+      "week": "2025-05-04",
+      "cases": 1198,
+      "temperature_min": 18.5724142857143,
+      "humidity_max": 92.5121
+    },
+    {
+      "week": "2025-05-11",
+      "cases": 1141,
+      "temperature_min": 18.3613142857143,
+      "humidity_max": 91.3157714285714
+    },
+    {
+      "week": "2025-05-18",
+      "cases": 1002,
+      "temperature_min": 17.5376714285714,
+      "humidity_max": 91.3351714285714
+    },
+    {
+      "week": "2025-05-25",
+      "cases": 816,
+      "temperature_min": 18.1470857142857,
+      "humidity_max": 88.8587285714286
+    },
+    {
+      "week": "2025-06-01",
+      "cases": 718,
+      "temperature_min": 18.3713857142857,
+      "humidity_max": 94.0833857142857
+    },
+    {
+      "week": "2025-06-08",
+      "cases": 506,
+      "temperature_min": 16.3566857142857,
+      "humidity_max": 90.767
+    },
+    {
+      "week": "2025-06-15",
+      "cases": 414,
+      "temperature_min": 14.7520857142857,
+      "humidity_max": 87.6017714285714
+    },
+    {
+      "week": "2025-06-22",
+      "cases": 438,
+      "temperature_min": 16.5165428571429,
+      "humidity_max": 90.2980714285714
+    },
+    {
+      "week": "2025-06-29",
+      "cases": 362,
+      "temperature_min": 16.8786142857143,
+      "humidity_max": 92.9636428571429
+    },
+    {
+      "week": "2025-07-06",
+      "cases": 367,
+      "temperature_min": 14.5620428571429,
+      "humidity_max": 95.6379142857143
+    },
+    {
+      "week": "2025-07-13",
+      "cases": 338,
+      "temperature_min": 14.4184285714286,
+      "humidity_max": 95.1648714285714
+    },
+    {
+      "week": "2025-07-20",
+      "cases": 328,
+      "temperature_min": 15.9077714285714,
+      "humidity_max": 96.3713428571428
+    },
+    {
+      "week": "2025-07-27",
+      "cases": 282,
+      "temperature_min": 14.3693857142857,
+      "humidity_max": 85.9395142857143
+    },
+    {
+      "week": "2025-08-03",
+      "cases": 312,
+      "temperature_min": 15.6099857142857,
+      "humidity_max": 93.6618714285714
+    },
+    {
+      "week": "2025-08-10",
+      "cases": 292,
+      "temperature_min": 14.6553142857143,
+      "humidity_max": 92.4428714285714
+    },
+    {
+      "week": "2025-08-17",
+      "cases": 325,
+      "temperature_min": 16.5987714285714,
+      "humidity_max": 88.3684571428571
+    },
+    {
+      "week": "2025-08-24",
+      "cases": 273,
+      "temperature_min": 19.0753714285714,
+      "humidity_max": 91.6492857142857
+    },
+    {
+      "week": "2025-08-31",
+      "cases": 286,
+      "temperature_min": 17.3692142857143,
+      "humidity_max": 90.1802428571429
+    },
+    {
+      "week": "2025-09-07",
+      "cases": 300,
+      "temperature_min": 18.0814142857143,
+      "humidity_max": 90.9729571428571
+    },
+    {
+      "week": "2025-09-14",
+      "cases": 308,
+      "temperature_min": 18.1232285714286,
+      "humidity_max": 92.1345571428571
+    },
+    {
+      "week": "2025-09-21",
+      "cases": 286,
+      "temperature_min": 18.5660142857143,
+      "humidity_max": 86.6857285714286
+    },
+    {
+      "week": "2025-09-28",
+      "cases": 295,
+      "temperature_min": 17.5797571428571,
+      "humidity_max": 87.4206285714286
+    },
+    {
+      "week": "2025-10-05",
+      "cases": 271,
+      "temperature_min": 19.3661571428571,
+      "humidity_max": 87.6469142857143
+    },
+    {
+      "week": "2025-10-12",
+      "cases": 308,
+      "temperature_min": 20.3655285714286,
+      "humidity_max": 93.6812428571429
+    },
+    {
+      "week": "2025-10-19",
+      "cases": 271,
+      "temperature_min": 16.2350142857143,
+      "humidity_max": 87.8822714285714
+    },
+    {
+      "week": "2025-10-26",
+      "cases": 218,
+      "temperature_min": 19.7352,
+      "humidity_max": 93.2082
+    },
+    {
+      "week": "2025-11-02",
+      "cases": 244,
+      "temperature_min": 20.4190142857143,
+      "humidity_max": 92.1942571428571
+    },
+    {
+      "week": "2025-11-09",
+      "cases": 264,
+      "temperature_min": 18.4198714285714,
+      "humidity_max": 88.8882
+    },
+    {
+      "week": "2025-11-16",
+      "cases": 223,
+      "temperature_min": 20.6914428571429,
+      "humidity_max": 90.8408857142857
+    },
+    {
+      "week": "2025-11-23",
+      "cases": 216,
+      "temperature_min": 20.1659714285714,
+      "humidity_max": 93.1072285714286
+    },
+    {
+      "week": "2025-11-30",
+      "cases": 259,
+      "temperature_min": 21.0305571428571,
+      "humidity_max": 91.7105714285714
+    },
+    {
+      "week": "2025-12-07",
+      "cases": 245,
+      "temperature_min": 23.5657142857143,
+      "humidity_max": 85.6889571428571
+    },
+    {
+      "week": "2025-12-14",
+      "cases": 196,
+      "temperature_min": 22.4274571428571,
+      "humidity_max": 91.3831142857143
+    },
+    {
+      "week": "2025-12-21",
+      "cases": 144,
+      "temperature_min": 23.2092857142857,
+      "humidity_max": 87.4793428571429
+    },
+    {
+      "week": "2025-12-28",
+      "cases": 215,
+      "temperature_min": 25.3883857142857,
+      "humidity_max": 84.8009285714286
+    },
+    {
+      "week": "2026-01-04",
+      "cases": 299,
+      "temperature_min": 22.3338857142857,
+      "humidity_max": 88.5561428571429
+    },
+    {
+      "week": "2026-01-11",
+      "cases": 281,
+      "temperature_min": 24.0536857142857,
+      "humidity_max": 82.4535
+    },
+    {
+      "week": "2026-01-18",
+      "cases": 302,
+      "temperature_min": 21.9115571428571,
+      "humidity_max": 89.8223285714286
+    },
+    {
+      "week": "2026-01-25",
+      "cases": 314,
+      "temperature_min": 22.4275857142857,
+      "humidity_max": 93.8569428571429
+    },
+    {
+      "week": "2026-02-01",
+      "cases": 390,
+      "temperature_min": 23.8478857142857,
+      "humidity_max": 95.4507428571429
+    },
+    {
+      "week": "2026-02-08",
+      "cases": 299,
+      "temperature_min": 22.9689,
+      "humidity_max": 92.6654428571429
+    },
+    {
+      "week": "2026-02-15",
+      "cases": 476,
+      "temperature_min": 23.4686,
+      "humidity_max": 93.9107714285714
+    },
+    {
+      "week": "2026-02-22",
+      "cases": 662,
+      "temperature_min": 23.5830857142857,
+      "humidity_max": 93.1581142857143
+    },
+    {
+      "week": "2026-03-01",
+      "cases": 696,
+      "temperature_min": 21.4183,
+      "humidity_max": 91.6480285714286
+    },
+    {
+      "week": "2026-03-08",
+      "cases": 718,
+      "temperature_min": 22.4558285714286,
+      "humidity_max": 95.4786285714286
+    },
+    {
+      "week": "2026-03-15",
+      "cases": 733,
+      "temperature_min": 20.6083285714286,
+      "humidity_max": 97.5561142857143
+    },
+    {
+      "week": "2026-03-22",
+      "cases": 670,
+      "temperature_min": 21.2533142857143,
+      "humidity_max": 95.0813857142857
+    },
+    {
+      "week": "2026-03-29",
+      "cases": 520,
+      "temperature_min": 21.8346285714286,
+      "humidity_max": 95.1963
+    },
+    {
+      "week": "2026-04-05",
+      "cases": 758,
+      "temperature_min": 22.6447285714286,
+      "humidity_max": 90.7339142857143
+    },
+    {
+      "week": "2026-04-12",
+      "cases": 526,
+      "temperature_min": 19.8962714285714,
+      "humidity_max": 94.8583857142857
+    },
+    {
+      "week": "2026-04-19",
+      "cases": 427,
+      "temperature_min": 19.7828714285714,
+      "humidity_max": 94.7160857142857
+    },
+    {
+      "week": "2026-04-26",
+      "cases": 506,
+      "temperature_min": 22.0626142857143,
+      "humidity_max": 91.9100142857143
+    },
+    {
+      "week": "2026-05-03",
+      "cases": 502,
+      "temperature_min": 20.4350571428571,
+      "humidity_max": 88.3872857142857
+    },
+    {
+      "week": "2026-05-10",
+      "cases": 493,
+      "temperature_min": 19.337,
+      "humidity_max": 90.8137142857143
+    },
+    {
+      "week": "2026-05-17",
+      "cases": 404,
+      "temperature_min": 20.1319285714286,
+      "humidity_max": 93.3367714285714
+    },
+    {
+      "week": "2026-05-24",
+      "cases": 391,
+      "temperature_min": 19.1712428571429,
+      "humidity_max": 92.3795
+    },
+    {
+      "week": "2026-05-31",
+      "cases": 313,
+      "temperature_min": 17.2351,
+      "humidity_max": 95.0319285714286
+    },
+    {
+      "week": "2026-06-07",
+      "cases": 320,
+      "temperature_min": 15.8752571428571,
+      "humidity_max": 94.1189428571429
+    },
+    {
+      "week": "2026-06-14",
+      "cases": 341,
+      "temperature_min": 16.8762285714286,
+      "humidity_max": 92.9951142857143
+    },
+    {
+      "week": "2026-06-21",
+      "cases": 276,
+      "temperature_min": 17.7795571428571,
+      "humidity_max": 95.6368571428571
+    },
+    {
+      "week": "2026-06-28",
+      "cases": 307,
+      "temperature_min": 17.5789428571429,
+      "humidity_max": 93.9377714285714
+    },
+    {
+      "week": "2026-07-05",
+      "cases": 250,
+      "temperature_min": 16.5794857142857,
+      "humidity_max": 92.2196142857143
+    },
+    {
+      "week": "2026-07-12",
+      "cases": 273,
+      "temperature_min": 15.2744285714286,
+      "humidity_max": 85.1283428571429
+    },
+    {
+      "week": "2026-07-19",
+      "cases": 302,
+      "temperature_min": 16.5739428571429,
+      "humidity_max": 89.4831714285714
+    },
+    {
+      "week": "2026-07-26",
+      "cases": 209,
+      "temperature_min": 17.1760428571429,
+      "humidity_max": 93.2471142857143
+    },
+    {
+      "week": "2026-08-02",
+      "cases": 244,
+      "temperature_min": 18.2753,
+      "humidity_max": 87.7023571428571
+    },
+    {
+      "week": "2026-08-09",
+      "cases": 221,
+      "temperature_min": 19.0453428571429,
+      "humidity_max": 90.848
+    },
+    {
+      "week": "2026-08-16",
+      "cases": 193,
+      "temperature_min": 18.5017,
+      "humidity_max": 89.8125428571429
+    },
+    {
+      "week": "2026-08-23",
+      "cases": 95,
+      "temperature_min": 18.282375,
+      "humidity_max": 89.295525
+    }
+  ],
+  "assessment": "Experimental forecasts frozen at issuance. Outcomes and prospective accuracy are not yet assessed.",
+  "target": "Weekly notified dengue cases in Rio de Janeiro; source reports may be revised later.",
+  "published_payload_sha256": "b02af454df4e81690b2884e1127de19bcc4a7c0349811a945bb677fe26c637d1"
+}
