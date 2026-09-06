@@ -1,0 +1,56 @@
+{
+  "audits": [
+    {
+      "week": "2026-W36",
+      "recorded_at": "2026-09-06T01:17:29.675411+00:00",
+      "schema_version": "3.0",
+      "last_scan": "2026-09-06T01:17:22.454660+00:00",
+      "coverage": "degraded",
+      "sources": [
+        {
+          "id": "who",
+          "status": "ok",
+          "items": 50,
+          "signals": 44,
+          "errors": []
+        },
+        {
+          "id": "paho",
+          "status": "ok",
+          "items": 10,
+          "signals": 4,
+          "errors": []
+        },
+        {
+          "id": "news",
+          "status": "error",
+          "items": 0,
+          "signals": 0,
+          "errors": [
+            "HTTP 429"
+          ]
+        },
+        {
+          "id": "mastodon",
+          "status": "ok",
+          "items": 240,
+          "signals": 152,
+          "errors": []
+        },
+        {
+          "id": "reddit",
+          "status": "disabled",
+          "items": 0,
+          "signals": 0,
+          "errors": [
+            "Credentials not configured"
+          ]
+        }
+      ],
+      "documents": 129,
+      "review_queue": 38,
+      "quality_gates": "Python regression, synthetic triage evaluation and frontend tests passed before this scan",
+      "validation_scope": "Software regression only; not independent epidemiological validation"
+    }
+  ]
+}
